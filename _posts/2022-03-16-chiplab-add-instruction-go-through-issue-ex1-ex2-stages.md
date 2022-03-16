@@ -65,3 +65,27 @@ r1_1_w1_fw means the reading of rf (raddr0_0) is conflicted with the writing of 
 ````````
 
 能看到ex1_port0_res ，ex2_port0_res，两个ex stage里的alu的结果都送回issue里用来forwarding了，这里肯定得有点问题。
+
+
+
+在ex2里, ex2_alu0_res作为结果被传出去，wb_port0_rf_result, 再进入wb_stage，然后又以wdata1回写到registerfile。
+其实应该叫wdata0，毕竟这是第一个回写端口。感觉ex2后面的代码是另一个人写的，ex1里的alu0 alu1，到ex2的注释里变成alu1 alu2了。
+
+```````verilog
+ 512 wire [`GRLEN-1:0] port0_res_input = ({`GRLEN{port0_alu_change  }} & ex2_alu0_res     ) |                                                                                                              
+ 513                                     ({`GRLEN{port0_bru_change  }} & ex2_bru_link_pc  ) |                                                                                                              
+ 514                                     ({`GRLEN{port0_none_change }} & ex2_none0_result ) |                                                                                                              
+ 515                                     ({`GRLEN{port0_div_change  }} & ex2_div_res      ) |                                                                                                              
+ 516                                     ({`GRLEN{port0_mul_change  }} & ex2_mul_res      ) ;                                                                                                              
+ 517                                                                                                                                                                                                       
+....
+
+ 525 always @(posedge clk) begin                                                                                                                                                                           
+ 526     if (port0_change) begin                                                                                                                                                                           
+ 527         wb_port0_rf_result <= port0_res_input;                                                                                                                                                        
+ 528     end                                                                                                                                                                                               
+ 529 end 
+```````
+
+现在的问题是，add这种整数指令只需要一个周期就完成了，虽然也还是经历了ex1，ex2，相当于算了两遍，但mul，div这种指令需要好几个周期，
+怎样做到等待mul，div指令完成的呢？因为回写是在wb，按说mul，div应该在wb之前算完。
