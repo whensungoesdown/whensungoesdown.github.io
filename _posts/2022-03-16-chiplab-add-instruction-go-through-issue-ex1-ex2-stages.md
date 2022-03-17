@@ -1,5 +1,5 @@
 ---
-title: See how the add instruction goes through the issue, ex1 and ex2 stages
+title: Chiplab, how instructions go through the issue, ex1 and ex2 stages
 published: true
 ---
 
@@ -234,4 +234,119 @@ ex1_mdu_a在ex1_stage里分别成为ex2_mdu_a和mul_a或div_a，代码如下
 ex2_div_res LA64时就是output，LA32时就是input。。。。
 
 我后面就只关注LA32就行了
+
+-------------------
+那怎样知道mul或div指令完成了，然后ex2_stage到下一级流水wb呢。更重要的是，mul，div没有完成的时候，上一级ex1_stage里的指令应该stall。
+还是跟chiplab里这一套allowin一样的机制，ex2_allow_in没有置1，前面的一系列流水线都会stall。
+
+``````````verilog
+ 414 //////basic                                                                                                                                                                                           
+ 415 assign allow_in_temp = wb_allow_in && change;                                                                                                                                                         
+ 416 assign ex2_allow_in  = allow_in_temp;  ////TODO: MAY WAIT FOR DEBUG  
+``````````
+同样的ex2_allow_in需要看下后面的wb_allow_in行没行，然后再等change。这个change，就是mul，div或者lsu给出来的，表示结果已经好了。
+
+```````verilog
+ 482 //result                                                                                                                                                                                              
+ 483 wire port0_change;                                                                                                                                                                                    
+ 484 wire port0_alu_change  = (ex2_port0_src == `EX_ALU0  ) && ex2_alu0_valid;                                                                                                                             
+ 485 wire port0_lsu_change  = (ex2_port0_src == `EX_LSU   ) && lsu_res_valid;                                                                                                                              
+ 486 wire port0_bru_change  = (ex2_port0_src == `EX_BRU   ) && ex2_bru_valid;                                                                                                                              
+ 487 wire port0_none_change = (ex2_port0_src == `EX_NONE0 ) && ex2_none0_valid;                                                                                                                            
+ 488 wire port0_div_change  = (ex2_port0_src == `EX_DIV   ) && ex2_div_valid;// && (div_complete || div_completed);                                                                                        
+ 489 wire port0_mul_change  = (ex2_port0_src == `EX_MUL   ) && ex2_mul_valid && ex2_mul_ready;                                                                                                             
+ 490                                                                                                                                                                                                       
+ 491 wire port1_change;                                                                                                                                                                                    
+ 492 wire port1_alu_change  = (ex2_port1_src == `EX_ALU1  ) && ex2_alu1_valid;                                                                                                                             
+ 493 wire port1_lsu_change  = (ex2_port1_src == `EX_LSU   ) && lsu_res_valid;                                                                                                                              
+ 494 wire port1_bru_change  = (ex2_port1_src == `EX_BRU   ) && ex2_bru_valid;                                                                                                                              
+ 495 wire port1_none_change = (ex2_port1_src == `EX_NONE1 ) && ex2_none1_valid;                                                                                                                            
+ 496 wire port1_div_change  = (ex2_port1_src == `EX_DIV   ) && ex2_div_valid;// && (div_complete || div_completed);                                                                                        
+ 497 wire port1_mul_change  = (ex2_port1_src == `EX_MUL   ) && ex2_mul_valid && ex2_mul_ready;                                                                                                             
+ 498                                                                                                                                                                                                       
+ 499 always @(posedge clk) begin                                                                                                                                                                           
+ 500     if(port0_change) wb_port0_rf_res_lsu <= port0_lsu_change;                                                                                                                                         
+ 501                                                                                                                                                                                                       
+ 502     if(port1_change) wb_port1_rf_res_lsu <= port1_lsu_change;                                                                                                                                         
+ 503                                                                                                                                                                                                       
+ 504     if(data_data_ok) wb_lsu_res <= ex2_lsu_res;                                                                                                                                                       
+ 505 end                                                                                                                                                                                                   
+ 506                                                                                                                                                                                                       
+ 507 assign port0_change = port0_alu_change || port0_lsu_change || port0_bru_change || port0_none_change || port0_div_change || port0_mul_change || !ex2_port0_valid;                                      
+ 508 assign port1_change = port1_alu_change || port1_lsu_change || port1_bru_change || port1_none_change || port1_div_change || port1_mul_change || !ex2_port1_valid;                                      
+ 509                                                                                                                                                                                                       
+ 510 assign change = port0_change && port1_change;                                                                                                                                                         
+ 511                                                                                                                                                                                                       
+ 512 wire [`GRLEN-1:0] port0_res_input = ({`GRLEN{port0_alu_change  }} & ex2_alu0_res     ) |                                                                                                              
+ 513                                     ({`GRLEN{port0_bru_change  }} & ex2_bru_link_pc  ) |                                                                                                              
+ 514                                     ({`GRLEN{port0_none_change }} & ex2_none0_result ) |                                                                                                              
+ 515                                     ({`GRLEN{port0_div_change  }} & ex2_div_res      ) |                                                                                                              
+ 516                                     ({`GRLEN{port0_mul_change  }} & ex2_mul_res      ) ;                                                                                                              
+ 517                                                                                                                                                                                                       
+ 518 wire [`GRLEN-1:0] port1_res_input = ({`GRLEN{port1_alu_change  }} & ex2_alu1_res     ) |                                                                                                              
+ 519                                     ({`GRLEN{port1_bru_change  }} & ex2_bru_link_pc  ) |                                                                                                              
+ 520                                     ({`GRLEN{port1_none_change }} & ex2_none1_result ) |                                                                                                              
+ 521                                     ({`GRLEN{port1_div_change  }} & ex2_div_res      ) |                                                                                                              
+ 522                                     ({`GRLEN{port1_mul_change  }} & ex2_mul_res      ) ;                                                                                                              
+ 523                                                                                                                                                                                                       
+ 524                                                                                                                                                                                                       
+ 525 always @(posedge clk) begin                                                                                                                                                                           
+ 526     if (port0_change) begin                                                                                                                                                                           
+ 527         wb_port0_rf_result <= port0_res_input;                                                                                                                                                        
+ 528     end                                                                                                                                                                                               
+ 529 end
+
+ 530                                                                                                                                                                                                       
+ 531 always @(posedge clk) begin                                                                                                                                                                           
+ 532     if (port1_change) begin                                                                                                                                                                           
+ 533         wb_port1_rf_result <= port1_res_input;                                                                                                                                                        
+ 534     end                                                                                                                                                                                               
+ 535 end 
+```````
+
+````````verilog
+ 463 always @(posedge clk) begin                                                                                                                                                                           
+ 464     if (rst || exception || eret || wb_cancel || bru_cancel_all_ex2) begin                                                                                                                            
+ 465         wb_port0_valid  <= 1'd0;                                                                                                                                                                      
+ 466         wb_port1_valid  <= 1'd0;                                                                                                                                                                      
+ 467     end                                                                                                                                                                                               
+ 468     else if(ex2_allow_in) begin                                                                                                                                                                       
+ 469         wb_port0_valid  <= ex2_port0_valid && !bru_cancel_all_ex2;                                                                                                                                    
+ 470         wb_port1_valid  <= ex2_port1_valid && !(port0_cancel || (bru_cancel_ex2 && ex2_bru_port[0] && !bru_ignore_ex2)) && !bru_cancel_all_ex2;                                                       
+ 471     end                                                                                                                                                                                               
+ 472     else begin                                                                                                                                                                                        
+ 473         wb_port0_valid  <= 1'b0;                                                                                                                                                                      
+ 474         wb_port1_valid  <= 1'b0;                                                                                                                                                                      
+ 475     end                                                                                                                                                                                               
+ 476                                                                                                                                                                                                       
+ 477     if (rst || exception || eret || wb_cancel) wb_port2_valid  <= 1'b0;                                                                                                                               
+ 478     else if(ex2_allow_in) wb_port2_valid  <= ex2_bru_port[0];                                                                                                                                         
+ 479     else wb_port2_valid  <= 1'b0;                                                                                                                                                                     
+ 480 end
+
+```````
+
+同样的，ex2_stage允许进了，也就把wb_port0_valid置1，如果后面的wb_allow_in是1，就可以交给wb了。
+
+````````verilog
+ 463 always @(posedge clk) begin                                                                                                                                                                           
+ 464     if (rst || exception || eret || wb_cancel || bru_cancel_all_ex2) begin                                                                                                                            
+ 465         wb_port0_valid  <= 1'd0;                                                                                                                                                                      
+ 466         wb_port1_valid  <= 1'd0;                                                                                                                                                                      
+ 467     end                                                                                                                                                                                               
+ 468     else if(ex2_allow_in) begin                                                                                                                                                                       
+ 469         wb_port0_valid  <= ex2_port0_valid && !bru_cancel_all_ex2;                                                                                                                                    
+ 470         wb_port1_valid  <= ex2_port1_valid && !(port0_cancel || (bru_cancel_ex2 && ex2_bru_port[0] && !bru_ignore_ex2)) && !bru_cancel_all_ex2;                                                       
+ 471     end                                                                                                                                                                                               
+ 472     else begin                                                                                                                                                                                        
+ 473         wb_port0_valid  <= 1'b0;                                                                                                                                                                      
+ 474         wb_port1_valid  <= 1'b0;                                                                                                                                                                      
+ 475     end                                                                                                                                                                                               
+ 476                                                                                                                                                                                                       
+ 477     if (rst || exception || eret || wb_cancel) wb_port2_valid  <= 1'b0;                                                                                                                               
+ 478     else if(ex2_allow_in) wb_port2_valid  <= ex2_bru_port[0];                                                                                                                                         
+ 479     else wb_port2_valid  <= 1'b0;                                                                                                                                                                     
+ 480 end
+
+```````
 
