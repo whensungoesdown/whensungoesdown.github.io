@@ -405,3 +405,33 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  44   output reg [`GRLEN-1:0]            badvaddr                                                                                                                                                          
  45 ); 
 ````````````
+
+````````````verilog
+  4 module lsu_s2(                                                                                                                                                                                         
+  5   input               clk,                                                                                                                                                                             
+  6   input               resetn,                                                                                                                                                                          
+  7                                                                                                                                                                                                        
+  8   input               valid,                                                                                                                                                                           
+  9   input [`LSOC1K_LSU_CODE_BIT-1:0]lsu_op,                                                                                                                                                              
+ 10   input               lsu_recv,                                                                                                                                                                        
+ 11   input [ 2:0]        lsu_shift,                                                                                                                                                                       
+ 12                                                                                                                                                                                                        
+ 13   //cached memory interface                                                                                                                                                                            
+ 14   output              data_recv,                                                                                                                                                                       
+ 15   input               data_scsucceed,                                                                                                                                                                  
+ 16   input   [`GRLEN-1:0]data_rdata,                                                                                                                                                                      
+ 17   input               data_exception,                                                                                                                                                                  
+ 18   input   [ 5:0]      data_excode,                                                                                                                                                                     
+ 19   input   [`GRLEN-1:0]data_badvaddr,                                                                                                                                                                   
+ 20   input               data_data_ok,                                                                                                                                                                    
+ 21                                                                                                                                                                                                        
+ 22 //result                                                                                                                                                                                               
+ 23   output [`GRLEN-1:0] read_result,                                                                                                                                                                     
+ 24   output              lsu_res_valid,                                                                                                                                                                   
+ 25                                                                                                                                                                                                        
+ 26   input               change,                                                                                                                                                                          
+ 27   input               exception,                                                                                                                                                                       
+ 28   output reg [`GRLEN-1:0]   badvaddr,                                                                                                                                                                  
+ 29   output              badvaddr_valid                                                                                                                                                                   
+ 30 ); 
+````````````
