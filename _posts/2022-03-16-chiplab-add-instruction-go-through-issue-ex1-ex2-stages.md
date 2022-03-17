@@ -348,6 +348,6 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  478     else if(ex2_allow_in) wb_port2_valid  <= ex2_bru_port[0];                                                                                                                                         
  479     else wb_port2_valid  <= 1'b0;                                                                                                                                                                     
  480 end
-
-```````````
+ 
+ ``````````````
 
