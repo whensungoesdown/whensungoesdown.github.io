@@ -435,3 +435,7 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  29   output              badvaddr_valid                                                                                                                                                                   
  30 ); 
 ````````````
+
+
+可以是issue后面下接ex_stage module（包括alu和csr），然后有mul, div。
+这里应该看看OpenSPARC T1里的ex是怎样安排模块的。还有bypaasing network，也就是forwarding。
