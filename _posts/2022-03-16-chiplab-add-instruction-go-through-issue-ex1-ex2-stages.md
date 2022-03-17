@@ -351,3 +351,60 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  
  ``````````````
 
+
+-------------------------------
+
+突然有个想法，ex1_stage和ex2_stage，会不会有一个是多余的。比如只保留ex1_stage，可以完成整数指令，mul，div都可以在这个阶段发出，
+等带结果出来以后带到wb去。
+我现在能想到的其它问题，就是csr指令在哪个阶段完成，LSU是怎样实现的。
+
+找了下LSU，ex1_stage里有lsu_s1，ex2_stage里有lsu_s2。还没仔细看这两个模块，但参数有点意思，lsu_s1里面是memory interface，lsu_s2里
+是cache interface。
+
+````````````verilog
+  1 `include "decoded.vh"                                                                            |  1 `include "common.vh"                                                                             
+  2                                                                                                  |  2                                                                                                  
+  3 // ALU module                                                                                    |  3 // ALU module                                                                                    
+  4 module lsu_s1(                                                                                   |  4 module lsu_s2(                                                                                   
+  5   input               clk,                                                                       |  5   input               clk,                                                                       
+  6   input               resetn,                                                                    |  6   input               resetn,                                                                    
+  7                                                                                                  |  7                                                                                                  
+  8   input               valid,                                                                     |  8   input               valid,                                                                     
+  9   input [`LSOC1K_LSU_CODE_BIT-1:0]lsu_op,                                                        |  9   input [`LSOC1K_LSU_CODE_BIT-1:0]lsu_op,                                                        
+ 10   input [`GRLEN-1:0]  base,                                                                      | 10   input               lsu_recv,                                                                  
+ 11   input [`GRLEN-1:0]  offset,                                                                    | 11   input [ 2:0]        lsu_shift,                                                                 
+ 12   input [`GRLEN-1:0]  wdata,                                                                     | 12                                                                                                  
+ 13                                                                                                  | 13   //cached memory interface                                                                      
+ 14   input               tlb_req,                                                                   | 14   output              data_recv,                                                                 
+ 15   input               data_exception,                                                            | 15   input               data_scsucceed,                                                            
+ 16   input   [`GRLEN-1:0]data_badvaddr,                                                             | 16   input   [`GRLEN-1:0]data_rdata,                                                                
+ 17   input               tlb_finish,                                                                | 17   input               data_exception,                                                            
+ 18                                                                                                  | 18   input   [ 5:0]      data_excode,                                                               
+ 19   //memory interface                                                                             | 19   input   [`GRLEN-1:0]data_badvaddr,                                                             
+ 20   output              data_req,                                                                  | 20   input               data_data_ok,                                                              
+ 21   output [`GRLEN-1:0] data_addr,                                                                 | 21                                                                                                  
+ 22   output              data_wr,                                                                   | 22 //result                                                                                         
+ 23   `ifdef LA64                                                                                    | 23   output [`GRLEN-1:0] read_result,                                                               
+ 24   output [ 7:0]       data_wstrb,                                                                | 24   output              lsu_res_valid,                                                             
+ 25   `elsif LA32                                                                                    | 25                                                                                                  
+ 26   output [ 3:0]       data_wstrb,                                                                | 26   input               change,                                                                    
+ 27   `endif                                                                                         | 27   input               exception,                                                                 
+ 28   output [`GRLEN-1:0] data_wdata,                                                                | 28   output reg [`GRLEN-1:0]   badvaddr,                                                            
+ 29   output              data_prefetch,                                                             | 29   output              badvaddr_valid                                                             
+ 30   output              data_ll,                                                                   | 30 );                                                                                               
+ 31   output              data_sc,                                                                   | 31                                                                                                  
+ 32   input               data_addr_ok,                                                              | 32 wire rst = !resetn;                                                                              
+ 33                                                                                                  | 33                                                                                                  
+ 34 //result                                                                                         | 34 //define                                                                                         
+ 35   output              lsu_finish,                                                                | 35 reg [ 3:0] work_state;                                                                           
+ 36   output              lsu_ale,                                                                   | 36 reg [`PABITS-1:0] addr_reg;                                                                      
+ 37   output              lsu_adem,                                                                  | 37 reg res_valid;                                                                                   
+ 38   output              lsu_recv,                                                                  | 38                                                                                                  
+ 39                                                                                                  | 39 // LSUop decoder                                                                                 
+ 40   input [`LSOC1K_CSR_OUTPUT_BIT-1:0] csr_output,                                                 | 40 wire lsu_am    = lsu_op == `LSOC1K_LSU_AMSWAP_W    || lsu_op == `LSOC1K_LSU_AMSWAP_D    || lsu_o\
+ 41   input                              change,                                                     |    p == `LSOC1K_LSU_AMADD_W     || lsu_op == `LSOC1K_LSU_AMADD_D     ||                             
+ 42   input                              eret,                                                       | 41                  lsu_op == `LSOC1K_LSU_AMAND_W     || lsu_op == `LSOC1K_LSU_AMAND_D     || lsu_o\
+ 43   input                              exception,                                                  |    p == `LSOC1K_LSU_AMOR_W      || lsu_op == `LSOC1K_LSU_AMOR_D      ||                             
+ 44   output reg [`GRLEN-1:0]            badvaddr                                                    | 42                  lsu_op == `LSOC1K_LSU_AMXOR_W     || lsu_op == `LSOC1K_LSU_AMXOR_D     || lsu_o\
+ 45 ); 
+````````````
