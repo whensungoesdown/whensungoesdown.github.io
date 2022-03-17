@@ -122,7 +122,7 @@ r1_1_w1_fw means the reading of rf (raddr0_0) is conflicted with the writing of 
  151     input                                 ex1_mul_ready,                                                                                                                                              
  152     input                                 ex1_div_ready,
 ````````
-
+(还要注意的是ex2_mdu_op，ex2_mdu_a，ex2_mdu_b都是reg类型)
 
 这是咋回事。。。ex2_stage里的
 ``````verilog
@@ -164,7 +164,8 @@ r1_1_w1_fw means the reading of rf (raddr0_0) is conflicted with the writing of 
  390 `endif 
 ``````
 
-原因是：LA32给了mul和div模块，LA64里没给，直接这么对付了。。。所以才会有上面重复的ex2_mdu_a和mul_a，div_a
+原因是：LA32给了mul和div模块，LA64里没给，直接这么对付了。。。除法操作不知道会被verilog生成成啥样，在一个clock里完成除法频率肯定上不去。。
+所以才会有上面重复的ex2_mdu_a和mul_a，div_a
 ex1_mdu_a在ex1_stage里分别成为ex2_mdu_a和mul_a或div_a，代码如下
 ```````verilog
  552 //mdu                                                                                                                                                                                                 
@@ -214,4 +215,23 @@ ex1_mdu_a在ex1_stage里分别成为ex2_mdu_a和mul_a或div_a，代码如下
  596                     ex1_mdu_op == `LSOC1K_MDU_MOD_DU    ; 
 ```````
 
+从ex1_stage里出来以后，在LA64的代码里，ex2_mdu_a，ex2_mdu_b, ex2_mdu_op等就进ex2_stage里去算除法去了。
+在条件编译LA32的时候，mul_a, div_a分别在mul64x64, div模块里计算。
+这让代码看上去乱了很多，比如ex1_stage参数这里，
+`````verilog
+ 156     //MDU                                                                                                                                                                                             
+ 157     input [`LSOC1K_MDU_CODE_BIT-1:0] ex2_mdu_op,                                                                                                                                                      
+ 158     input [`GRLEN-1:0]               ex2_mdu_a,                                                                                                                                                       
+ 159     input [`GRLEN-1:0]               ex2_mdu_b,                                                                                                                                                       
+ 160     input                            ex2_mul_ready,                                                                                                                                                   
+ 161     input [`GRLEN-1:0]               ex2_mul_res,                                                                                                                                                     
+ 162     `ifdef LA64                                                                                                                                                                                       
+ 163     output [`GRLEN-1:0]              ex2_div_res,                                                                                                                                                     
+ 164     `elsif LA32                                                                                                                                                                                       
+ 165     input [`GRLEN-1:0]               ex2_div_res,                                                                                                                                                     
+ 166     `endif
+`````
+ex2_div_res LA64时就是output，LA32时就是input。。。。
+
+我后面就只关注LA32就行了
 
