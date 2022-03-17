@@ -303,8 +303,7 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  534     end                                                                                                                                                                                               
  535 end 
 ```````
-
-````````verilog
+`````````verilog
  463 always @(posedge clk) begin                                                                                                                                                                           
  464     if (rst || exception || eret || wb_cancel || bru_cancel_all_ex2) begin                                                                                                                            
  465         wb_port0_valid  <= 1'd0;                                                                                                                                                                      
@@ -324,11 +323,13 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  479     else wb_port2_valid  <= 1'b0;                                                                                                                                                                     
  480 end
 
-```````
+`````````
+
 
 同样的，ex2_stage允许进了，也就把wb_port0_valid置1，如果后面的wb_allow_in是1，就可以交给wb了。
 
-````````verilog
+
+````````````verilog
  463 always @(posedge clk) begin                                                                                                                                                                           
  464     if (rst || exception || eret || wb_cancel || bru_cancel_all_ex2) begin                                                                                                                            
  465         wb_port0_valid  <= 1'd0;                                                                                                                                                                      
@@ -348,6 +349,5 @@ ex2_div_res LA64时就是output，LA32时就是input。。。。
  479     else wb_port2_valid  <= 1'b0;                                                                                                                                                                     
  480 end
 
-```````
-
+```````````
 
