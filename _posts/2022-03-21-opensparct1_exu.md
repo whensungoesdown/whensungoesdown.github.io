@@ -82,3 +82,29 @@ module sparc_exu (/*AUTOARG*/
 endmodule // sparc_exu
 
 ``````````
+
+在chiplab issue里的东西，应该对应在这的bypass和ecl。
+
+乘法和除法都在div里。
+
+rml是个控制寄存器窗口的，这个和SPARC架构有关。ecc也先不用看。
+
+这里没有一个wb模块，chiplab里的wb_stage似乎也在bypass模块里。从bypass的参数里能看到byp_irf_rd_data_w, byp_irf_rd_data_w2。
+还得搞清楚这个w，w2是啥情况。
+
+```````````````verilog
+/*
+//  Module Name: sparc_exu_byp
+//      Description: This block includes the muxes for the bypassing for all
+//              3 register outputs.  It also includes the pipeline registers 
+//              for the output of the ALU.  All other operands come from
+//              outside the bypass block.  Rs1_data chooses between the normal
+//              bypassing paths and the PC.  Rs2_data chooses between the normal
+//              bypassing paths and the immediate.
+*/
+```````````````
+
+```
+The pipeline stages generally follow this convention:
+F - S - D - E - M - W/G - W2
+```
