@@ -14,7 +14,7 @@ cd OpenSPARCT1
 
 用bash shell的，就改OpenSPARCT1.bash。主要就改目录地址和安装的EDA工具，我现在啥也没有，就有mdoelsim，先不管，都注释掉。
 
-`````
+`````shell
 # User needs to define these new variables
 
 export DV_ROOT=/home/u/prjs/OpenSPARCT1
@@ -50,13 +50,13 @@ fi
 #then
 #  export NOVAS_HOME=/import/EDAtools/debussy/debussy,v5.3v19/5.x
 #fi
-...
-````
+
+`````
 
 这之后，就按README里说的，`source OpenSPARCT1.bash`
 
 然后
-`````
+`````shell
 $ cd ..
 $ cd OpenSPARCT1_model
 $ sims -sim_type=vcs -group=core1_mini
@@ -64,7 +64,7 @@ $ sims -sim_type=vcs -group=core1_mini
 
 我没有vcs，先试下，因为后面马上出错了。
 
-`````
+`````shell
 u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vcs -group=core1_mini
 sims -> .local_tool_wrapper: configsrch returned error code 127 Exiting ...
 `````
@@ -112,7 +112,7 @@ sims -> .local_tool_wrapper: configsrch returned error code 127 Exiting ...
 
 照着做。
 
-`````
+`````shell
 u@unamed:~/prjs/OpenSPARCT1_model$ touch /tmp/tre_log.log
 u@unamed:~/prjs/OpenSPARCT1_model$ export TRE_LOG=/tmp/tre_log.log
 u@unamed:~/prjs/OpenSPARCT1_model$ rsynp
