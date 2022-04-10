@@ -173,3 +173,163 @@ sims: Caught a SIGDIE. Could not pre-process the master_diaglist at /home/u/prjs
 `````
 
 接着处理这个错。
+
+bw_cpp其实是这里的/home/u/prjs/OpenSPARCT1/tools/bin/bw_cpp，是个脚本。
+bin目录也都加到PATH里了，出错的真正原因是这个脚本本身是csh脚本，而我电脑上没装csh。
+所以可以装个csh的shell，在前面source OpenSPARCT1.cshrc。
+或者把这个文件改成bash的语法。
+
+`````bash
+#!/bin/bash
+
+if [[ "`uname -s`" == "SunOS" ]]; then
+  if ( -f /usr/lib/cpp ) then
+    /usr/lib/cpp $*
+    exit
+  fi
+fi
+
+# check cpp style
+cpp -V < /dev/null >& /dev/null
+
+# if GNU style, add traditional-cpp flag and remove -B flag
+
+if [[ $status == 1 ]]; then
+  cpp -E -traditional-cpp `/bin/echo $* | /bin/sed 's/-B/ /g' ` | \
+  sed 's/\/\/.*//'
+else
+  cpp $*
+fi
+
+`````
+
+--------------
+
+
+下一个错误。
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=ls -group=core1_mini
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_type=ls -group=core1_mini 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 04:35:17 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_12/tre/sims.iver
+sims: Frozen tre_search /home/u/prjs/OpenSPARCT1/tools/env/tools.iver
+sims: processing diaglist /home/u/prjs/OpenSPARCT1/verif/diag/master_diaglist () ..
+sims: processing group core1_mini
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -nosimslog -sim_build -vera_build -sys=core1 -vcs_rel_name=core1_2022_04_10_3 -nosas -novcs_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 04:35:19 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_12/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 1110687129
+sims: creating model directory /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_3
+sims: building vera model
+sims: vera_start Sun 10 Apr 2022 04:35:19 AM EDT
+sims: building vera model in /home/u/prjs/OpenSPARCT1/verif/env/cmp/vera
+sims: setenv VERA_LIBDIR /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_3/vera
+sims: gmake p=4 VERA_LIBDIR=/home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_3/vera
+/home/u/prjs/OpenSPARCT1/tools/Linux/x86_64/gmake,1.0: 3: /usr/bin/gmake: not found
+sims: Caught a SIGDIE. failed making vera testbench in /home/u/prjs/OpenSPARCT1/verif/env/cmp/vera at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1780.
+
+sims: Caught a SIGDIE. Could not build model for regression at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1272.
+`````
+
+没有gmake，这样就可以了。
+
+`````shell
+sudo ln -s /usr/bin/make  /usr/bin/gmake
+`````
+
+--------------
+
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=ls -group=core1_mini
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_type=ls -group=core1_mini 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 04:36:46 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_13/tre/sims.iver
+sims: Frozen tre_search /home/u/prjs/OpenSPARCT1/tools/env/tools.iver
+sims: processing diaglist /home/u/prjs/OpenSPARCT1/verif/diag/master_diaglist () ..
+sims: processing group core1_mini
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -nosimslog -sim_build -vera_build -sys=core1 -vcs_rel_name=core1_2022_04_10_4 -nosas -novcs_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 04:36:48 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_13/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 1635829362
+sims: creating model directory /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4
+sims: building vera model
+sims: vera_start Sun 10 Apr 2022 04:36:48 AM EDT
+sims: building vera model in /home/u/prjs/OpenSPARCT1/verif/env/cmp/vera
+sims: setenv VERA_LIBDIR /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4/vera
+sims: gmake p=4 VERA_LIBDIR=/home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4/vera
+generating /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4/vera/iop_rtl.h from /home/u/prjs/OpenSPARCT1/design/sys/iop/include/iop.h
+generating /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4/vera/sys_rtl.h from /home/u/prjs/OpenSPARCT1/design/sys/iop/include/sys.h
+Copying include/cpxorder_ports_binds.vrh
+Copying include/l2jbi_ports_binds.vrh
+Copying include/l2order_ports_binds.vrh
+Copying include/cmp_ports_binds.vrh
+Copying include/l2jbi.vcon
+Copying include/cpxorder.vcon
+Copying include/cmp_top.vcon
+Copying include/ucb.vcon
+Copying include/l2order.vcon
+Copying include/sparc.vcon
+Copying include/l2jbi.if.vrh
+Copying include/cpxorder.if.vrh
+Copying include/cmp_top.if.vrh
+Copying include/l2order.if.vrh
+Copying include/cmp_defines.vri
+Copying include/diag.vri
+Copying cpx_record.vr
+Vera: generating headers for cpx_record.vr
+vera -cmp -I . -max_error 5 -q -H cpx_record.vr cpx_record
+/bin/sh: 1: vera: not found
+gmake: *** [Makefile:206: /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_4/vera/cpx_record.vrh] Error 127
+sims: Caught a SIGDIE. failed making vera testbench in /home/u/prjs/OpenSPARCT1/verif/env/cmp/vera at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1780.
+
+sims: Caught a SIGDIE. Could not build model for regression at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1272.
+
+`````
