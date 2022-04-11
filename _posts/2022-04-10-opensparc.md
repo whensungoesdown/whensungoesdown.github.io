@@ -667,6 +667,10 @@ $ perlbrew install 5.8.9 -Accflags="-m32 -march=i686" -Aldflags="-m32 -march=i68
 `````shell
 $ perlbrew install perl-5.8.9 -Dusethreads
 `````
+装完以后还要改这个变量。
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ export PERL_CMD=/home/u/perl5/perlbrew/perls/perl-5.8.9/bin/perl
+`````
 这样这个bug就过去了，接着就是新问题。
 
 
