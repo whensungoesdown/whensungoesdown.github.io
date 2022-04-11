@@ -611,3 +611,222 @@ sims: stop_time Sun 10 Apr 2022 11:47:06 PM EDT
 `````
 
 后面的midas编译错。
+
+midas也是OpenSPARCT1/tools/bin/里面的一个脚本，单独运行midas也会出现相同的错误，就是Perl_Gthr_key_ptr函数没有。
+搜了以后，开始以为是perl的版本不对，Vertor.so里面搜字串，看到编译时用的是perl 5.8.0，而我系统上装的是5.30.0。
+所以用perlbrew下载安装不同版本的perl。
+装perlbrew用下面这个：
+
+`````shell
+$ curl -L https://install.perlbrew.pl | bash
+`````
+
+> # Initialize
+> perlbrew init
+>  
+> # See what is available
+> perlbrew available
+>  
+> # Install some Perls
+> perlbrew install 5.18.2
+> perlbrew install perl-5.8.1
+> perlbrew install perl-5.19.9
+>  
+> # See what were installed
+> perlbrew list
+>  
+> # Swith to an installation and set it as default
+> perlbrew switch perl-5.18.2
+>  
+> # Temporarily use another version only in current shell.
+> perlbrew use perl-5.8.1
+> perl -v
+>  
+> # Or turn it off completely. Useful when you messed up too deep.
+> # Or want to go back to the system Perl.
+> perlbrew off
+>  
+> # Use 'switch' command to turn it back on.
+> perlbrew switch perl-5.12.2
+>  
+> # Exec something with all perlbrew-ed perls
+> perlbrew exec -- perl -E 'say $]'
+
+用perlbrew available看支持哪些版本，看到有5.8.9，就装这个。
+`````shell
+$ perlbrew install perl-5.8.9
+`````
+但发现还是不行，同样的错误，我也试了5.8.0，甚至还试了32bit的perl，都不行。
+
+在64位机器上装32bit perl的参数也放在这。
+`````shell
+$ perlbrew install 5.8.9 -Accflags="-m32 -march=i686" -Aldflags="-m32 -march=i686" -Alddlflags="-shared -m32 -march=i686"
+`````
+
+后来搜到，是因为perl支不支持thread的原因，所以编译的时候带thread。
+`````shell
+$ perlbrew install perl-5.8.9 -Dusethreads
+`````
+这样这个bug就过去了，接着就是新问题。
+
+
+---------------------
+
+`````shell
+sims -sim_run -sys=core1 -vcs_rel_name=core1_2022_04_11_4 -regress_id=2022_04_11_4 -alias=mt_alu_ldx:model_core1:core1_mini:0 -dv_root=/home/u/prjs/OpenSPARCT1 -model_dir=/home/u/prjs/OpenSPARCT1_model -result_dir=/home/u/prjs/OpenSPARCT1_model -sims_config=/home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config -group_name=core1_mini -regress_date=2022_04_11 -regress_time=10_58_36 -sas -sas -rtl_timeout=50000 -max_cycle=300000 -finish_mask=7 mt_alu_ldx.s -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -novera_run -nobuild -regress -nosas -nouse_oolm 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Mon 11 Apr 2022 10:59:15 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_11_4/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 2456996947
+sims: group_name = core1_mini
+sims: regress_date = 2022_04_11
+sims: regress_time = 10_58_36
+sims: locating diag mt_alu_ldx.s
+sims: Looking for diag under $DV_ROOT/verif/diag
+sims: Found diag under /home/u/prjs/OpenSPARCT1/verif/diag/assembly/arch/mt/generated/mt_alu_ldx.s
+sims: assembling diag
+sims: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/lib/site_perl/5.8.0
+/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/bin/midas
+/home/u/perl5/perlbrew/perls/perl-5.8.9/bin/perl
+-mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+midas: init_config, project is OpenSPARCT1.
+midas: Setting project defaults for project 'OpenSPARCT1'.
+midas: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+midas: Running from /home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/bin/midas
+midas: ###########################################################
+midas: ##  SETUP PHASE
+midas: ###########################################################
+midas: ### Will build in directory "/var/tmp/u:mt_alu_ldx:model_core1:core1_mini:0:273151/build"
+midas: mkdir /var/tmp/u:mt_alu_ldx:model_core1:core1_mini:0:273151/build
+midas: cp diag.s build/diag.src
+midas: cd build
+midas: Splitting diag.src into diag.s and diag.pl (if necessary).
+midas: ###########################################################
+midas: ##  PREPROCESSING PHASE
+midas: ###########################################################
+midas: bw_cpp -B -P -I. -I.. -I/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include -DGOLDFINGER=1 -DMIDAS_VERSION=3.30 -DMIDAS_MAJOR_VERS=3 -DMIDAS_MINOR_VERS=30 -DSUN4V=1 -DNIAGARA diag.s > diag.cpp
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:31,
+                 from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:37:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/xlate.h:947:8: warning: extra tokens at end of #endif directive [-Wendif-labels]
+  947 | #endif */ __XLATE_H__ */
+      |        ^
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:165,
+                 from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:37:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot_dramctl_init.s:56: warning: "CAS_LATENCY" redefined
+   56 | #define CAS_LATENCY  0x3
+      | 
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot_dramctl_init.s:34: note: this is the location of the previous definition
+   34 | #define CAS_LATENCY 3
+      | 
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:37:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:860:30: warning: extra tokens at end of #ifndef directive
+  860 | #ifndef USER_PAGE_CUSTOM_MAP !added as per the request of "Bob Rethemeyer" to support MBLIMP on 06/24/04
+      |                              ^
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:37:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:1015:8: warning: extra tokens at end of #endif directive [-Wendif-labels]
+ 1015 | #endif ! ifdef USE_STACK
+      |        ^
+midas: bw_m4  --include=. --include=.. < diag.cpp > diag.m4
+/home/u/prjs/OpenSPARCT1/tools/Linux/x86_64/m4_gmp: error while loading shared libraries: libgmp.so.3: cannot open shared object file: No such file or directory
+midas: At pkg=Midas::Interface, file=/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/lib/site_perl/5.8.0/Midas/Interface.pm, line=368
+midas: FATAL ERROR: M_M4FAIL (#20): M4 preprocessor failed.
+midas: FATAL ERROR: Command "bw_m4  --include=. --include=.. < diag.cpp > diag.m4" failed with status 127. 
+sims: Caught a SIGDIE. midas compilation error at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 4089.
+
+/bin/rmdir: failed to remove '/var/tmp/u:mt_alu_ldx:model_core1:core1_mini:0:273151': No such file or directory
+sims: mtblkldst_loop:model_core1:core1_mini:0
+sims -sim_run -sys=core1 -vcs_rel_name=core1_2022_04_11_4 -regress_id=2022_04_11_4 -alias=mtblkldst_loop:model_core1:core1_mini:0 -dv_root=/home/u/prjs/OpenSPARCT1 -model_dir=/home/u/prjs/OpenSPARCT1_model -result_dir=/home/u/prjs/OpenSPARCT1_model -sims_config=/home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config -group_name=core1_mini -regress_date=2022_04_11 -regress_time=10_58_36 -sas -sas -sim_run_args=+spc_pipe=0 -finish_mask=f mtblkldst_loop.s -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -novera_run -nobuild -regress -nosas -nouse_oolm 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Mon 11 Apr 2022 10:59:15 AM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_11_4/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 907444985
+sims: group_name = core1_mini
+sims: regress_date = 2022_04_11
+sims: regress_time = 10_58_36
+sims: locating diag mtblkldst_loop.s
+sims: Looking for diag under $DV_ROOT/verif/diag
+sims: Found diag under /home/u/prjs/OpenSPARCT1/verif/diag/assembly/arch/mt/mtblkldst_loop.s
+sims: assembling diag
+sims: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/lib/site_perl/5.8.0
+/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/bin/midas
+/home/u/perl5/perlbrew/perls/perl-5.8.9/bin/perl
+-mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+midas: init_config, project is OpenSPARCT1.
+midas: Setting project defaults for project 'OpenSPARCT1'.
+midas: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+midas: Running from /home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/bin/midas
+midas: ###########################################################
+midas: ##  SETUP PHASE
+midas: ###########################################################
+midas: ### Will build in directory "/var/tmp/u:mtblkldst_loop:model_core1:core1_mini:0:273312/build"
+midas: mkdir /var/tmp/u:mtblkldst_loop:model_core1:core1_mini:0:273312/build
+midas: cp diag.s build/diag.src
+midas: cd build
+midas: Splitting diag.src into diag.s and diag.pl (if necessary).
+midas: ###########################################################
+midas: ##  PREPROCESSING PHASE
+midas: ###########################################################
+midas: bw_cpp -B -P -I. -I.. -I/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include -DGOLDFINGER=1 -DMIDAS_VERSION=3.30 -DMIDAS_MAJOR_VERS=3 -DMIDAS_MINOR_VERS=30 -DSUN4V=1 -DNIAGARA diag.s > diag.cpp
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:31,
+                 from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:40:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/xlate.h:947:8: warning: extra tokens at end of #endif directive [-Wendif-labels]
+  947 | #endif */ __XLATE_H__ */
+      |        ^
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:165,
+                 from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:40:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot_dramctl_init.s:56: warning: "CAS_LATENCY" redefined
+   56 | #define CAS_LATENCY  0x3
+      | 
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot_dramctl_init.s:34: note: this is the location of the previous definition
+   34 | #define CAS_LATENCY 3
+      | 
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:40:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:860:30: warning: extra tokens at end of #ifndef directive
+  860 | #ifndef USER_PAGE_CUSTOM_MAP !added as per the request of "Bob Rethemeyer" to support MBLIMP on 06/24/04
+      |                              ^
+In file included from /home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/boot.s:27,
+                 from diag.s:40:
+/home/u/prjs/OpenSPARCT1/verif/diag/assembly/include/hboot.s:1015:8: warning: extra tokens at end of #endif directive [-Wendif-labels]
+ 1015 | #endif ! ifdef USE_STACK
+      |        ^
+midas: bw_m4  --include=. --include=.. < diag.cpp > diag.m4
+/home/u/prjs/OpenSPARCT1/tools/Linux/x86_64/m4_gmp: error while loading shared libraries: libgmp.so.3: cannot open shared object file: No such file or directory
+midas: At pkg=Midas::Interface, file=/home/u/prjs/OpenSPARCT1/tools/perlmod/Midas/3.30/lib/site_perl/5.8.0/Midas/Interface.pm, line=368
+midas: FATAL ERROR: M_M4FAIL (#20): M4 preprocessor failed.
+midas: FATAL ERROR: Command "bw_m4  --include=. --include=.. < diag.cpp > diag.m4" failed with status 127. 
+sims: Caught a SIGDIE. midas compilation error at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 4089.
+
+/bin/rmdir: failed to remove '/var/tmp/u:mtblkldst_loop:model_core1:core1_mini:0:273312': No such file or directory
+sims: stop_time Mon 11 Apr 2022 10:59:16 AM EDT
+`````
+
+一堆warning，但有个问题就是libgmp.so.3没有找到。
