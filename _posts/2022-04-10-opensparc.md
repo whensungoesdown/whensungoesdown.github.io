@@ -412,3 +412,202 @@ sims: Caught a SIGDIE. VCS_HOME not defined. at /home/u/prjs/OpenSPARCT1/tools/s
 > to specify multiple argument options.
 
 
+先用vlib创建work library，然后在vlog的参数里指定work。vlog是用来build/compile verilog的。
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ vlib work
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vlog -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -group=core1_mini -novera_build -novera_run
+`````
+
+还真的开始编译了，后面出现了新的错误。
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vlog -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -group=core1_mini -novera_build -novera_run
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_type=vlog -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -group=core1_mini -novera_build -novera_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 11:46:30 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_24/tre/sims.iver
+sims: Frozen tre_search /home/u/prjs/OpenSPARCT1/tools/env/tools.iver
+sims: processing diaglist /home/u/prjs/OpenSPARCT1/verif/diag/master_diaglist () ..
+sims: processing group core1_mini
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -nosimslog -sim_build -novera_build -sys=core1 -vcs_rel_name=core1_2022_04_10_15 -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -novera_run -nosas -novcs_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 11:46:32 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_24/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 2841798902
+sims: creating model directory /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_15
+sims: setenv VERA_LIBDIR /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_15/vera
+sims: LM_LICENSE_FILE : /import/EDAtools/licenses/synopsys_key:/import/EDAtools/licenses/ncverilog_key
+sims: NOVAS_HOME not defined, Debussy will not be used.
+sims: Building rtl model
+sims: vlog -work ~/prjs/OpenSPARCT1_model/work -f flist 
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module jbus_monitor
+-- Compiling module jp_sjm
+-- Compiling module cmp_top
+-- Compiling module pad_efc
+-- Compiling module efc
+-- Compiling module efc_stdc
+-- Compiling module efc_saed
+-- Compiling module efc_tck
+-- Compiling module bw_r_efa
+-- Compiling module bw_clk_cl_efc_jbus
+-- Compiling module bw_ctu_pad_cluster
+-- Compiling module ctu_clsp_clkgn_1div
+-- Compiling module ctu_clsp_clkgn_syncp
+-- Compiling module ctu_clsp_clkgn_shadreg
+-- Compiling module ctu_clsp_clkgn_ddiv
+-- Compiling module ctu_clsp_clkgn_fstlog
+-- Compiling module ctu_clsp_clkgn_clksel
+-- Compiling module ctu_clsp_clkgn_clksw
+-- Compiling module ctu_clsp_clkgn_nstep_cnt
+-- Compiling module ctu_clsp_clkgn_nstep
+-- Compiling module ctu_clsp_clkgn_ssiclk
+-- Compiling module ctu_clsp_clkgn
+-- Compiling module ctu_clsp_dramgif
+-- Compiling module ctu_clsp_jbusgif
+-- Compiling module ctu_clsp_cmpgif
+-- Compiling module ctu_clsp_creg
+-- Compiling module ctu_clsp_clkctrl
+-- Compiling module ctu_clsp_ctrl
+-- Compiling module ctu_clsp_pllcnt
+-- Compiling module ctu_clsp_synch_cljl
+-- Compiling module ctu_clsp_synch_jlcl
+-- Compiling module ctu_clsp_synch_jldl
+-- Compiling module ctu_clsp_synch_dldg
+-- Compiling module ctu_clsp
+-- Compiling module ctu_dft_jtag_tap
+-- Compiling module ctu_dft_jtag
+-- Compiling module ctu_dft_bist
+-- Compiling module ctu_dft_creg
+-- Compiling module ctu_dft
+-- Compiling module ctu_test_stub_scan
+-- Compiling module ctu_revision
+-- Compiling module ctu_mask_id
+-- Compiling module ctu_jtag_id
+-- Compiling module ctu
+-- Compiling module ctu_sync_pulse_check
+-- Compiling module bw_clk_cl_ctu_jbus
+-- Compiling module bw_clk_cl_ctu_cmp
+-- Compiling module bw_ctu_clk_sync_mux_1path
+-- Compiling module bw_ctu_clk_sync_mux
+-- Compiling module bw_clk_cl_ctu_2xcmp
+-- Compiling module bw_clk_cl_ctu_2xcmp_b
+-- Compiling module ctu_sync_header
+-- Compiling module bw_zzctu_sync
+-- Compiling module bw_rng
+-- Compiling module bw_pll
+-- Compiling module bw_tsr
+-- Compiling module pad_misc
+-- Compiling module bw_io_misc_chunk1
+-- Compiling module bw_io_misc_chunk2
+-- Compiling module bw_io_misc_chunk3
+-- Compiling module bw_io_misc_chunk5
+-- Compiling module bw_io_misc_chunk6
+-- Compiling module bw_clk_cl_misc_jbus
+-- Compiling module bw_io_schmitt
+-- Compiling module bw_io_hstl_pad
+-- Compiling module bw_io_cmos_pad
+-- Compiling module bw_io_cmos2_pad
+-- Compiling module bw_io_hstl_edgelogic
+-- Compiling module bw_io_cmos_edgelogic
+-- Compiling module bw_io_hstl_drv
+-- Compiling module bw_io_misc_rpt
+-- Compiling module bw_io_cmos2_pad_up
+-- Compiling module bw_io_cmos2_term_up
+-- Compiling module bw_io_cmos2_pad_dn
+-- Compiling module bw_io_cmos2_term_dn
+-- Compiling module bw_io_dtlhstl_rcv
+-- Compiling module bw_io_dq_pscan
+-- Compiling module bw_io_jp_bs_baseblk
+-- Compiling module bw_io_jp_sstl_bscan
+-- Compiling module bw_io_jp_sstl_dq_bscan
+-- Compiling module bw_io_jp_sstl_oebscan
+-- Compiling module bw_io_sstl_bscan
+
+...
+
+
+/bin/rmdir: failed to remove '/var/tmp/u:mt_dcache_falseraw:model_core1:core1_mini:0:28099': No such file or directory
+sims: mt_alu_ldx:model_core1:core1_mini:0
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_run -sys=core1 -vcs_rel_name=core1_2022_04_10_15 -regress_id=2022_04_10_24 -alias=mt_alu_ldx:model_core1:core1_mini:0 -dv_root=/home/u/prjs/OpenSPARCT1 -model_dir=/home/u/prjs/OpenSPARCT1_model -result_dir=/home/u/prjs/OpenSPARCT1_model -sims_config=/home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config -group_name=core1_mini -regress_date=2022_04_10 -regress_time=23_46_30 -sas -sas -rtl_timeout=50000 -max_cycle=300000 -finish_mask=7 mt_alu_ldx.s -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -novera_run -nobuild -regress -nosas -nouse_oolm 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 11:47:05 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_24/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 108972634
+sims: group_name = core1_mini
+sims: regress_date = 2022_04_10
+sims: regress_time = 23_46_30
+sims: locating diag mt_alu_ldx.s
+sims: Looking for diag under $DV_ROOT/verif/diag
+sims: Found diag under /home/u/prjs/OpenSPARCT1/verif/diag/assembly/arch/mt/generated/mt_alu_ldx.s
+sims: assembling diag
+sims: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+/usr/bin/perl: symbol lookup error: /home/u/prjs/OpenSPARCT1/tools/perlmod/Linux-x86_64/auto/Bit/Vector/Vector.so: undefined symbol: Perl_Gthr_key_ptr
+sims: Caught a SIGDIE. midas compilation error at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 4089.
+
+/bin/rmdir: failed to remove '/var/tmp/u:mt_alu_ldx:model_core1:core1_mini:0:28206': No such file or directory
+sims: mtblkldst_loop:model_core1:core1_mini:0
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_run -sys=core1 -vcs_rel_name=core1_2022_04_10_15 -regress_id=2022_04_10_24 -alias=mtblkldst_loop:model_core1:core1_mini:0 -dv_root=/home/u/prjs/OpenSPARCT1 -model_dir=/home/u/prjs/OpenSPARCT1_model -result_dir=/home/u/prjs/OpenSPARCT1_model -sims_config=/home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config -group_name=core1_mini -regress_date=2022_04_10 -regress_time=23_46_30 -sas -sas -sim_run_args=+spc_pipe=0 -finish_mask=f mtblkldst_loop.s -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -novera_run -nobuild -regress -nosas -nouse_oolm 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 11:47:06 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_24/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 283903339
+sims: group_name = core1_mini
+sims: regress_date = 2022_04_10
+sims: regress_time = 23_46_30
+sims: locating diag mtblkldst_loop.s
+sims: Looking for diag under $DV_ROOT/verif/diag
+sims: Found diag under /home/u/prjs/OpenSPARCT1/verif/diag/assembly/arch/mt/mtblkldst_loop.s
+sims: assembling diag
+sims: midas -mmu=niagara -diag_root=/home/u/prjs/OpenSPARCT1 diag.s
+/usr/bin/perl: symbol lookup error: /home/u/prjs/OpenSPARCT1/tools/perlmod/Linux-x86_64/auto/Bit/Vector/Vector.so: undefined symbol: Perl_Gthr_key_ptr
+sims: Caught a SIGDIE. midas compilation error at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 4089.
+
+/bin/rmdir: failed to remove '/var/tmp/u:mtblkldst_loop:model_core1:core1_mini:0:28313': No such file or directory
+sims: stop_time Sun 10 Apr 2022 11:47:06 PM EDT
+`````
+
+后面的midas编译错。
