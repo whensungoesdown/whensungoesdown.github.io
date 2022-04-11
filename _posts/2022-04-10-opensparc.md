@@ -621,35 +621,35 @@ midas也是OpenSPARCT1/tools/bin/里面的一个脚本，单独运行midas也会
 $ curl -L https://install.perlbrew.pl | bash
 `````
 
-> # Initialize
+> \# Initialize
 > perlbrew init
 >  
-> # See what is available
+> \# See what is available
 > perlbrew available
 >  
-> # Install some Perls
+> \# Install some Perls
 > perlbrew install 5.18.2
 > perlbrew install perl-5.8.1
 > perlbrew install perl-5.19.9
 >  
-> # See what were installed
+> \# See what were installed
 > perlbrew list
 >  
-> # Swith to an installation and set it as default
+> \# Swith to an installation and set it as default
 > perlbrew switch perl-5.18.2
 >  
-> # Temporarily use another version only in current shell.
+> \# Temporarily use another version only in current shell.
 > perlbrew use perl-5.8.1
 > perl -v
 >  
-> # Or turn it off completely. Useful when you messed up too deep.
-> # Or want to go back to the system Perl.
+> \# Or turn it off completely. Useful when you messed up too deep.
+> \# Or want to go back to the system Perl.
 > perlbrew off
 >  
-> # Use 'switch' command to turn it back on.
+> \# Use 'switch' command to turn it back on.
 > perlbrew switch perl-5.12.2
 >  
-> # Exec something with all perlbrew-ed perls
+> \# Exec something with all perlbrew-ed perls
 > perlbrew exec -- perl -E 'say $]'
 
 用perlbrew available看支持哪些版本，看到有5.8.9，就装这个。
