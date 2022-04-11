@@ -261,6 +261,13 @@ sims: Caught a SIGDIE. Could not build model for regression at /home/u/prjs/Open
 sudo ln -s /usr/bin/make  /usr/bin/gmake
 `````
 
+前面我还忘了这个：
+
+`````shell
+% cd $DV_ROOT/tools/env
+% ln -s Makefile.Linux.x86_64 Makefile.system
+`````
+
 --------------
 
 `````shell
@@ -333,3 +340,75 @@ sims: Caught a SIGDIE. failed making vera testbench in /home/u/prjs/OpenSPARCT1/
 sims: Caught a SIGDIE. Could not build model for regression at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1272.
 
 `````
+
+我没有vera，这个很老了，是synopsys收购的，现在这个语言的一部分已经成了systemverilog。
+> By default, the simulations are run with Vera. If you do not want to use Vera, add following option to the sims command:
+> `-novera_build -novera_run`
+
+
+
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vsim -group=core1_mini -novera_build -novera_run
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -sim_type=vsim -group=core1_mini -novera_build -novera_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 09:43:20 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_16/tre/sims.iver
+sims: Frozen tre_search /home/u/prjs/OpenSPARCT1/tools/env/tools.iver
+sims: processing diaglist /home/u/prjs/OpenSPARCT1/verif/diag/master_diaglist () ..
+sims: processing group core1_mini
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+Unescaped left brace in regex is passed through in regex; marked by <-- HERE in m/\${ <-- HERE *(\w+)}*/ at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 3979.
+sims -nosimslog -sim_build -novera_build -sys=core1 -vcs_rel_name=core1_2022_04_10_7 -novera_run -nosas -novcs_run 
+sims: ================================================
+sims:   Simulation Script for OpenSPARC T1
+sims:   Copyright (c) 2001-2006 Sun Microsystems, Inc.
+sims:   All rights reserved.
+sims: ================================================
+sims: start_time Sun 10 Apr 2022 09:43:22 PM EDT
+sims: running on unamed
+sims: uname is Linux unamed 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+sims: version 1.262
+sims: dv_root /home/u/prjs/OpenSPARCT1
+sims: model_dir /home/u/prjs/OpenSPARCT1_model
+sims: tre_search /home/u/prjs/OpenSPARCT1_model/2022_04_10_16/tre/sims.iver
+sims: using config file /home/u/prjs/OpenSPARCT1/tools/src/sims/sims.config ()
+sims: using random seed 3864168019
+sims: creating model directory /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_7
+sims: setenv VERA_LIBDIR /home/u/prjs/OpenSPARCT1_model/core1/core1_2022_04_10_7/vera
+sims: LM_LICENSE_FILE : /import/EDAtools/licenses/synopsys_key:/import/EDAtools/licenses/ncverilog_key
+sims: NOVAS_HOME not defined, Debussy will not be used.
+sims: Building rtl model
+sims: Caught a SIGDIE. sim_build_cmd not defined at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 2252.
+
+sims: Caught a SIGDIE. Could not build model for regression at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1272.
+`````
+
+命令行里我随便填的-sim_type=vsim，所以是sim_build_cmd not defined。要是填-sim_type=vcs，那脚本就会去找是不是装了vcs。
+`````shell
+sims: Caught a SIGDIE. VCS_HOME not defined. at /home/u/prjs/OpenSPARCT1/tools/src/sims/sims,1.262 line 1889.
+`````
+
+> 3.2.3
+> Running Regression With Other Simulators
+> To use a Verilog simulator other than VCS or NCVerilog, use following options for
+> the sims command:
+> -sim_type=”Your simulator name”
+> -sim_build_cmd=”Your simulator command to build/compile RTL”
+> -sim_run_cmd=”Your simulator command to run simulations”
+> -sim_build_args=”Arguments to build/compile”
+> -sim_run_args=”Arguments to run simulations”
+> You only need to specify the sim_type, sim_build_cmd, and sim_run_cmd
+> options once. You can specify sim_build_args and sim_run_args multiple times
+> to specify multiple argument options.
+
+
