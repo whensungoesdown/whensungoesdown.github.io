@@ -2843,3 +2843,28 @@ sims: Caught a SIGDIE. sim_run_cmd not defined at /home/u/prjs/OpenSPARCT1/tools
 sims: stop_time Mon 11 Apr 2022 01:14:17 PM EDT
 
 `````
+
+vsim参数给的不对，后面生成的参数看上去是给VCS的。
+
+`````shell
+u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vlog -sim_build_cmd=vlog -sim_build_args="-work ~/prjs/OpenSPARCT1_model/work" -sim_run_cmd=vsim -sim_run_args="-c work.sparc" -group=core1_mini -novera_build -novera_run
+`````
+
+`````shell
+vsim +BW_BFM7 +BW_BFM6 +BW_BFM5 +BW_BFM4 +BW_BFM3 +BW_BFM2 +BW_BFM1 +SYSTEM_DV_MATCH=2 +RANK_DIMM +STACK_DIMM +hypervisor=1 +vera_exit_on_error +cpu_num=0 +dowarningfinish +doerrorfinish "-c work.sparc" +vcs+dumpvarsoff +finish_mask=3 +TIMEOUT=50000 +wait_cycle_to_kill=10 +max_cycle=200000 +tg_seed=1432548440 +good_trap=0000082000:1000122000 +bad_trap=0000082020:1000122020 +efuse_data_file=efuse.img +asm_diag_name=mt_wrrdcwp_loop.s +efuse_image_name=default.dat +dv_root=/home/u/prjs/OpenSPARCT1
+`````
+
+modelsim启动图形界面的时候总有问题，发现自己以前在Arch Linux上就遇到过这个问题；
+
+https://whensungoes.blogspot.com/2020/04/install-modelsim-on-arch-linux.html
+
+后面又找不到libbz2.so.1.0，装个32位的就行了。
+`````shell
+$ sudo apt install libbz2-dev:i386
+`````
+
+这时候modelsim图形界面是启动起来，但给的参数包括sims生成的参数应该都还不对。
+
+测试用例有一部分能成功编译，然后调用vsim，但大部分还编译不过。
+
+不过现在可以用modelsim图形界面加载整个sparc，但run 100ns，也没见出什么波形，这就得后面慢慢调试了。
