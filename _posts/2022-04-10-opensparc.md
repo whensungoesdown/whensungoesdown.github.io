@@ -2854,9 +2854,21 @@ u@unamed:~/prjs/OpenSPARCT1_model$ sims -sim_type=vlog -sim_build_cmd=vlog -sim_
 vsim +BW_BFM7 +BW_BFM6 +BW_BFM5 +BW_BFM4 +BW_BFM3 +BW_BFM2 +BW_BFM1 +SYSTEM_DV_MATCH=2 +RANK_DIMM +STACK_DIMM +hypervisor=1 +vera_exit_on_error +cpu_num=0 +dowarningfinish +doerrorfinish "-c work.sparc" +vcs+dumpvarsoff +finish_mask=3 +TIMEOUT=50000 +wait_cycle_to_kill=10 +max_cycle=200000 +tg_seed=1432548440 +good_trap=0000082000:1000122000 +bad_trap=0000082020:1000122020 +efuse_data_file=efuse.img +asm_diag_name=mt_wrrdcwp_loop.s +efuse_image_name=default.dat +dv_root=/home/u/prjs/OpenSPARCT1
 `````
 
-modelsim启动图形界面的时候总有问题，发现自己以前在Arch Linux上就遇到过这个问题；
+modelsim启动图形界面的时候总有问题。
+这次主要是卡这个错误上了，一个freetype lib的问题。
+
+`````shell
+invoked from within
+“ncFyP12 -+”
+(file “/mtitcl/vsim/vsim” line 1)
+** Fatal: Read failure in vlm process (0,0)
+`````
+
+发现自己以前在Arch Linux上就遇到过。
 
 https://whensungoes.blogspot.com/2020/04/install-modelsim-on-arch-linux.html
+
+
 
 后面又找不到libbz2.so.1.0，装个32位的就行了。
 `````shell
