@@ -329,49 +329,31 @@ page on the Java Software website:
      http://java.sun.com/j2se/1.5.0/runtime.html
 `````
 
--------------------------------------------------------------------------
+下载个新的Java SE Development Kit 5.0u22
+
+https://www.oracle.com/java/technologies/java-archive-javase5-downloads.html
+
+https://download.oracle.com/otn/java/jdk/1.5.0_22/jdk-1_5_0_22-linux-amd64.bin
+
+运行安装后找到里面的jre目录。
 `````shell
-u@unamed:~$ xclm
-Traceback (most recent call last):
-  File "/usr/lib/command-not-found", line 28, in <module>
-    from CommandNotFound import CommandNotFound
-  File "/usr/lib/python3/dist-packages/CommandNotFound/CommandNotFound.py", line 19, in <module>
-    from CommandNotFound.db.db import SqliteDatabase
-  File "/usr/lib/python3/dist-packages/CommandNotFound/db/db.py", line 5, in <module>
-    import apt_pkg
-ImportError: /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6: version `CXXABI_1.3.8' not found (required by /usr/lib/python3/dist-packages/apt_pkg.cpython-38-x86_64-linux-gnu.so)
-
+u@unamed:~/tools/jdk1.5.0_22$ ls
+bin  COPYRIGHT  demo  include  jre  lib  LICENSE  man  README.html  sample  src.zip  THIRDPARTYLICENSEREADME.txt
+u@unamed:~/tools/jdk1.5.0_22$ ls jre
+bin  CHANGES  COPYRIGHT  lib  LICENSE  README  THIRDPARTYLICENSEREADME.txt  Welcome.html
 `````
+然后用这个jre目录替换Xilinx/10.1/ISE/java/lin64/jre。
+问题就解决了，xps启动后Block Diagram显示出来了，之前也是java的问题这里出错。
+
+还有个事情要注意，从新生成bitstream的时候，要把Hardware菜单下的Clean Netlist，Clean Bits和Clean Hardware全都运行清理一遍。
+否则之前的错误还在，没有重新生成。
+特别是Clean Hardware，才看到下面这个文件被清理了，相应的东西重新生成。
+
+`OpenSPARCT1/design/sys/edk/synthesis/hard_ethernet_mac_wrapper_xst.srp`
 
 
+--------------------------
+现在这个环境能生成bitstream了，netlist system.ngc文件，1.2MB, system.ngd, 22MB。
 
-`````shell
-u@unamed:/lib$ strings x86_64-linux-gnu/libstdc++.so.6 | grep CXXABI
-CXXABI_1.3
-CXXABI_1.3.1
-CXXABI_1.3.2
-CXXABI_1.3.3
-CXXABI_1.3.4
-CXXABI_1.3.5
-CXXABI_1.3.6
-CXXABI_1.3.7
-CXXABI_1.3.8
-CXXABI_1.3.9
-CXXABI_1.3.10
-CXXABI_1.3.11
-CXXABI_1.3.12
-CXXABI_TM_1
-CXXABI_FLOAT128
-u@unamed:/lib$ file x86_64-linux-gnu/libstdc++.so.6
-x86_64-linux-gnu/libstdc++.so.6: symbolic link to libstdc++.so.6.0.28
-u@unamed:/lib$ cd
-u@unamed:~$ file /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6
-/home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, stripped
-u@unamed:~$ mv /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6 /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6.bak
-u@unamed:~$ ln -s /lib/x86_64-linux-gnu/libstdc++.so.6 /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6
-u@unamed:~$ file /home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6
-/home/u/Xilinx/10.1/EDK/lib/lin64/libstdc++.so.6: symbolic link to /lib/x86_64-linux-gnu/libstdc++.so.6
-u@unamed:~$
-`````
+![generate bitstream](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-04-14.png)
 
-后来发现这个什么也不是，装的ISE里就没有xclm还是xlcm这个程序。
