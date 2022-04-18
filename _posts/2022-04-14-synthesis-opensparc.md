@@ -357,3 +357,50 @@ bin  CHANGES  COPYRIGHT  lib  LICENSE  README  THIRDPARTYLICENSEREADME.txt  Welc
 
 ![generate bitstream](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-04-14.png)
 
+
+
+------------------------
+第二天早上一看，console里又输出了不少。
+
+`````shell
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+ERROR:Bitgen - Unknown PLL_ADV site  in pminfo.
+Saving bit stream in "system.bit".
+Bitstream generation is complete.
+`````
+
+没有找到怎么解决这个错误，但bitstream还是成功生成了，system.bit。
+后来用system.bit生成ace文件，放到ml505上跑也成功了。
+
+pminfo这些应该是BFD file里的东西。
+
+> PLL_ADV    Primitive: Advanced Phase Locked Loop Clock Circuit
+
+
+> 3.2 BFD Files
+> BFD (BitFile Description) files are internal and proprietary Xilinx files which map configuration
+> information to bitstream contents. The configuration information consists of all the programmable
+> resources in a device family, including routing resources, logic configuration, and block RAM re-
+> sources. This configuration information is broken down according to tile type, and is mapped to
+> configuration bits through sets of equations. These equations are expressed in BFD syntax and are
+> commonly referred to as BFD equations.
+> 
+> Each FPGA family typically has its own BFD file, able to accommodate the entire range of devices
+> in the family. This means that a BFD file must define resources and configuration bits for all tile
+> types which occur in the family, even though not all tile types will necessarily be present in all
+> devices in the family. In addition the BFD file may define abstract tile types which never occur in
+> any device in the family, but which are used hierarchically as parents of other tile types. The use
+> of abstract tile types in BFD files increases the maintainability of the files, decreases their sizes,
+> and allows them to more accurately match the device models.
+> 
+> BFD files are normally included with Xilinx software tools in a binary format suitable only for tool
+> use. The BFD files used here are original text files from which the binary versions are generated.
+
+
+先不管了。
