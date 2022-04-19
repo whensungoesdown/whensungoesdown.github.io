@@ -73,6 +73,6 @@ tutorial里说的是把板上的sw3开关拌到10101010，表示从CF卡启动�
 这个听上去很合理，因为ace文件里还有OBP（Open Boot PROM）。但其实这个prom应该是OpenSPARC启动时的firmware，
 microblaze启动时运行的是microblaze_0_bootloop。ccx-firmware是干啥的还没搞清楚。
 而我这个ml505开发板启动的时候，如果sw3在10101000的时候（rev0），是先进入个小菜单的。
-启动自己的ace文件可以放在/config/rev6/里，开机的时候选6。
+启动自己的ace文件可以放在/ML50X/cfg6/里，开机的时候选6。
 
 
