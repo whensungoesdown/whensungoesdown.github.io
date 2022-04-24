@@ -407,3 +407,40 @@ pminfo这些应该是BFD file里的东西。
 
 
 大意了。。。生成的ace文件不行，这个错误还是要解决。
+
+
+/home/u/Xilinx/10.1/ISE/bin/lin64/bitgen，用的时候参数在bitgen.ut里。
+`````shell
+system.make:	cd implementation; bitgen -w -f bitgen.ut $(SYSTEM)
+`````
+
+
+
+`````shell
+$(SYSTEM_ACE):
+        @echo "In order to generate ace file, you must have:-"
+        @echo "- exactly one processor."
+        @echo "- opb_mdm, if using microblaze."
+
+`````
+
+
+edk/system.log里还有错误。这个之前处理过。
+`````shell
+ERROR:MDT - C_MEM_CAS_LATENCY0 (mpmc) -
+   /home/u/Xilinx/10.1/ISE/bin/lin64/unwrapped/xilperl: error while loading
+   shared libraries: libdb-4.1.so: cannot open shared object file: No such file
+   or directory
+       while executing
+   "exec xilperl $perlPath  -mpmc3
+                                   -family      [xget_hw_parameter_value $mh..."
+       (procedure "init_control" line 40)
+       invoked from within
+   "init_control   $mhsinst"
+       (procedure "::hw_mpmc_v4_03_a::syslevel_update_ctrl_parameter" line 6)
+       invoked from within
+   "::hw_mpmc_v4_03_a::syslevel_update_ctrl_parameter 100783616"
+
+`````
+
+system.log之前的编译信息也都保存着，所以这个是改过了。
