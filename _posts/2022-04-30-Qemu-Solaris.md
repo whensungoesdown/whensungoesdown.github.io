@@ -1,5 +1,5 @@
 ---
-title: Qemu Sparc64 Solaris
+title: Qemu Sparc64
 published: true
 ---
 
@@ -42,3 +42,63 @@ published: true
 
 > You need to specify the repository where do you wanna change it,, in case locally then:
 > passwd -r files “username”
+
+
+-----------
+
+后来又找到个装debian的。
+https://wiki.debian.org/Sparc64Qemu
+
+用这里面的参数装ubuntu7.10没成功，不过debian9.0还是装上了。
+
+> ## Using qemu-system-sparc64 command line
+> 
+> ** hard drive and d-i image
+> 
+> Once you have a virtual disk created, e.g.
+> 
+> `````shell
+> qemu-img create -f qcow2 -o size=8G /path/to/vm/images/default/debian-unstable-sparc64.qcow2
+> `````
+> 
+> As of 2016-06-28 you will need a d-i iso from
+> 
+> https://people.debian.org/~glaubitz/debian-cd/
+> 
+> ### Short form
+> 
+> Short form of qemu-system-sparc64, limited networking
+> 
+> `````shell
+> qemu-system-sparc64 -hda /path/to/vm/images/default/debian-unstable-sparc64.qcow2 -cdrom /path/to/vm/images/default/iso/debian-9.0-sparc64-NETINST-1.iso -boot once=d -serial pty -nographic -m 160
+> `````
+> 
+> Access the VM via
+> 
+> `````shell
+> minicom -p /dev/pty/X
+> `````
+> 
+> ### Longer form
+> 
+> Longer form of qemu-system-sparc64, shows a little more of the defined system features
+> 
+> `````shell
+> LC_ALL=C QEMU_AUDIO_DRV=none \
+> PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+> /usr/bin/qemu-system-sparc64 -name debian-unstable-sparc64 -machine sun4u,accel=tcg,usb=off -m 1024 \
+> -realtime mlock=off -smp 1,sockets=1,cores=1,threads=1 \
+> -uuid ccd8b5c2-b8e4-4d5e-af19-9322cd8e55bf -rtc base=utc -no-reboot -no-shutdown \
+> -boot strict=on \
+> -drive file=/path/to/vm/images/default/debian-unstable-sparc64.qcow2,if=none,id=drive-ide0-0-1,format=qcow2,cache=none,aio=native \
+> -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-1,id=ide0-0-1 \
+> -netdev user,id=hostnet0,hostfwd=tcp::5555-:22 \
+> -device e1000,netdev=hostnet0,id=net0,mac=52:54:00:ce:98:e8 \
+> -msg timestamp=on -serial pty -nographic
+> `````shell
+> 
+> Connect to the VM's serial via PTY e.g. from minicom
+> 
+> `````shell
+> minicom -p /dev/pty/X
+> `````shell
