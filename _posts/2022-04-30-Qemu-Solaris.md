@@ -102,3 +102,5 @@ https://wiki.debian.org/Sparc64Qemu
 > `````shell
 > minicom -p /dev/pty/X
 > `````shell
+>
+> This still uses user-mode networking with forwarding on localhost:5555 to VMs port 22 for ssh access. 
