@@ -27,11 +27,13 @@ netlist生成好了以后，sparc.ngc还要复制到OpenSPARCT1/design/sys/edk/p
 > netlist placed in the netlist directory in its place. There can only be one netlist in the
 > netlist directory. The text box shows how to replace the Synplicity netlist with the
 > XST netlist
-> `````shell
-> % cd $DV_ROOT/design/sys/edk/pcores/iop_fpga_v1_00_a
-> % mv netlist/sparc.edf .
-> % cp path-to-netlist/sparc.ngc netlist
-> `````shell
+
+`````shell
+% cd $DV_ROOT/design/sys/edk/pcores/iop_fpga_v1_00_a
+% mv netlist/sparc.edf .
+% cp path-to-netlist/sparc.ngc netlist
+`````shell
+
 > After the new netlist has been put in place, the file data/iop_fpga_v2_1_0.bbd
 > must be edited to point to the new netlist.
 
