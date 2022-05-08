@@ -16,11 +16,52 @@ u@unamed:~/prjs/OpenSPARCT1$ rxil -device=XC5VLX110T -all
 
 我的开发板是XC5VLX110T的。
 
-
 > The Virtex®-5 OpenSPARC Evaluation Platform is a powerful system for hosting the OpenSPARC T1 open-source microprocessor. Equivalent to the Xilinx® ML509 board and based on the Xilinx XUPV5-LX110T FPGA, this kit brings the throughput of OpenSPARC Chip Multi-Threading to an FPGA.
 > 
 > OpenSPARC T1 is the open-sourced version of the custom designed UltraSPARC T1 microprocesor from Sun Microsystems. To broaden the appeal of this state-of-the-art Chip Multi-threading (CMT) technology to the developers, engineers at Sun Microsystems and Xilinx Inc. have developed a reference design that allows a scaled-down version of the OpenSPARC T1 processor to run on Xilinx Virtex-5 FPGAs. This reference design is an excellent starting point for researchers and entrepreneurs to build and test novel ideas in the areas of computer architecture, logic design, parallel programming, and compiler techniques, among others. 
 
+
+netlist生成好了以后，sparc.ngc还要复制到OpenSPARCT1/design/sys/edk/pcores/iop_fpga_v1_00_a/netlist目录下。
+
+> To use an XST netlist instead, the Synplicity netlist must be removed and the XST
+> netlist placed in the netlist directory in its place. There can only be one netlist in the
+> netlist directory. The text box shows how to replace the Synplicity netlist with the
+> XST netlist
+> `````shell
+> % cd $DV_ROOT/design/sys/edk/pcores/iop_fpga_v1_00_a
+> % mv netlist/sparc.edf .
+> % cp path-to-netlist/sparc.ngc netlist
+> `````shell
+> After the new netlist has been put in place, the file data/iop_fpga_v2_1_0.bbd
+> must be edited to point to the new netlist.
+
+在修改opensparc的代码后 可以只编译sparc部分来看编译是否成功，看下ERROR是不是0.
+`````shell
+u@unamed:~/prjs/OpenSPARCT1$ rxil -device=XC5VLX110T sparc
+`````
+
+因为就算有错没有成功编译，sparc.ngc也不会自动删除，很有可能用到以前的版本自己还不知道。
+
+复制过去的sparc.ngc，在edk里生成bitstream的时候会用到。edk编译netlist是编译其它系统资源，而sparc核心的netlist就是用之前xst编译好的。
+OpenSPARCT1/design/sys/edk/pcores/iop_fpga_v1_00_a/netlist/sparc.ngc会复制到OpenSPARCT1/design/sys/edk/implementation/iop_fpga_0_wrapper/sparc.ngc。
+
+而在edk里，只有Hardware->Clean Hardware才会删掉以前的sparc.ngc。
+
+如果sparc.ngc没有准备好，在Generate Bitstream的时候会有下面的出错提示。
+
+`````shell
+Managing hardware (BBD-specified) netlist files ...
+IPNAME:iop_fpga INSTANCE:iop_fpga_0 -
+/home/u/prjs/OpenSPARCT1/design/sys/edk/system.mhs line 344 - Copying
+(BBD-specified) netlist files.
+ERROR:MDT - BlackBox Netlist file iop_fpga_v1_00_a/netlist/sparc.ngc not found
+ERROR:MDT - IPNAME:iop_fpga INSTANCE:iop_fpga_0 -
+   /home/u/prjs/OpenSPARCT1/design/sys/edk/system.mhs line 344 - BBD netlist
+   file(s) not found!
+ERROR:MDT - platgen failed with errors!
+make: *** [system.make:240: implementation/system.bmm] Error 2
+Done!
+`````
 
 
 --------------------
