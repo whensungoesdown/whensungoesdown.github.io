@@ -42,7 +42,8 @@ netlist生成好了以后，sparc.ngc还要复制到OpenSPARCT1/design/sys/edk/p
 u@unamed:~/prjs/OpenSPARCT1$ rxil -device=XC5VLX110T sparc
 `````
 
-因为就算有错没有成功编译，sparc.ngc也不会自动删除，很有可能用到以前的版本自己还不知道。
+因为就算有错没有成功编译，sparc.ngc不会自动删除，而且还会生成个新的，很有可能用到以前的版本自己还不知道。
+要确定变异后ERROR是0，确认sparc.ngc生成的时间。
 
 复制过去的sparc.ngc，在edk里生成bitstream的时候会用到。edk编译netlist是编译其它系统资源，而sparc核心的netlist就是用之前xst编译好的。
 OpenSPARCT1/design/sys/edk/pcores/iop_fpga_v1_00_a/netlist/sparc.ngc会复制到OpenSPARCT1/design/sys/edk/implementation/iop_fpga_0_wrapper/sparc.ngc。

@@ -467,3 +467,240 @@ End of assembler dump.
         001873df 00              ??         00h
 
 `````
+
+
+sparc64 ubuntu7.10  libc-2.6.1.so
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             int __stdcall strcmp(char * __s1, char * __s2)
+             int               o0:4           <RETURN>
+             char *            o0:8           __s1
+             char *            o1:8           __s2
+                             strcmp                                          XREF[144]:   Entry Point(*), 
+                                                                                          FUN_0012d0c0:0012d2f0(c), 
+                                                                                          FUN_0012d0c0:0012d358(c), 
+                                                                                          FUN_0012d0c0:0012d370(c), 
+                                                                                          FUN_0012d0c0:0012d3c4(c), 
+                                                                                          FUN_0012d0c0:0012d69c(c), 
+                                                                                          FUN_0012da00:0012dc54(c), 
+                                                                                          FUN_0012da00:0012dc6c(c), 
+                                                                                          FUN_0012da00:0012dc84(c), 
+                                                                                          FUN_0012da00:0012dc9c(c), 
+                                                                                          FUN_0012dea0:0012ded0(c), 
+                                                                                          FUN_0012dea0:0012df10(c), 
+                                                                                          FUN_0012dea0:0012df28(c), 
+                                                                                          FUN_0012e380:0012e3c4(c), 
+                                                                                          FUN_0012edc0:0012ede0(c), 
+                                                                                          FUN_0012edc0:0012edf4(c), 
+                                                                                          FUN_0012edc0:0012ee08(c), 
+                                                                                          FUN_0012edc0:0012ee1c(c), 
+                                                                                          FUN_0012edc0:0012ee30(c), 
+                                                                                          00256134, [more]
+        0018d2e0 03 00 40 40     sethi      %hi(0x1010000),g1
+        0018d2e4 80 8a 20 07     andcc      __s1,0x7,g0
+        0018d2e8 12 40 00 66     bpne,pn    %icc,LAB_0018d480
+        0018d2ec 82 10 61 01     _or        g1,0x101,g1
+        0018d2f0 86 8a 60 07     andcc      __s2,0x7,g3
+        0018d2f4 12 40 00 74     bpne,pn    %icc,LAB_0018d4c4
+        0018d2f8 85 28 70 20     _sllx      g1,0x20,g2
+        0018d2fc d4 5a 00 00     ldx        [__s1+g0],o2
+        0018d300 82 10 40 02     or         g1,g2,g1
+                             LAB_0018d304                                    XREF[1]:     0018d4bc(j)  
+        0018d304 d6 5a 40 00     ldx        [__s2+g0],o3
+        0018d308 92 22 40 08     sub        __s2,__s1,__s2
+        0018d30c 85 28 70 07     sllx       g1,0x7,g2
+                             LAB_0018d310                                    XREF[2]:     0018d328(j), 0018d398(j)  
+        0018d310 90 02 20 08     add        __s1,0x8,__s1
+        0018d314 86 22 80 01     sub        o2,g1,g3
+        0018d318 80 a2 80 0b     cmp        o2,o3
+        0018d31c 12 60 00 29     bpne,pn    %xcc,LAB_0018d3c0
+        0018d320 d4 da 10 40     _ldxa      [__s1+g0] 0x82,o2
+        0018d324 80 88 c0 02     andcc      g3,g2,g0
+        0018d328 22 6f ff fa     bpe,a,pt   %xcc,LAB_0018d310
+        0018d32c d6 da 50 48     _ldxa      [__s2+__s1] 0x82,o3
+        0018d330 98 80 c0 01     addcc      g3,g1,o4
+        0018d334 87 30 f0 20     srlx       g3,0x20,g3
+        0018d338 80 88 c0 02     andcc      g3,g2,g0
+        0018d33c 02 68 00 0d     bpe,pt     %xcc,LAB_0018d370
+        0018d340 9b 33 30 38     _srlx      o4,0x38,o5
+        0018d344 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d348 02 40 00 16     bpe,pn     %icc,LAB_0018d3a0
+        0018d34c 9b 33 30 30     _srlx      o4,0x30,o5
+        0018d350 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d354 02 40 00 13     bpe,pn     %icc,LAB_0018d3a0
+        0018d358 9b 33 30 28     _srlx      o4,0x28,o5
+        0018d35c 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d360 02 40 00 10     bpe,pn     %icc,LAB_0018d3a0
+        0018d364 9b 33 30 20     _srlx      o4,0x20,o5
+        0018d368 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d36c 02 40 00 0d     bpe,pn     %icc,LAB_0018d3a0
+                             LAB_0018d370                                    XREF[1]:     0018d33c(j)  
+        0018d370 9b 33 30 18     _srlx      o4,0x18,o5
+        0018d374 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d378 02 40 00 0a     bpe,pn     %icc,LAB_0018d3a0
+        0018d37c 9b 33 30 10     _srlx      o4,0x10,o5
+        0018d380 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d384 02 40 00 07     bpe,pn     %icc,LAB_0018d3a0
+        0018d388 9b 33 30 08     _srlx      o4,0x8,o5
+        0018d38c 80 8b 60 ff     andcc      o5,0xff,g0
+        0018d390 02 40 00 04     bpe,pn     %icc,LAB_0018d3a0
+        0018d394 80 8b 20 ff     _andcc     o4,0xff,g0
+        0018d398 32 47 ff de     bpne,a,pn  %icc,LAB_0018d310
+        0018d39c d6 da 50 48     _ldxa      [__s2+__s1] 0x82,o3
+                             LAB_0018d3a0                                    XREF[16]:    0018d348(j), 0018d354(j), 
+                                                                                          0018d360(j), 0018d36c(j), 
+                                                                                          0018d378(j), 0018d384(j), 
+                                                                                          0018d390(j), 0018d4a0(j), 
+                                                                                          0018d528(j), 0018d534(j), 
+                                                                                          0018d540(j), 0018d54c(j), 
+                                                                                          0018d558(j), 0018d564(j), 
+                                                                                          0018d570(j), 0018d578(j)  
+        0018d3a0 81 c3 e0 08     retl
+        0018d3a4 90 10 00 00     _mov       g0,__s1
+        0018d3a8 30 68 00 06     bpa,a,pt   LAB_0018d3c0
+        0018d3ac 01 00 00 00     nop
+        0018d3b0 01 00 00 00     nop
+        0018d3b4 01 00 00 00     nop
+        0018d3b8 01 00 00 00     nop
+        0018d3bc 01 00 00 00     nop
+                             LAB_0018d3c0                                    XREF[3]:     0018d31c(j), 0018d3a8(j), 
+                                                                                          0018d504(j)  
+        0018d3c0 8c 10 20 ff     mov        0xff,g6
+        0018d3c4 80 88 c0 02     andcc      g3,g2,g0
+        0018d3c8 02 68 00 1b     bpe,pt     %xcc,LAB_0018d434
+        0018d3cc 98 80 c0 01     _addcc     g3,g1,o4
+        0018d3d0 87 30 f0 20     srlx       g3,0x20,g3
+        0018d3d4 80 88 c0 02     andcc      g3,g2,g0
+        0018d3d8 02 68 00 0d     bpe,pt     %xcc,LAB_0018d40c
+        0018d3dc 9b 29 b0 38     _sllx      g6,0x38,o5
+        0018d3e0 80 8b 00 0d     andcc      o4,o5,g0
+        0018d3e4 02 60 00 1b     bpe,pn     %xcc,LAB_0018d450
+        0018d3e8 9b 29 b0 30     _sllx      g6,0x30,o5
+        0018d3ec 80 8b 00 0d     andcc      o4,o5,g0
+        0018d3f0 02 60 00 18     bpe,pn     %xcc,LAB_0018d450
+        0018d3f4 9b 29 b0 28     _sllx      g6,0x28,o5
+        0018d3f8 80 8b 00 0d     andcc      o4,o5,g0
+        0018d3fc 02 60 00 15     bpe,pn     %xcc,LAB_0018d450
+        0018d400 9b 29 b0 20     _sllx      g6,0x20,o5
+        0018d404 80 8b 00 0d     andcc      o4,o5,g0
+        0018d408 02 60 00 12     bpe,pn     %xcc,LAB_0018d450
+                             LAB_0018d40c                                    XREF[1]:     0018d3d8(j)  
+        0018d40c 9b 29 b0 18     _sllx      g6,0x18,o5
+        0018d410 80 8b 00 0d     andcc      o4,o5,g0
+        0018d414 02 40 00 0f     bpe,pn     %icc,LAB_0018d450
+        0018d418 9b 29 b0 10     _sllx      g6,0x10,o5
+        0018d41c 80 8b 00 0d     andcc      o4,o5,g0
+        0018d420 02 40 00 0c     bpe,pn     %icc,LAB_0018d450
+        0018d424 9b 29 b0 08     _sllx      g6,0x8,o5
+        0018d428 80 8b 00 0d     andcc      o4,o5,g0
+        0018d42c 02 40 00 09     bpe,pn     %icc,LAB_0018d450
+        0018d430 9a 10 00 06     _mov       g6,o5
+                             LAB_0018d434                                    XREF[1]:     0018d3c8(j)  
+        0018d434 80 a3 00 0b     cmp        o4,o3
+        0018d438 90 10 3f ff     mov        -0x1,__s1
+        0018d43c 81 c3 e0 08     retl
+        0018d440 91 67 30 01     _movgu     %xcc,0x1,__s1
+        0018d444 30 68 00 03     bpa,a,pt   LAB_0018d450
+        0018d448 01 00 00 00     nop
+        0018d44c 01 00 00 00     nop
+                             LAB_0018d450                                    XREF[8]:     0018d3e4(j), 0018d3f0(j), 
+                                                                                          0018d3fc(j), 0018d408(j), 
+                                                                                          0018d414(j), 0018d420(j), 
+                                                                                          0018d42c(j), 0018d444(j)  
+        0018d450 8c 23 60 01     sub        o5,0x1,g6
+        0018d454 90 10 00 00     mov        g0,__s1
+        0018d458 9a 13 40 06     or         o5,g6,o5
+        0018d45c 98 2b 00 0d     andn       o4,o5,o4
+        0018d460 96 2a c0 0d     andn       o3,o5,o3
+        0018d464 80 a3 00 0b     cmp        o4,o3
+        0018d468 91 67 30 01     movgu      %xcc,0x1,__s1
+        0018d46c 81 c3 e0 08     retl
+        0018d470 91 65 77 ff     _movcs     %xcc,-0x1,__s1
+                             LAB_0018d474                                    XREF[1]:     0018d498(j)  
+        0018d474 81 c3 e0 08     retl
+        0018d478 90 10 00 0c     _mov       o4,__s1
+        0018d47c 01 00 00 00     nop
+                             LAB_0018d480                                    XREF[1]:     0018d2e8(j)  
+        0018d480 d4 0a 00 00     ldub       [__s1+g0],o2
+        0018d484 90 02 20 01     add        __s1,0x1,__s1
+        0018d488 d6 0a 40 00     ldub       [__s2+g0],o3
+        0018d48c 85 28 70 20     sllx       g1,0x20,g2
+                             LAB_0018d490                                    XREF[1]:     0018d4ac(j)  
+        0018d490 92 02 60 01     add        __s2,0x1,__s2
+        0018d494 98 a2 80 0b     subcc      o2,o3,o4
+        0018d498 12 67 ff f7     bpne,pn    %xcc,LAB_0018d474
+        0018d49c d4 8a 10 40     _lduba     [__s1+g0] 0x82,o2
+        0018d4a0 02 f2 ff c0     brz,pn     o3,LAB_0018d3a0
+        0018d4a4 d6 8a 50 40     _lduba     [__s2+g0] 0x82,o3
+        0018d4a8 80 8a 20 07     andcc      __s1,0x7,g0
+        0018d4ac 32 47 ff f9     bpne,a,pn  %icc,LAB_0018d490
+        0018d4b0 90 02 20 01     _add       __s1,0x1,__s1
+        0018d4b4 82 10 40 02     or         g1,g2,g1
+        0018d4b8 86 8a 60 07     andcc      __s2,0x7,g3
+        0018d4bc 22 47 ff 92     bpe,a,pn   %icc,LAB_0018d304
+        0018d4c0 d4 da 10 40     _ldxa      [__s1+g0] 0x82,o2
+                             LAB_0018d4c4                                    XREF[1]:     0018d2f4(j)  
+        0018d4c4 8b 28 f0 03     sllx       g3,0x3,g5
+        0018d4c8 9a 10 20 40     mov        0x40,o5
+        0018d4cc 92 22 40 03     sub        __s2,g3,__s2
+        0018d4d0 9a 23 40 05     sub        o5,g5,o5
+        0018d4d4 cc da 50 40     ldxa       [__s2+g0] 0x82,g6
+        0018d4d8 82 10 40 02     or         g1,g2,g1
+        0018d4dc 92 22 40 08     sub        __s2,__s1,__s2
+        0018d4e0 85 28 70 07     sllx       g1,0x7,g2
+        0018d4e4 92 02 60 08     add        __s2,0x8,__s2
+                             LAB_0018d4e8                                    XREF[1]:     0018d510(j)  
+        0018d4e8 97 29 90 05     sllx       g6,g5,o3
+        0018d4ec cc da 50 48     ldxa       [__s2+__s1] 0x82,g6
+                             LAB_0018d4f0                                    XREF[1]:     0018d580(j)  
+        0018d4f0 99 31 90 0d     srlx       g6,o5,o4
+        0018d4f4 d4 da 10 40     ldxa       [__s1+g0] 0x82,o2
+        0018d4f8 96 12 c0 0c     or         o3,o4,o3
+        0018d4fc 90 02 20 08     add        __s1,0x8,__s1
+        0018d500 80 a2 80 0b     cmp        o2,o3
+        0018d504 12 67 ff af     bpne,pn    %xcc,LAB_0018d3c0
+        0018d508 86 22 80 01     _sub       o2,g1,g3
+        0018d50c 80 88 c0 02     andcc      g3,g2,g0
+        0018d510 02 6f ff f6     bpe,pt     %xcc,LAB_0018d4e8
+        0018d514 87 30 f0 20     _srlx      g3,0x20,g3
+        0018d518 80 88 c0 02     andcc      g3,g2,g0
+        0018d51c 02 68 00 0d     bpe,pt     %xcc,LAB_0018d550
+        0018d520 87 32 b0 38     _srlx      o2,0x38,g3
+        0018d524 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d528 02 47 ff 9e     bpe,pn     %icc,LAB_0018d3a0
+        0018d52c 87 32 b0 30     _srlx      o2,0x30,g3
+        0018d530 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d534 02 47 ff 9b     bpe,pn     %icc,LAB_0018d3a0
+        0018d538 87 32 b0 28     _srlx      o2,0x28,g3
+        0018d53c 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d540 02 47 ff 98     bpe,pn     %icc,LAB_0018d3a0
+        0018d544 87 32 b0 20     _srlx      o2,0x20,g3
+        0018d548 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d54c 02 47 ff 95     bpe,pn     %icc,LAB_0018d3a0
+                             LAB_0018d550                                    XREF[1]:     0018d51c(j)  
+        0018d550 87 32 b0 18     _srlx      o2,0x18,g3
+        0018d554 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d558 02 47 ff 92     bpe,pn     %icc,LAB_0018d3a0
+        0018d55c 87 32 b0 10     _srlx      o2,0x10,g3
+        0018d560 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d564 02 47 ff 8f     bpe,pn     %icc,LAB_0018d3a0
+        0018d568 87 32 b0 08     _srlx      o2,0x8,g3
+        0018d56c 80 88 e0 ff     andcc      g3,0xff,g0
+        0018d570 02 47 ff 8c     bpe,pn     %icc,LAB_0018d3a0
+        0018d574 80 8a a0 ff     _andcc     o2,0xff,g0
+        0018d578 02 47 ff 8a     bpe,pn     %icc,LAB_0018d3a0
+        0018d57c 97 29 90 05     _sllx      g6,g5,o3
+        0018d580 10 6f ff dc     bpa,pt     LAB_0018d4f0
+        0018d584 cc da 50 48     _ldxa      [__s2+__s1] 0x82,g6
+        0018d588 30 68 00 06     bpa,a,pt   FUN_0018d5a0                                     undefined FUN_0018d5a0()
+                             -- Flow Override: CALL_RETURN (CALL_TERMINATOR)
+        0018d58c 01 00 00 00     nop
+        0018d590 01 00 00 00     nop
+        0018d594 01 00 00 00     nop
+        0018d598 01 00 00 00     nop
+        0018d59c 01 00 00 00     nop
+
+`````
