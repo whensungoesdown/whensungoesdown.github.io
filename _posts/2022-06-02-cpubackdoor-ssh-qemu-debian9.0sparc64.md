@@ -38,10 +38,10 @@ The authenticity of host '10.0.2.15 (10.0.2.15)' can't be established.
 ECDSA key fingerprint is SHA256:XI2RJzNENAcc+LZX6xOhxRmYOdEy4gP/Aku/dr857vw.    
 Are you sure you want to continue connecting (yes/no)? yes                      
 Warning: Permanently added '10.0.2.15' (ECDSA) to the list of known hosts.      
-00000000@10.0.2.15's password:                                                  
+00000000@10.0.2.15's password:           (Ctrl + C brek)     
                                                                                 
 u@debiansparc64:~$ ssh u@10.0.2.15                                              
-u@10.0.2.15's password:                                                         
+u@10.0.2.15's password:                  (type anything)                                      
 Linux debiansparc64 4.15.0-2-sparc64 #1 Debian 4.15.11-1 (2018-03-20) sparc64   
                                                                                 
 The programs included with the Debian GNU/Linux system are free software;       
