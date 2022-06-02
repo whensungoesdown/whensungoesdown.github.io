@@ -5,6 +5,8 @@ published: true
 
 在qemu上测试CPU后门ssh远程登陆，也是可以的。
 
+没在OpenSPARC T1的fpga上测，因为ramdisk还没搞定，ubuntu7.10的网络还是不通，而且也没法装sshd。
+
 因为毕竟ssh也是通过本地login进程验证的。
 
 不知道ssh是不是只能用username@ip的方式登陆还是有和login一样的界面，可以输入用户名密码。
