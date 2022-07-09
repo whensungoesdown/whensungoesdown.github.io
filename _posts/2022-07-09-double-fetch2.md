@@ -124,7 +124,7 @@ DIFF EIP
 
 `````shell
                              LAB_1404168fd                                   XREF[1]:     140416a72(j)  
-       1404168fd 8b 39           MOV        EDI,dword ptr [param_1]
+   --> 1404168fd 8b 39           MOV        EDI,dword ptr [param_1]
        1404168ff 41 3b c5        CMP        EAX,R13D
        140416902 0f 84 00        JZ         LAB_140416a08
                  01 00 00
@@ -148,7 +148,7 @@ DIFF EIP
        140416bfa 48 85 ff        TEST       RDI,RDI
        140416bfd 0f 84 75        JZ         LAB_140416e78
                  02 00 00
-       140416c03 44 8b 27        MOV        R12D,dword ptr [RDI]
+   --> 140416c03 44 8b 27        MOV        R12D,dword ptr [RDI]
        140416c06 48 8d 77 04     LEA        RSI,[RDI + 0x4]
        140416c0a 48 89 74        MOV        qword ptr [RSP + local_118],RSI
                  24 50
