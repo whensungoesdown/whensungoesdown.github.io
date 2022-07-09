@@ -27,7 +27,7 @@ DIFF EIP
 认为会在64k或什么地方对齐。
 `````shell
                              LAB_1404159eb                                   XREF[1]:     140415b0d(j)  
-       1404159eb 8b 38           MOV        EDI,dword ptr [RAX]
+   --> 1404159eb 8b 38           MOV        EDI,dword ptr [RAX]
        1404159ed 81 fa 00        CMP        param_2,0x80000000
                  00 00 80
        1404159f3 0f 84 c0        JZ         LAB_140415ab9
@@ -40,7 +40,7 @@ DIFF EIP
 
 `````shell
                              LAB_140418bb8                                   XREF[1]:     140418c9e(j)  
-       140418bb8 8b 19           MOV        EBX,dword ptr [param_1]
+   --> 140418bb8 8b 19           MOV        EBX,dword ptr [param_1]
        140418bba 8b c7           MOV        EAX,EDI
        140418bbc 25 00 00        AND        EAX,0xc0000000
                  00 c0
@@ -77,7 +77,7 @@ modrm是0x1的，大概是48 8b 01这种。
 
 `````shell
                              LAB_1404169c1                                   XREF[1]:     140416ab9(j)  
-     **1404169c1 48 8b 01        MOV        RAX,qword ptr [param_1]**
+   --> 1404169c1 48 8b 01        MOV        RAX,qword ptr [param_1]
        1404169c4 48 89 84        MOV        qword ptr [RSP + local_a8],RAX
                  24 c0 00 
                  00 00
@@ -88,7 +88,7 @@ modrm是0x1的，大概是48 8b 01这种。
        1404169d9 0f 83 df        JNC        LAB_140416abe
                  00 00 00
                              LAB_1404169df                                   XREF[1]:     140416ac1(j)  
-     **1404169df 48 8b 01        MOV        RAX,qword ptr [param_1]**
+   --> 1404169df 48 8b 01        MOV        RAX,qword ptr [param_1]
        1404169e2 48 89 01        MOV        qword ptr [param_1],RAX
        1404169e5 8b 7c 24 58     MOV        EDI,dword ptr [RSP + local_110]
        1404169e9 e9 d8 00        JMP        LAB_140416ac6
@@ -102,7 +102,7 @@ modrm是0x1的，大概是48 8b 01这种。
 
 -------------------------------------
 
-再试试一个。
+再试一个。
 
 `````shell
 DOUBLE FETCH:   cr3 0x12132c000, syscall 0x88
