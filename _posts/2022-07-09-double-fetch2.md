@@ -77,7 +77,7 @@ modrm是0x1的，大概是48 8b 01这种。
 
 `````shell
                              LAB_1404169c1                                   XREF[1]:     140416ab9(j)  
-     **1404169c1 48 8b 01        MOV        RAX,qword ptr [param_1] **
+     **1404169c1 48 8b 01        MOV        RAX,qword ptr [param_1]**
        1404169c4 48 89 84        MOV        qword ptr [RSP + local_a8],RAX
                  24 c0 00 
                  00 00
@@ -88,7 +88,7 @@ modrm是0x1的，大概是48 8b 01这种。
        1404169d9 0f 83 df        JNC        LAB_140416abe
                  00 00 00
                              LAB_1404169df                                   XREF[1]:     140416ac1(j)  
-    ** 1404169df 48 8b 01        MOV        RAX,qword ptr [param_1] **
+     **1404169df 48 8b 01        MOV        RAX,qword ptr [param_1]**
        1404169e2 48 89 01        MOV        qword ptr [param_1],RAX
        1404169e5 8b 7c 24 58     MOV        EDI,dword ptr [RSP + local_110]
        1404169e9 e9 d8 00        JMP        LAB_140416ac6
@@ -99,3 +99,58 @@ modrm是0x1的，大概是48 8b 01这种。
 这个就很明显了，但有没有价值还的具体分析。后面的9df那里，读近来马上写回去是什么操作呢，try catch然后看是否可写？
 
 
+
+-------------------------------------
+
+再试试一个。
+
+`````shell
+DOUBLE FETCH:   cr3 0x12132c000, syscall 0x88
+   eip 0xfffff80179ca0603, user_address 0x662867f3b0, user_data 0xf8000000, modrm 0x39, pc 0xfffff80179ca08fd
+   eip 0xfffff80179ca0bf2, user_address 0x662867f3b0, user_data 0xf8000000, modrm 0x27, pc 0xfffff80179ca0c03
+DIFF EIP
+`````
+
+48 8b 39        MOV        RDI,qword ptr [RCX]
+
+似乎没有单独的 8b 39，但prefix也不一定就是48。
+
+比如：
+
+4c 8b 39        MOV        R15,qword ptr [RCX]
+
+
+还是搜8fd，找到了。
+
+`````shell
+                             LAB_1404168fd                                   XREF[1]:     140416a72(j)  
+       1404168fd 8b 39           MOV        EDI,dword ptr [param_1]
+       1404168ff 41 3b c5        CMP        EAX,R13D
+       140416902 0f 84 00        JZ         LAB_140416a08
+                 01 00 00
+       140416908 41 bf 08        MOV        R15D,0x8
+                 00 00 00
+       14041690e 41 8b c7        MOV        EAX,R15D
+       140416911 41 85 fd        TEST       R13D,EDI
+       140416914 74 04           JZ         LAB_14041691a
+       140416916 41 8d 47 18     LEA        EAX,[R15 + 0x18]
+
+`````
+
+代码下面不远的c03的地方，果然有对应的下一次读，44 8b 27。
+
+`````shell
+                             LAB_140416bf2                                   XREF[3]:     1404171d9(j), 140417423(j), 
+                                                                                          140417447(j)  
+       140416bf2 48 8b bc        MOV        RDI,qword ptr [RSP + local_res20]
+                 24 88 01 
+                 00 00
+       140416bfa 48 85 ff        TEST       RDI,RDI
+       140416bfd 0f 84 75        JZ         LAB_140416e78
+                 02 00 00
+       140416c03 44 8b 27        MOV        R12D,dword ptr [RDI]
+       140416c06 48 8d 77 04     LEA        RSI,[RDI + 0x4]
+       140416c0a 48 89 74        MOV        qword ptr [RSP + local_118],RSI
+                 24 50
+
+`````
