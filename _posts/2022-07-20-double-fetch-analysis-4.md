@@ -1837,3 +1837,118 @@ DOUBLE FETCH:   cr3 0xa9774000, syscall 0x42
        14005c4b5 eb 05           JMP        LAB_14005c4bc
 
 `````
+
+
+
+---------------------------------------------
+
+case 23
+
+这个没啥意思，AL读进来也没用到。
+
+`````shell
+DOUBLE FETCH:   cr3 0xa9774000, syscall 0x42
+   eip 0xfffff80179c84540, user_address 0x3eb00fd6e0, user_data 0x30, modrm 0x1, pc 0xfffff80179c848a2
+   eip 0xfffff801798e6474, user_address 0x3eb00fd6e0, user_data 0x30, modrm 0x1, pc 0xfffff801798e649e
+`````
+
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined FUN_14005c474()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[0x18]:8  local_res18                             XREF[1]:     14005c4a4(W)  
+                             FUN_14005c474                                   XREF[4]:     FUN_1400bc6e0:1400bc7bc(c), 
+                                                                                          140335fb4(*), 140335fbc(*), 
+                                                                                          NtDuplicateToken:1403fa612(c)  
+       14005c474 48 83 ec 28     SUB        RSP,0x28
+       14005c478 4c 8b c9        MOV        R9,RCX
+       14005c47b 45 33 d2        XOR        R10D,R10D
+       14005c47e 45 88 10        MOV        byte ptr [R8],R10B
+       14005c481 84 d2           TEST       DL,DL
+       14005c483 74 42           JZ         LAB_14005c4c7
+       14005c485 48 85 c9        TEST       RCX,RCX
+       14005c488 74 32           JZ         LAB_14005c4bc
+       14005c48a f6 c1 03        TEST       CL,0x3
+       14005c48d 75 28           JNZ        LAB_14005c4b7
+       14005c48f 48 3b 0d        CMP        RCX,qword ptr [MmUserProbeAddress]               = ??
+                 6a 2d 32 00
+       14005c496 48 0f 43        CMOVNC     RCX,qword ptr [MmUserProbeAddress]               = ??
+                 0d 62 2d 
+                 32 00
+   --> 14005c49e 8a 01           MOV        AL,byte ptr [RCX]
+   x   14005c4a0 49 8b 41 20     MOV        RAX,qword ptr [R9 + 0x20]
+       14005c4a4 48 89 44        MOV        qword ptr [RSP + local_res18],RAX
+                 24 40
+       14005c4a9 49 3b c2        CMP        RAX,R10
+       14005c4ac 74 0e           JZ         LAB_14005c4bc
+       14005c4ae 41 8d 4a 01     LEA        ECX,[R10 + 0x1]
+       14005c4b2 41 88 08        MOV        byte ptr [R8],CL
+       14005c4b5 eb 05           JMP        LAB_14005c4bc
+
+`````
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined FUN_1403fa874()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[0x18]:8  local_res18                             XREF[3]:     1403fa8a8(W), 
+                                                                                                   1403fa8cb(R), 
+                                                                                                   1403fa8df(R)  
+             undefined4        Stack[0x10]:4  local_res10                             XREF[1]:     1403fa8d2(W)  
+                             FUN_1403fa874                                   XREF[3]:     140356cb0(*), 
+                                                                                          NtDuplicateToken:1403fa5f9(c), 
+                                                                                          FUN_140458558:1404588a6(c)  
+       1403fa874 48 83 ec 28     SUB        RSP,0x28
+       1403fa878 4c 8b d1        MOV        R10,RCX
+       1403fa87b 45 33 db        XOR        R11D,R11D
+       1403fa87e 45 88 18        MOV        byte ptr [R8],R11B
+       1403fa881 84 d2           TEST       DL,DL
+       1403fa883 0f 84 9d        JZ         LAB_1403fa926
+                 00 00 00
+       1403fa889 48 85 c9        TEST       RCX,RCX
+       1403fa88c 74 7c           JZ         LAB_1403fa90a
+       1403fa88e f6 c1 03        TEST       CL,0x3
+       1403fa891 75 66           JNZ        LAB_1403fa8f9
+       1403fa893 48 3b 0d        CMP        RCX,qword ptr [MmUserProbeAddress]               = ??
+                 66 49 f8 ff
+       1403fa89a 48 0f 43        CMOVNC     RCX,qword ptr [MmUserProbeAddress]               = ??
+                 0d 5e 49 
+                 f8 ff
+   --> 1403fa8a2 8a 01           MOV        AL,byte ptr [RCX]
+       1403fa8a4 49 8b 42 28     MOV        RAX,qword ptr [R10 + 0x28]
+       1403fa8a8 48 89 44        MOV        qword ptr [RSP + local_res18],RAX
+                 24 40
+       1403fa8ad 48 8b c8        MOV        RCX,RAX
+       1403fa8b0 48 85 c0        TEST       RAX,RAX
+       1403fa8b3 74 55           JZ         LAB_1403fa90a
+       1403fa8b5 f6 c1 03        TEST       CL,0x3
+       1403fa8b8 75 44           JNZ        LAB_1403fa8fe
+       1403fa8ba 48 3b 05        CMP        RAX,qword ptr [MmUserProbeAddress]               = ??
+                 3f 49 f8 ff
+       1403fa8c1 48 0f 43        CMOVNC     RCX,qword ptr [MmUserProbeAddress]               = ??
+                 0d 37 49 
+                 f8 ff
+       1403fa8c9 8a 01           MOV        AL,byte ptr [RCX]
+       1403fa8cb 48 8b 44        MOV        RAX,qword ptr [RSP + local_res18]
+                 24 40
+       1403fa8d0 8b 08           MOV        ECX,dword ptr [RAX]
+       1403fa8d2 89 4c 24 38     MOV        dword ptr [RSP + local_res10],ECX
+       1403fa8d6 83 f9 0c        CMP        ECX,0xc
+       1403fa8d9 75 28           JNZ        LAB_1403fa903
+       1403fa8db 41 c6 00 01     MOV        byte ptr [R8],0x1
+       1403fa8df 48 8b 44        MOV        RAX,qword ptr [RSP + local_res18]
+                 24 40
+       1403fa8e4 f2 0f 10 00     MOVSD      XMM0,qword ptr [RAX]
+       1403fa8e8 f2 41 0f        MOVSD      qword ptr [R9],XMM0
+                 11 01
+   x   1403fa8ed 8b 40 08        MOV        EAX,dword ptr [RAX + 0x8]
+       1403fa8f0 41 89 41 08     MOV        dword ptr [R9 + 0x8],EAX
+       1403fa8f4 41 89 09        MOV        dword ptr [R9],ECX
+       1403fa8f7 eb 11           JMP        LAB_1403fa90a
+
+`````
