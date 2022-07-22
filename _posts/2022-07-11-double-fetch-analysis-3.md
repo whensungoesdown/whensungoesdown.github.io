@@ -133,7 +133,7 @@ DOUBLE FETCH:   cr3 0x11067e000, syscall 0x29
                  24 78
        1403f889b 66 85 c0        TEST       AX,AX
        1403f889e 75 31           JNZ        LAB_1403f88d1
-       1403f88a0 48 8b 79 10     MOV        RDI,qword ptr [param_1 + 0x10]
+  -->> 1403f88a0 48 8b 79 10     MOV        RDI,qword ptr [param_1 + 0x10]
                              LAB_1403f88a4                                   XREF[1]:     1403f88de(j)  
        1403f88a4 48 89 7c        MOV        qword ptr [RSP + local_78],RDI
                  24 60
@@ -316,3 +316,66 @@ SeCaptureSecurityDescriptor()
 >         sufficient privilege to use this privileged system service.
 > 
 > 
+
+
+本以为系统在读InputSecurityDescriptor的时候没有try catch，因为看SeCaptureSecurityDescriptor和
+NtAccessCheckAndAuditAlarm的时候没见到，以为可以搞个local DOS。结果是x64的exception早就变了，自己一直
+都不知道。。。
+
+
+SEH的记录不放在stack上了，所以代码上看着好像是没try catch，没有SEH_prolog4这样的函数地址压到栈上。
+
+x64的exception表放在PE的section里。
+
+相关的文章列几个在这里，还没来得及仔细看。
+
+
+http://osronline.com/article.cfm%5earticle=469.htm
+
+https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=msvc-170
+
+https://docs.microsoft.com/en-us/cpp/cpp/exception-handling-in-visual-cpp?view=msvc-170
+
+https://itanium-cxx-abi.github.io/cxx-abi/exceptions.pdf
+
+
+在80c的地方下断点，等第一次读过去以后再改数据，试了些值，比如0，ffffffff，也没蓝。
+
+先试试其它的吧。
+
+
+
+后来发现其它记录里 1403f88a0这里和80c读的是同一个地方。
+
+
+`````shell
+DOUBLE FETCH:   cr3 0x135311000, syscall 0x77
+   eip 0xfffff80179c82801, user_address 0x7ff69552fe30, user_data 0x0, modrm 0x41, pc 0xfffff80179c8280c
+   eip 0xfffff80179c8287c, user_address 0x7ff69552fe30, user_data 0x0, modrm 0x79, pc 0xfffff80179c828a0
+DIFF EIP
+
+DOUBLE FETCH:   cr3 0x135311000, syscall 0xa8
+   eip 0xfffff80179c82790, user_address 0x11fe7f0d8, user_data 0x0, modrm 0x41, pc 0xfffff80179c8280c
+   eip 0xfffff80179c82790, user_address 0x11fe7f0d8, user_data 0x0, modrm 0x79, pc 0xfffff80179c828a0
+
+DOUBLE FETCH:   cr3 0x135311000, syscall 0x9b
+   eip 0xfffff80179c82790, user_address 0x7ff69552fdb0, user_data 0x0, modrm 0x41, pc 0xfffff80179c8280c
+   eip 0xfffff80179c82790, user_address 0x7ff69552fdb0, user_data 0x0, modrm 0x79, pc 0xfffff80179c828a0
+
+DOUBLE FETCH:   cr3 0x135311000, syscall 0xb3
+   eip 0xfffff80179c82790, user_address 0x7ff69552fd70, user_data 0x0, modrm 0x41, pc 0xfffff80179c8280c
+   eip 0xfffff80179c82790, user_address 0x7ff69552fd70, user_data 0x0, modrm 0x79, pc 0xfffff80179c828a0
+
+
+`````
+
+系统调用0x77是NtAlpcCreatePort。
+
+系统调用0xa8是NtCreateNamedPipeFile。
+
+0x9b NtCreateDirectoryObject
+
+0xb3 NtCreateThreadEx
+
+
+还有很多，不一一列举了。
