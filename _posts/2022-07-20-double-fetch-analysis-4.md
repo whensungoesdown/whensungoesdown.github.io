@@ -1653,6 +1653,17 @@ syscall 0x42, NtDuplicateToken
 case 21
 
 
+`````shell
+DOUBLE FETCH:   cr3 0xa9774000, syscall 0x42
+   eip 0xfffff80179c84540, user_address 0x3eb00fd708, user_data 0x3eb00fd710, modrm 0x42, pc 0xfffff80179c848a4
+   eip 0xfffff80179c73030, user_address 0x3eb00fd708, user_data 0x3eb00fd710, modrm 0x70, pc 0xfffff80179c7311a
+`````
+
+
+这个也是读用户数据到内核stack变量里，后面需要具体分析。
+
+这次每个fetch在不同的函数里，这些函数其它部分也存在double fetch，也似乎说明有些函数直接从参数里读地址然后读数据，
+并不考虑同一个用户地址读多遍的问题。
 
 `````shell
                              LAB_1403e90fb                                   XREF[1]:     1403e90f1(j)  
@@ -1661,13 +1672,13 @@ case 21
        1403e9100 0f 85 9a        JNZ        LAB_1403e91a0
                  00 00 00
        1403e9106 89 03           MOV        dword ptr [RBX],EAX
-   --> 1403e9108 4d 8b 78 10     MOV        R15,qword ptr [param_3 + 0x10]
+   x   1403e9108 4d 8b 78 10     MOV        R15,qword ptr [param_3 + 0x10]
        1403e910c 4c 89 7c        MOV        qword ptr [RSP + local_48],R15
                  24 50
        1403e9111 49 8b 48 20     MOV        param_1,qword ptr [param_3 + 0x20]
        1403e9115 48 89 4c        MOV        qword ptr [RSP + local_40],param_1
                  24 58
-       1403e911a 4d 8b 70 28     MOV        R14,qword ptr [param_3 + 0x28]
+   --> 1403e911a 4d 8b 70 28     MOV        R14,qword ptr [param_3 + 0x28]
        1403e911e 4c 89 74        MOV        qword ptr [RSP + local_58],R14
                  24 40
        1403e9123 4d 85 f6        TEST       R14,R14
@@ -1741,5 +1752,88 @@ case 21
        1403fa8f0 41 89 41 08     MOV        dword ptr [R9 + 0x8],EAX
        1403fa8f4 41 89 09        MOV        dword ptr [R9],ECX
        1403fa8f7 eb 11           JMP        LAB_1403fa90a
+
+`````
+---------------------------------------------------------------------
+
+case 22
+
+
+需要分析。
+
+`````shell
+DOUBLE FETCH:   cr3 0xa9774000, syscall 0x42
+   eip 0xfffff801798e6474, user_address 0x3eb00fd700, user_data 0x0, modrm 0x41, pc 0xfffff801798e64a0
+   eip 0xfffff80179c73030, user_address 0x3eb00fd700, user_data 0x0, modrm 0x48, pc 0xfffff80179c73111
+`````
+
+0xfffff80179c73111−0xfffff801798e64a0 = 38CC71
+
+
+1403e9111−14005c4a0 = 38CC71
+
+
+`````shell
+                             LAB_1403e90fb                                   XREF[1]:     1403e90f1(j)  
+       1403e90fb a9 0d e0        TEST       EAX,0xfffee00d
+                 fe ff
+       1403e9100 0f 85 9a        JNZ        LAB_1403e91a0
+                 00 00 00
+       1403e9106 89 03           MOV        dword ptr [RBX],EAX
+   x   1403e9108 4d 8b 78 10     MOV        R15,qword ptr [param_3 + 0x10]
+       1403e910c 4c 89 7c        MOV        qword ptr [RSP + local_48],R15
+                 24 50
+   --> 1403e9111 49 8b 48 20     MOV        param_1,qword ptr [param_3 + 0x20]
+       1403e9115 48 89 4c        MOV        qword ptr [RSP + local_40],param_1
+                 24 58
+       1403e911a 4d 8b 70 28     MOV        R14,qword ptr [param_3 + 0x28]
+       1403e911e 4c 89 74        MOV        qword ptr [RSP + local_58],R14
+                 24 40
+       1403e9123 4d 85 f6        TEST       R14,R14
+       1403e9126 0f 84 8e        JZ         LAB_1403e91ba
+                 00 00 00
+       1403e912c 40 84 f6        TEST       SIL,SIL
+       1403e912f 74 3f           JZ         LAB_1403e9170
+       1403e9131 65 48 8b        MOV        RAX,qword ptr GS:[0x188]
+                 04 25 88 
+                 01 00 00
+
+`````
+
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined FUN_14005c474()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[0x18]:8  local_res18                             XREF[1]:     14005c4a4(W)  
+                             FUN_14005c474                                   XREF[4]:     FUN_1400bc6e0:1400bc7bc(c), 
+                                                                                          140335fb4(*), 140335fbc(*), 
+                                                                                          NtDuplicateToken:1403fa612(c)  
+       14005c474 48 83 ec 28     SUB        RSP,0x28
+       14005c478 4c 8b c9        MOV        R9,RCX
+       14005c47b 45 33 d2        XOR        R10D,R10D
+       14005c47e 45 88 10        MOV        byte ptr [R8],R10B
+       14005c481 84 d2           TEST       DL,DL
+       14005c483 74 42           JZ         LAB_14005c4c7
+       14005c485 48 85 c9        TEST       RCX,RCX
+       14005c488 74 32           JZ         LAB_14005c4bc
+       14005c48a f6 c1 03        TEST       CL,0x3
+       14005c48d 75 28           JNZ        LAB_14005c4b7
+       14005c48f 48 3b 0d        CMP        RCX,qword ptr [MmUserProbeAddress]               = ??
+                 6a 2d 32 00
+       14005c496 48 0f 43        CMOVNC     RCX,qword ptr [MmUserProbeAddress]               = ??
+                 0d 62 2d 
+                 32 00
+       14005c49e 8a 01           MOV        AL,byte ptr [RCX]
+   --> 14005c4a0 49 8b 41 20     MOV        RAX,qword ptr [R9 + 0x20]
+       14005c4a4 48 89 44        MOV        qword ptr [RSP + local_res18],RAX
+                 24 40
+       14005c4a9 49 3b c2        CMP        RAX,R10
+       14005c4ac 74 0e           JZ         LAB_14005c4bc
+       14005c4ae 41 8d 4a 01     LEA        ECX,[R10 + 0x1]
+       14005c4b2 41 88 08        MOV        byte ptr [R8],CL
+       14005c4b5 eb 05           JMP        LAB_14005c4bc
 
 `````
