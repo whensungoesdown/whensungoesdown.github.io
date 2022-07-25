@@ -2463,3 +2463,1173 @@ DOUBLE FETCH:   cr3 0xa9774000, syscall 0x43
        140077709 89 42 44        MOV        dword ptr [RDX + 0x44],EAX
 
 `````
+
+
+----------------------------------------------
+
+
+case 31
+
+`````shell
+DOUBLE FETCH:   cr3 0x0, syscall 0x23
+   eip 0xfffff80179d041ba, user_address 0x3eb02d20bc, user_data 0x0, modrm 0x82, pc 0xfffff80179d04267
+   eip 0xfffff80179d041ba, user_address 0x3eb02d20bc, user_data 0x0, modrm 0x82, pc 0xfffff80179d04267
+`````
+
+syscall 0x23NtQueryVirtualMemory
+
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined FUN_14047a184()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[0x20]:8  local_res20                             XREF[7]:     14047a248(W), 
+                                                                                                   14047a29b(*), 
+                                                                                                   14047a2b4(R), 
+                                                                                                   14059e822(W), 
+                                                                                                   14059e839(W), 
+                                                                                                   14059e867(*), 
+                                                                                                   14059e878(*)  
+             undefined8        Stack[0x18]:8  local_res18                             XREF[8]:     14047a1e4(W), 
+                                                                                                   14047a228(W), 
+                                                                                                   14047a290(*), 
+                                                                                                   14047a2ac(R), 
+                                                                                                   14047a34a(W), 
+                                                                                                   14047a380(W), 
+                                                                                                   14059e844(W), 
+                                                                                                   14059e85f(*)  
+             undefined1        Stack[0x10]:1  local_res10                             XREF[1]:     14059e84c(*)  
+             undefined8        Stack[-0x38]:8 local_38                                XREF[2]:     14047a1d9(W), 
+                                                                                                   14047a33f(W)  
+             undefined8        Stack[-0x40]:8 local_40                                XREF[2]:     14047a1cd(W), 
+                                                                                                   14047a334(W)  
+             undefined4        Stack[-0x48]:4 local_48                                XREF[1]:     14047a26d(W)  
+             undefined4        Stack[-0x50]:4 local_50                                XREF[1]:     14047a284(W)  
+             undefined8        Stack[-0x58]:8 local_58                                XREF[2]:     14047a28c(W), 
+                                                                                                   14059e854(W)  
+                             FUN_14047a184                                   XREF[4]:     FUN_140038b50:1400390e8(c), 
+                                                                                          FUN_140039a90:14016254a(c), 
+                                                                                          14028951c(*), 14035b990(*)  
+       14047a184 40 53           PUSH       RBX
+       14047a186 56              PUSH       RSI
+       14047a187 57              PUSH       RDI
+       14047a188 41 56           PUSH       R14
+       14047a18a 41 57           PUSH       R15
+       14047a18c 48 83 ec 50     SUB        RSP,0x50
+       14047a190 48 8b d9        MOV        RBX,RCX
+       14047a193 33 f6           XOR        ESI,ESI
+       14047a195 65 4c 8b        MOV        R14,qword ptr GS:[0x188]
+                 34 25 88 
+                 01 00 00
+       14047a19e 41 8a 86        MOV        AL,byte ptr [R14 + 0x6c4]
+                 c4 06 00 00
+       14047a1a5 84 c0           TEST       AL,AL
+       14047a1a7 0f 88 e9        JS         LAB_14047a396
+                 01 00 00
+       14047a1ad a8 03           TEST       AL,0x3
+       14047a1af 0f 85 e1        JNZ        LAB_14047a396
+                 01 00 00
+       14047a1b5 e8 46 10        CALL       KeIsAttachedProcess                              undefined KeIsAttachedProcess()
+                 bf ff
+       14047a1ba 84 c0           TEST       AL,AL
+       14047a1bc 0f 85 d4        JNZ        LAB_14047a396
+                 01 00 00
+       14047a1c2 49 8b 96        MOV        RDX,qword ptr [R14 + 0xf0]
+                 f0 00 00 00
+       14047a1c9 4c 8b 42 08     MOV        R8,qword ptr [RDX + 0x8]
+       14047a1cd 4c 89 44        MOV        qword ptr [RSP + local_40],R8
+                 24 38
+       14047a1d2 48 8b 82        MOV        RAX,qword ptr [RDX + 0x1478]
+                 78 14 00 00
+       14047a1d9 48 89 44        MOV        qword ptr [RSP + local_38],RAX
+                 24 40
+       14047a1de 8b 8a 48        MOV        ECX,dword ptr [RDX + 0x1748]
+                 17 00 00
+       14047a1e4 48 89 8c        MOV        qword ptr [RSP + local_res18],RCX
+                 24 90 00 
+                 00 00
+       14047a1ec eb 0a           JMP        LAB_14047a1f8
+       14047a1ee b8 01 00        MOV        EAX,0x80000001
+                 00 80
+       14047a1f3 e9 ea 00        JMP        LAB_14047a2e2
+                 00 00
+                             LAB_14047a1f8                                   XREF[1]:     14047a1ec(j)  
+       14047a1f8 49 c7 c2        MOV        R10,-0x1000
+                 00 f0 ff ff
+       14047a1ff 49 23 c2        AND        RAX,R10
+       14047a202 48 81 c1        ADD        RCX,0xfff
+                 ff 0f 00 00
+       14047a209 49 23 ca        AND        RCX,R10
+       14047a20c 4c 8d 7a 10     LEA        R15,[RDX + 0x10]
+       14047a210 bf 00 10        MOV        EDI,0x1000
+                 00 00
+       14047a215 0f 85 d3        JNZ        LAB_14047a2ee
+                 00 00 00
+                             LAB_14047a21b                                   XREF[1]:     14047a2f1(j)  
+       14047a21b 41 b9 00        MOV        R9D,0x3000
+                 30 00 00
+       14047a221 49 3b c9        CMP        RCX,R9
+       14047a224 49 0f 42 c9     CMOVC      RCX,R9
+       14047a228 48 89 8c        MOV        qword ptr [RSP + local_res18],RCX
+                 24 90 00 
+                 00 00
+       14047a230 49 3b d8        CMP        RBX,R8
+       14047a233 0f 83 bd        JNC        LAB_14047a2f6
+                 00 00 00
+       14047a239 48 3b d8        CMP        RBX,RAX
+       14047a23c 0f 82 b4        JC         LAB_14047a2f6
+                 00 00 00
+                             LAB_14047a242                                   XREF[1]:     14047a38c(j)  
+       14047a242 49 23 da        AND        RBX,R10
+       14047a245 48 2b d9        SUB        RBX,RCX
+       14047a248 48 89 9c        MOV        qword ptr [RSP + local_res20],RBX
+                 24 98 00 
+                 00 00
+       14047a250 48 3b d8        CMP        RBX,RAX
+       14047a253 0f 86 c3        JBE        LAB_14059e81c
+                 45 12 00
+       14047a259 49 8b 86        MOV        RAX,qword ptr [R14 + 0xb8]
+                 b8 00 00 00
+       14047a260 48 8b 90        MOV        RDX,qword ptr [RAX + 0x3f8]
+                 f8 03 00 00
+   --> 14047a267 8b 82 bc        MOV        EAX,dword ptr [RDX + 0xbc]
+                 00 00 00
+       14047a26d 89 44 24 30     MOV        dword ptr [RSP + local_48],EAX
+       14047a271 eb 07           JMP        LAB_14047a27a
+       14047a273 b8 01 00        MOV        EAX,0x80000001
+                 00 80
+       14047a278 eb 68           JMP        LAB_14047a2e2
+                             LAB_14047a27a                                   XREF[1]:     14047a271(j)  
+       14047a27a 0f ba e0 10     BT         EAX,0x10
+       14047a27e 0f 82 a8        JC         LAB_14059e82c
+                 45 12 00
+       14047a284 c7 44 24        MOV        dword ptr [RSP + local_50],0x104
+                 28 04 01 
+                 00 00
+       14047a28c 89 7c 24 20     MOV        dword ptr [RSP + local_58],EDI
+       14047a290 4c 8d 8c        LEA        R9=>local_res18,[RSP + 0x90]
+                 24 90 00 
+                 00 00
+
+`````
+
+
+
+`MOV        R14,qword ptr GS:[0x188]`
+
+GS:[0x188]是_KTHREAD，
+
+_KTHREAD+0xb8是什么结构没搞清楚。落在nt!_KTHREAD结构的ApcStateFill里，但这个定义为char[43]。
+
+后来调用windbg调了下，这个_KTHREAD+0xb8虽然结构里给出的位值很奇怪，但实际上这是个_EPROCESS指针。
+
+_EPROCESS+0x3f8指向_PEB。
+
+又调上这个了，过了十来年，又重操旧业。。。
+
+这个不继续看下去了，PEB里的东西自然是user-mode的。
+
+
+`````shell
+
+kd> dt nt!_KTHREAD
+   +0x000 Header           : _DISPATCHER_HEADER
+   +0x018 SListFaultAddress : Ptr64 Void
+   +0x020 QuantumTarget    : Uint8B
+   +0x028 InitialStack     : Ptr64 Void
+   +0x030 StackLimit       : Ptr64 Void
+   +0x038 StackBase        : Ptr64 Void
+   +0x040 ThreadLock       : Uint8B
+   +0x048 CycleTime        : Uint8B
+   +0x050 CurrentRunTime   : Uint4B
+   +0x054 ExpectedRunTime  : Uint4B
+   +0x058 KernelStack      : Ptr64 Void
+   +0x060 StateSaveArea    : Ptr64 _XSAVE_FORMAT
+   +0x068 SchedulingGroup  : Ptr64 _KSCHEDULING_GROUP
+   +0x070 WaitRegister     : _KWAIT_STATUS_REGISTER
+   +0x071 Running          : UChar
+   +0x072 Alerted          : [2] UChar
+   +0x074 AutoBoostActive  : Pos 0, 1 Bit
+   +0x074 ReadyTransition  : Pos 1, 1 Bit
+   +0x074 WaitNext         : Pos 2, 1 Bit
+   +0x074 SystemAffinityActive : Pos 3, 1 Bit
+   +0x074 Alertable        : Pos 4, 1 Bit
+   +0x074 UserStackWalkActive : Pos 5, 1 Bit
+   +0x074 ApcInterruptRequest : Pos 6, 1 Bit
+   +0x074 QuantumEndMigrate : Pos 7, 1 Bit
+   +0x074 UmsDirectedSwitchEnable : Pos 8, 1 Bit
+   +0x074 TimerActive      : Pos 9, 1 Bit
+   +0x074 SystemThread     : Pos 10, 1 Bit
+   +0x074 ProcessDetachActive : Pos 11, 1 Bit
+   +0x074 CalloutActive    : Pos 12, 1 Bit
+   +0x074 ScbReadyQueue    : Pos 13, 1 Bit
+   +0x074 ApcQueueable     : Pos 14, 1 Bit
+   +0x074 ReservedStackInUse : Pos 15, 1 Bit
+   +0x074 UmsPerformingSyscall : Pos 16, 1 Bit
+   +0x074 TimerSuspended   : Pos 17, 1 Bit
+   +0x074 SuspendedWaitMode : Pos 18, 1 Bit
+   +0x074 SuspendSchedulerApcWait : Pos 19, 1 Bit
+   +0x074 Reserved         : Pos 20, 12 Bits
+   +0x074 MiscFlags        : Int4B
+   +0x078 AutoAlignment    : Pos 0, 1 Bit
+   +0x078 DisableBoost     : Pos 1, 1 Bit
+   +0x078 ThreadFlagsSpare0 : Pos 2, 1 Bit
+   +0x078 AlertedByThreadId : Pos 3, 1 Bit
+   +0x078 QuantumDonation  : Pos 4, 1 Bit
+   +0x078 EnableStackSwap  : Pos 5, 1 Bit
+   +0x078 GuiThread        : Pos 6, 1 Bit
+   +0x078 DisableQuantum   : Pos 7, 1 Bit
+   +0x078 ChargeOnlySchedulingGroup : Pos 8, 1 Bit
+   +0x078 DeferPreemption  : Pos 9, 1 Bit
+   +0x078 QueueDeferPreemption : Pos 10, 1 Bit
+   +0x078 ForceDeferSchedule : Pos 11, 1 Bit
+   +0x078 SharedReadyQueueAffinity : Pos 12, 1 Bit
+   +0x078 FreezeCount      : Pos 13, 1 Bit
+   +0x078 TerminationApcRequest : Pos 14, 1 Bit
+   +0x078 AutoBoostEntriesExhausted : Pos 15, 1 Bit
+   +0x078 KernelStackResident : Pos 16, 1 Bit
+   +0x078 CommitFailTerminateRequest : Pos 17, 1 Bit
+   +0x078 ProcessStackCountDecremented : Pos 18, 1 Bit
+   +0x078 ThreadFlagsSpare : Pos 19, 5 Bits
+   +0x078 EtwStackTraceApcInserted : Pos 24, 8 Bits
+   +0x078 ThreadFlags      : Int4B
+   +0x07c Tag              : UChar
+   +0x07d SystemHeteroCpuPolicy : UChar
+   +0x07e UserHeteroCpuPolicy : Pos 0, 7 Bits
+   +0x07e ExplicitSystemHeteroCpuPolicy : Pos 7, 1 Bit
+   +0x07f Spare0           : UChar
+   +0x080 SystemCallNumber : Uint4B
+   +0x084 Spare10          : Uint4B
+   +0x088 FirstArgument    : Ptr64 Void
+   +0x090 TrapFrame        : Ptr64 _KTRAP_FRAME
+   +0x098 ApcState         : _KAPC_STATE
+   +0x098 ApcStateFill     : [43] UChar
+   +0x0c3 Priority         : Char
+   +0x0c4 UserIdealProcessor : Uint4B
+   +0x0c8 WaitStatus       : Int8B
+   +0x0d0 WaitBlockList    : Ptr64 _KWAIT_BLOCK
+   +0x0d8 WaitListEntry    : _LIST_ENTRY
+   +0x0d8 SwapListEntry    : _SINGLE_LIST_ENTRY
+   +0x0e8 Queue            : Ptr64 _DISPATCHER_HEADER
+   +0x0f0 Teb              : Ptr64 Void
+   +0x0f8 RelativeTimerBias : Uint8B
+   +0x100 Timer            : _KTIMER
+   +0x140 WaitBlock        : [4] _KWAIT_BLOCK
+   +0x140 WaitBlockFill4   : [20] UChar
+   +0x154 ContextSwitches  : Uint4B
+   +0x140 WaitBlockFill5   : [68] UChar
+   +0x184 State            : UChar
+   +0x185 Spare13          : Char
+   +0x186 WaitIrql         : UChar
+   +0x187 WaitMode         : Char
+   +0x140 WaitBlockFill6   : [116] UChar
+   +0x1b4 WaitTime         : Uint4B
+   +0x140 WaitBlockFill7   : [164] UChar
+   +0x1e4 KernelApcDisable : Int2B
+   +0x1e6 SpecialApcDisable : Int2B
+   +0x1e4 CombinedApcDisable : Uint4B
+   +0x140 WaitBlockFill8   : [40] UChar
+   +0x168 ThreadCounters   : Ptr64 _KTHREAD_COUNTERS
+   +0x140 WaitBlockFill9   : [88] UChar
+   +0x198 XStateSave       : Ptr64 _XSTATE_SAVE
+   +0x140 WaitBlockFill10  : [136] UChar
+   +0x1c8 Win32Thread      : Ptr64 Void
+   +0x140 WaitBlockFill11  : [176] UChar
+   +0x1f0 Ucb              : Ptr64 _UMS_CONTROL_BLOCK
+   +0x1f8 Uch              : Ptr64 _KUMS_CONTEXT_HEADER
+   +0x200 TebMappedLowVa   : Ptr64 Void
+   +0x208 QueueListEntry   : _LIST_ENTRY
+   +0x218 NextProcessor    : Uint4B
+   +0x218 NextProcessorNumber : Pos 0, 31 Bits
+   +0x218 SharedReadyQueue : Pos 31, 1 Bit
+   +0x21c QueuePriority    : Int4B
+   +0x220 Process          : Ptr64 _KPROCESS
+   +0x228 UserAffinity     : _GROUP_AFFINITY
+   +0x228 UserAffinityFill : [10] UChar
+   +0x232 PreviousMode     : Char
+   +0x233 BasePriority     : Char
+   +0x234 PriorityDecrement : Char
+   +0x234 ForegroundBoost  : Pos 0, 4 Bits
+   +0x234 UnusualBoost     : Pos 4, 4 Bits
+   +0x235 Preempted        : UChar
+   +0x236 AdjustReason     : UChar
+   +0x237 AdjustIncrement  : Char
+   +0x238 AffinityVersion  : Uint8B
+   +0x240 Affinity         : _GROUP_AFFINITY
+   +0x240 AffinityFill     : [10] UChar
+   +0x24a ApcStateIndex    : UChar
+   +0x24b WaitBlockCount   : UChar
+   +0x24c IdealProcessor   : Uint4B
+   +0x250 NpxState         : Uint8B
+   +0x258 SavedApcState    : _KAPC_STATE
+   +0x258 SavedApcStateFill : [43] UChar
+   +0x283 WaitReason       : UChar
+   +0x284 SuspendCount     : Char
+   +0x285 Saturation       : Char
+   +0x286 SListFaultCount  : Uint2B
+   +0x288 SchedulerApc     : _KAPC
+   +0x288 SchedulerApcFill0 : [1] UChar
+   +0x289 ResourceIndex    : UChar
+   +0x288 SchedulerApcFill1 : [3] UChar
+   +0x28b QuantumReset     : UChar
+   +0x288 SchedulerApcFill2 : [4] UChar
+   +0x28c KernelTime       : Uint4B
+   +0x288 SchedulerApcFill3 : [64] UChar
+   +0x2c8 WaitPrcb         : Ptr64 _KPRCB
+   +0x288 SchedulerApcFill4 : [72] UChar
+   +0x2d0 LegoData         : Ptr64 Void
+   +0x288 SchedulerApcFill5 : [83] UChar
+   +0x2db CallbackNestingLevel : UChar
+   +0x2dc UserTime         : Uint4B
+   +0x2e0 SuspendEvent     : _KEVENT
+   +0x2f8 ThreadListEntry  : _LIST_ENTRY
+   +0x308 MutantListHead   : _LIST_ENTRY
+   +0x318 AbEntrySummary   : UChar
+   +0x319 AbWaitEntryCount : UChar
+   +0x31a Spare20          : Uint2B
+   +0x31c SecureThreadCookie : Uint4B
+   +0x320 LockEntries      : [6] _KLOCK_ENTRY
+   +0x560 PropagateBoostsEntry : _SINGLE_LIST_ENTRY
+   +0x568 IoSelfBoostsEntry : _SINGLE_LIST_ENTRY
+   +0x570 PriorityFloorCounts : [16] UChar
+   +0x580 PriorityFloorSummary : Uint4B
+   +0x584 AbCompletedIoBoostCount : Int4B
+   +0x588 KeReferenceCount : Int2B
+   +0x58a AbOrphanedEntrySummary : UChar
+   +0x58b AbOwnedEntryCount : UChar
+   +0x58c ForegroundLossTime : Uint4B
+   +0x590 GlobalForegroundListEntry : _LIST_ENTRY
+   +0x590 ForegroundDpcStackListEntry : _SINGLE_LIST_ENTRY
+   +0x598 InGlobalForegroundList : Uint8B
+   +0x5a0 ReadOperationCount : Int8B
+   +0x5a8 WriteOperationCount : Int8B
+   +0x5b0 OtherOperationCount : Int8B
+   +0x5b8 ReadTransferCount : Int8B
+   +0x5c0 WriteTransferCount : Int8B
+   +0x5c8 OtherTransferCount : Int8B
+   +0x5d0 QueuedScb        : Ptr64 _KSCB
+
+
+
+
+
+kd> !process 0 0
+**** NT ACTIVE PROCESS DUMP ****
+PROCESS ffffe000ab060040
+    SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+    DirBase: 001aa000  ObjectTable: ffffc0014ea14000  HandleCount: <Data Not Accessible>
+    Image: System
+
+PROCESS ffffe000ac480040
+    SessionId: none  Cid: 010c    Peb: ec5278000  ParentCid: 0004
+    DirBase: 72ee5000  ObjectTable: ffffc0014ef3ebc0  HandleCount: <Data Not Accessible>
+    Image: smss.exe
+
+PROCESS ffffe000ad7be080
+    SessionId: 0  Cid: 0158    Peb: e20dafe000  ParentCid: 0150
+    DirBase: 0199c000  ObjectTable: ffffc0015653e280  HandleCount: <Data Not Accessible>
+    Image: csrss.exe
+
+PROCESS ffffe000ad973080
+    SessionId: 0  Cid: 01a0    Peb: a530ea7000  ParentCid: 0150
+    DirBase: 7a3c4000  ObjectTable: ffffc0014fa259c0  HandleCount: <Data Not Accessible>
+    Image: wininit.exe
+
+PROCESS ffffe000ad7b6080
+    SessionId: 1  Cid: 01ac    Peb: 542d0f7000  ParentCid: 0198
+    DirBase: 7a34c000  ObjectTable: ffffc0014fa31280  HandleCount: <Data Not Accessible>
+    Image: csrss.exe
+
+PROCESS ffffe000ac4f0840
+    SessionId: 1  Cid: 01d4    Peb: 4bdaf0a000  ParentCid: 0198
+    DirBase: 79752000  ObjectTable: ffffc0014fa3fa00  HandleCount: <Data Not Accessible>
+    Image: winlogon.exe
+
+PROCESS ffffe000ad9e61c0
+    SessionId: 0  Cid: 0218    Peb: 85bafcf000  ParentCid: 01a0
+    DirBase: 789e4000  ObjectTable: ffffc0014fa47800  HandleCount: <Data Not Accessible>
+    Image: services.exe
+
+PROCESS ffffe000ad9f2080
+    SessionId: 0  Cid: 0220    Peb: ccaf5cc000  ParentCid: 01a0
+    DirBase: 78bc2000  ObjectTable: ffffc0014faf3540  HandleCount: <Data Not Accessible>
+    Image: lsass.exe
+
+PROCESS ffffe000ad9a8840
+    SessionId: 0  Cid: 0260    Peb: 2e7c4b5000  ParentCid: 0218
+    DirBase: 771fe000  ObjectTable: ffffc0014fb78300  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adcb9840
+    SessionId: 0  Cid: 0280    Peb: a1a89f5000  ParentCid: 0218
+    DirBase: 76dd2000  ObjectTable: ffffc0014fbe1800  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000add3e080
+    SessionId: 1  Cid: 0304    Peb: ac336e8000  ParentCid: 01d4
+    DirBase: 7582c000  ObjectTable: ffffc0014fc51200  HandleCount: <Data Not Accessible>
+    Image: dwm.exe
+
+PROCESS ffffe000add90640
+    SessionId: 0  Cid: 0354    Peb: 1007abd000  ParentCid: 0218
+    DirBase: 74cbf000  ObjectTable: ffffc0014fd70d80  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000add8b840
+    SessionId: 0  Cid: 0368    Peb: a6bdac5000  ParentCid: 0218
+    DirBase: 74805000  ObjectTable: ffffc0014fd8e040  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000addc0840
+    SessionId: 0  Cid: 039c    Peb: ad7c65e000  ParentCid: 0218
+    DirBase: 742bd000  ObjectTable: ffffc0014fda8700  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000addd1840
+    SessionId: 0  Cid: 03b4    Peb: e50c35b000  ParentCid: 0218
+    DirBase: 74091000  ObjectTable: ffffc0014fcbb3c0  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ade01840
+    SessionId: 0  Cid: 03dc    Peb: 00214000  ParentCid: 0218
+    DirBase: 7275d000  ObjectTable: ffffc0014fc92800  HandleCount: <Data Not Accessible>
+    Image: VBoxService.exe
+
+PROCESS ffffe000addcc840
+    SessionId: 0  Cid: 00f0    Peb: f5f9922000  ParentCid: 0218
+    DirBase: 72205000  ObjectTable: ffffc0014fd56d40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ade29840
+    SessionId: 0  Cid: 0170    Peb: f8670ab000  ParentCid: 0218
+    DirBase: 717b4000  ObjectTable: ffffc0014fe36e40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ab093080
+    SessionId: 0  Cid: 0448    Peb: 9d68b63000  ParentCid: 0218
+    DirBase: 6c70b000  ObjectTable: ffffc00150015940  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ada1a840
+    SessionId: 0  Cid: 04c4    Peb: 003dc000  ParentCid: 0218
+    DirBase: 6b89d000  ObjectTable: ffffc00150097f40  HandleCount: <Data Not Accessible>
+    Image: spoolsv.exe
+
+PROCESS ffffe000ada6f840
+    SessionId: 0  Cid: 0548    Peb: cf4015e000  ParentCid: 0218
+    DirBase: 69f25000  ObjectTable: ffffc0014ffd4380  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbb0840
+    SessionId: 0  Cid: 05f0    Peb: 544d93f000  ParentCid: 0218
+    DirBase: 674b8000  ObjectTable: ffffc001501f8880  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbf7840
+    SessionId: 0  Cid: 0664    Peb: f143062000  ParentCid: 0218
+    DirBase: 66b31000  ObjectTable: ffffc001501e5900  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbd5840
+    SessionId: 0  Cid: 066c    Peb: 7660e52000  ParentCid: 0218
+    DirBase: 66bc2000  ObjectTable: ffffc001501fce40  HandleCount: <Data Not Accessible>
+    Image: MsMpEng.exe
+
+PROCESS ffffe000ae198840
+    SessionId: 0  Cid: 0588    Peb: 9afc07a000  ParentCid: 0218
+    DirBase: 58098000  ObjectTable: ffffc001506cc440  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbb8080
+    SessionId: 0  Cid: 0564    Peb: 23b4ddf000  ParentCid: 0218
+    DirBase: 5ea61000  ObjectTable: ffffc001506f9500  HandleCount: <Data Not Accessible>
+    Image: NisSrv.exe
+
+PROCESS ffffe000ab228840
+    SessionId: 1  Cid: 08bc    Peb: ce6f113000  ParentCid: 0354
+    DirBase: 750eb000  ObjectTable: ffffc00150a6cd40  HandleCount: <Data Not Accessible>
+    Image: taskhostw.exe
+
+PROCESS ffffe000ae00f840
+    SessionId: 1  Cid: 08fc    Peb: 30b87a1000  ParentCid: 0354
+    DirBase: 576f7000  ObjectTable: ffffc00150a75f40  HandleCount: <Data Not Accessible>
+    Image: sihost.exe
+
+PROCESS ffffe000ae29e840
+    SessionId: 1  Cid: 09c8    Peb: f79cc99000  ParentCid: 0260
+    DirBase: 56cfc000  ObjectTable: ffffc00150a58d40  HandleCount: <Data Not Accessible>
+    Image: RuntimeBroker.exe
+
+PROCESS ffffe000ab213840
+    SessionId: 1  Cid: 09f4    Peb: 3fc5003000  ParentCid: 01d4
+    DirBase: 56854000  ObjectTable: 00000000  HandleCount:   0.
+    Image: userinit.exe
+
+PROCESS ffffe000ae2fa500
+    SessionId: 1  Cid: 0a08    Peb: 003bd000  ParentCid: 09f4
+    DirBase: 565e3000  ObjectTable: ffffc00150bf98c0  HandleCount: <Data Not Accessible>
+    Image: explorer.exe
+
+PROCESS ffffe000ae2e0840
+    SessionId: 1  Cid: 0a28    Peb: 00563000  ParentCid: 0260
+    DirBase: 5627d000  ObjectTable: ffffc00150c509c0  HandleCount: <Data Not Accessible>
+    Image: SkypeHost.exe
+
+PROCESS ffffe000ae377840
+    SessionId: 0  Cid: 0ac4    Peb: 804aad2000  ParentCid: 0218
+    DirBase: 54d50000  ObjectTable: ffffc00150cffcc0  HandleCount: <Data Not Accessible>
+    Image: SearchIndexer.exe
+
+PROCESS ffffe000ae3b0600
+    SessionId: 1  Cid: 0b48    Peb: 37ac40f000  ParentCid: 0260
+    DirBase: 53add000  ObjectTable: ffffc00150c0b2c0  HandleCount: <Data Not Accessible>
+    Image: ShellExperienceHost.exe
+
+PROCESS ffffe000ae482340
+    SessionId: 1  Cid: 0bc4    Peb: 6cd1e11000  ParentCid: 0260
+    DirBase: 516e3000  ObjectTable: ffffc00150e343c0  HandleCount: <Data Not Accessible>
+    Image: SearchUI.exe
+
+PROCESS ffffe000ac5b8840
+    SessionId: 1  Cid: 0d88    Peb: 002ee000  ParentCid: 0a08
+    DirBase: 78ad2000  ObjectTable: ffffc0015129f1c0  HandleCount: <Data Not Accessible>
+    Image: VBoxTray.exe
+
+PROCESS ffffe000ac520840
+    SessionId: 1  Cid: 0da8    Peb: 00350000  ParentCid: 0a08
+    DirBase: 24257000  ObjectTable: ffffc001512b2d00  HandleCount: <Data Not Accessible>
+    Image: OneDrive.exe
+
+PROCESS ffffe000ae399080
+    SessionId: 1  Cid: 0ac0    Peb: f2c7f3f000  ParentCid: 0218
+    DirBase: 0102d000  ObjectTable: ffffc001511c3e40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ae431840
+    SessionId: 0  Cid: 0f60    Peb: f275a9e000  ParentCid: 0ac4
+    DirBase: 54e4c000  ObjectTable: ffffc00151591200  HandleCount: <Data Not Accessible>
+    Image: SearchProtocolHost.exe
+
+PROCESS ffffe000abad8840
+    SessionId: 0  Cid: 031c    Peb: f9f5648000  ParentCid: 0ac4
+    DirBase: 483a2000  ObjectTable: ffffc00150050140  HandleCount: <Data Not Accessible>
+    Image: SearchFilterHost.exe
+
+PROCESS ffffe000abac0840
+    SessionId: 0  Cid: 0fcc    Peb: 62d1f03000  ParentCid: 00f0
+    DirBase: 4ace1000  ObjectTable: ffffc00151670140  HandleCount: <Data Not Accessible>
+    Image: audiodg.exe
+
+kd> g
+Break instruction exception - code 80000003 (first chance)
+*******************************************************************************
+*                                                                             *
+*   You are seeing this message because you pressed either                    *
+*       CTRL+C (if you run kd.exe) or,                                        *
+*       CTRL+BREAK (if you run WinDBG),                                       *
+*   on your debugger machine's keyboard.                                      *
+*                                                                             *
+*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+*                                                                             *
+* If you did not intend to break into the debugger, press the "g" key, then   *
+* press the "Enter" key now.  This message might immediately reappear.  If it *
+* does, press "g" and "Enter" again.                                          *
+*                                                                             *
+*******************************************************************************
+nt!DbgBreakPointWithStatus:
+fffff800`9cfc06d0 cc              int     3
+kd> !process 0 0
+**** NT ACTIVE PROCESS DUMP ****
+PROCESS ffffe000ab060040
+    SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+    DirBase: 001aa000  ObjectTable: ffffc0014ea14000  HandleCount: <Data Not Accessible>
+    Image: System
+
+PROCESS ffffe000ac480040
+    SessionId: none  Cid: 010c    Peb: ec5278000  ParentCid: 0004
+    DirBase: 72ee5000  ObjectTable: ffffc0014ef3ebc0  HandleCount: <Data Not Accessible>
+    Image: smss.exe
+
+PROCESS ffffe000ad7be080
+    SessionId: 0  Cid: 0158    Peb: e20dafe000  ParentCid: 0150
+    DirBase: 0199c000  ObjectTable: ffffc0015653e280  HandleCount: <Data Not Accessible>
+    Image: csrss.exe
+
+PROCESS ffffe000ad973080
+    SessionId: 0  Cid: 01a0    Peb: a530ea7000  ParentCid: 0150
+    DirBase: 7a3c4000  ObjectTable: ffffc0014fa259c0  HandleCount: <Data Not Accessible>
+    Image: wininit.exe
+
+PROCESS ffffe000ad7b6080
+    SessionId: 1  Cid: 01ac    Peb: 542d0f7000  ParentCid: 0198
+    DirBase: 7a34c000  ObjectTable: ffffc0014fa31280  HandleCount: <Data Not Accessible>
+    Image: csrss.exe
+
+PROCESS ffffe000ac4f0840
+    SessionId: 1  Cid: 01d4    Peb: 4bdaf0a000  ParentCid: 0198
+    DirBase: 79752000  ObjectTable: ffffc0014fa3fa00  HandleCount: <Data Not Accessible>
+    Image: winlogon.exe
+
+PROCESS ffffe000ad9e61c0
+    SessionId: 0  Cid: 0218    Peb: 85bafcf000  ParentCid: 01a0
+    DirBase: 789e4000  ObjectTable: ffffc0014fa47800  HandleCount: <Data Not Accessible>
+    Image: services.exe
+
+PROCESS ffffe000ad9f2080
+    SessionId: 0  Cid: 0220    Peb: ccaf5cc000  ParentCid: 01a0
+    DirBase: 78bc2000  ObjectTable: ffffc0014faf3540  HandleCount: <Data Not Accessible>
+    Image: lsass.exe
+
+PROCESS ffffe000ad9a8840
+    SessionId: 0  Cid: 0260    Peb: 2e7c4b5000  ParentCid: 0218
+    DirBase: 771fe000  ObjectTable: ffffc0014fb78300  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adcb9840
+    SessionId: 0  Cid: 0280    Peb: a1a89f5000  ParentCid: 0218
+    DirBase: 76dd2000  ObjectTable: ffffc0014fbe1800  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000add3e080
+    SessionId: 1  Cid: 0304    Peb: ac336e8000  ParentCid: 01d4
+    DirBase: 7582c000  ObjectTable: ffffc0014fc51200  HandleCount: <Data Not Accessible>
+    Image: dwm.exe
+
+PROCESS ffffe000add90640
+    SessionId: 0  Cid: 0354    Peb: 1007abd000  ParentCid: 0218
+    DirBase: 74cbf000  ObjectTable: ffffc0014fd70d80  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000add8b840
+    SessionId: 0  Cid: 0368    Peb: a6bdac5000  ParentCid: 0218
+    DirBase: 74805000  ObjectTable: ffffc0014fd8e040  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000addc0840
+    SessionId: 0  Cid: 039c    Peb: ad7c65e000  ParentCid: 0218
+    DirBase: 742bd000  ObjectTable: ffffc0014fda8700  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000addd1840
+    SessionId: 0  Cid: 03b4    Peb: e50c35b000  ParentCid: 0218
+    DirBase: 74091000  ObjectTable: ffffc0014fcbb3c0  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ade01840
+    SessionId: 0  Cid: 03dc    Peb: 00214000  ParentCid: 0218
+    DirBase: 7275d000  ObjectTable: ffffc0014fc92800  HandleCount: <Data Not Accessible>
+    Image: VBoxService.exe
+
+PROCESS ffffe000addcc840
+    SessionId: 0  Cid: 00f0    Peb: f5f9922000  ParentCid: 0218
+    DirBase: 72205000  ObjectTable: ffffc0014fd56d40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ade29840
+    SessionId: 0  Cid: 0170    Peb: f8670ab000  ParentCid: 0218
+    DirBase: 717b4000  ObjectTable: ffffc0014fe36e40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ab093080
+    SessionId: 0  Cid: 0448    Peb: 9d68b63000  ParentCid: 0218
+    DirBase: 6c70b000  ObjectTable: ffffc00150015940  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ada1a840
+    SessionId: 0  Cid: 04c4    Peb: 003dc000  ParentCid: 0218
+    DirBase: 6b89d000  ObjectTable: ffffc00150097f40  HandleCount: <Data Not Accessible>
+    Image: spoolsv.exe
+
+PROCESS ffffe000adbb0840
+    SessionId: 0  Cid: 05f0    Peb: 544d93f000  ParentCid: 0218
+    DirBase: 674b8000  ObjectTable: ffffc001501f8880  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbf7840
+    SessionId: 0  Cid: 0664    Peb: f143062000  ParentCid: 0218
+    DirBase: 66b31000  ObjectTable: ffffc001501e5900  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbd5840
+    SessionId: 0  Cid: 066c    Peb: 7660e52000  ParentCid: 0218
+    DirBase: 66bc2000  ObjectTable: ffffc001501fce40  HandleCount: <Data Not Accessible>
+    Image: MsMpEng.exe
+
+PROCESS ffffe000ae198840
+    SessionId: 0  Cid: 0588    Peb: 9afc07a000  ParentCid: 0218
+    DirBase: 58098000  ObjectTable: ffffc001506cc440  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000adbb8080
+    SessionId: 0  Cid: 0564    Peb: 23b4ddf000  ParentCid: 0218
+    DirBase: 5ea61000  ObjectTable: ffffc001506f9500  HandleCount: <Data Not Accessible>
+    Image: NisSrv.exe
+
+PROCESS ffffe000ab228840
+    SessionId: 1  Cid: 08bc    Peb: ce6f113000  ParentCid: 0354
+    DirBase: 750eb000  ObjectTable: ffffc00150a6cd40  HandleCount: <Data Not Accessible>
+    Image: taskhostw.exe
+
+PROCESS ffffe000ae00f840
+    SessionId: 1  Cid: 08fc    Peb: 30b87a1000  ParentCid: 0354
+    DirBase: 576f7000  ObjectTable: ffffc00150a75f40  HandleCount: <Data Not Accessible>
+    Image: sihost.exe
+
+PROCESS ffffe000ae29e840
+    SessionId: 1  Cid: 09c8    Peb: f79cc99000  ParentCid: 0260
+    DirBase: 56cfc000  ObjectTable: ffffc00150a58d40  HandleCount: <Data Not Accessible>
+    Image: RuntimeBroker.exe
+
+PROCESS ffffe000ab213840
+    SessionId: 1  Cid: 09f4    Peb: 3fc5003000  ParentCid: 01d4
+    DirBase: 56854000  ObjectTable: 00000000  HandleCount:   0.
+    Image: userinit.exe
+
+PROCESS ffffe000ae2fa500
+    SessionId: 1  Cid: 0a08    Peb: 003bd000  ParentCid: 09f4
+    DirBase: 565e3000  ObjectTable: ffffc00150bf98c0  HandleCount: <Data Not Accessible>
+    Image: explorer.exe
+
+PROCESS ffffe000ae2e0840
+    SessionId: 1  Cid: 0a28    Peb: 00563000  ParentCid: 0260
+    DirBase: 5627d000  ObjectTable: ffffc00150c509c0  HandleCount: <Data Not Accessible>
+    Image: SkypeHost.exe
+
+PROCESS ffffe000ae377840
+    SessionId: 0  Cid: 0ac4    Peb: 804aad2000  ParentCid: 0218
+    DirBase: 54d50000  ObjectTable: ffffc00150cffcc0  HandleCount: <Data Not Accessible>
+    Image: SearchIndexer.exe
+
+PROCESS ffffe000ae3b0600
+    SessionId: 1  Cid: 0b48    Peb: 37ac40f000  ParentCid: 0260
+    DirBase: 53add000  ObjectTable: ffffc00150c0b2c0  HandleCount: <Data Not Accessible>
+    Image: ShellExperienceHost.exe
+
+PROCESS ffffe000ae482340
+    SessionId: 1  Cid: 0bc4    Peb: 6cd1e11000  ParentCid: 0260
+    DirBase: 516e3000  ObjectTable: ffffc00150e343c0  HandleCount: <Data Not Accessible>
+    Image: SearchUI.exe
+
+PROCESS ffffe000ac5b8840
+    SessionId: 1  Cid: 0d88    Peb: 002ee000  ParentCid: 0a08
+    DirBase: 78ad2000  ObjectTable: ffffc0015129f1c0  HandleCount: <Data Not Accessible>
+    Image: VBoxTray.exe
+
+PROCESS ffffe000ac520840
+    SessionId: 1  Cid: 0da8    Peb: 00350000  ParentCid: 0a08
+    DirBase: 24257000  ObjectTable: ffffc001512b2d00  HandleCount: <Data Not Accessible>
+    Image: OneDrive.exe
+
+PROCESS ffffe000ae399080
+    SessionId: 1  Cid: 0ac0    Peb: f2c7f3f000  ParentCid: 0218
+    DirBase: 0102d000  ObjectTable: ffffc001511c3e40  HandleCount: <Data Not Accessible>
+    Image: svchost.exe
+
+PROCESS ffffe000ae431840
+    SessionId: 0  Cid: 0f60    Peb: f275a9e000  ParentCid: 0ac4
+    DirBase: 54e4c000  ObjectTable: ffffc00151591200  HandleCount: <Data Not Accessible>
+    Image: SearchProtocolHost.exe
+
+PROCESS ffffe000abad8840
+    SessionId: 0  Cid: 031c    Peb: f9f5648000  ParentCid: 0ac4
+    DirBase: 483a2000  ObjectTable: ffffc00150050140  HandleCount: <Data Not Accessible>
+    Image: SearchFilterHost.exe
+
+PROCESS ffffe000abac0840
+    SessionId: 0  Cid: 0fcc    Peb: 62d1f03000  ParentCid: 00f0
+    DirBase: 4ace1000  ObjectTable: ffffc00151670140  HandleCount: <Data Not Accessible>
+    Image: audiodg.exe
+
+PROCESS ffffe000adb572c0
+    SessionId: 1  Cid: 0590    Peb: 93acec7000  ParentCid: 0a08
+    DirBase: 7bd57000  ObjectTable: ffffc0014ffd4380  HandleCount: <Data Not Accessible>
+    Image: notepad.exe
+
+kd> .process ffffe000adb572c0
+Implicit process is now ffffe000`adb572c0
+WARNING: .cache forcedecodeuser is not enabled
+kd> g
+Break instruction exception - code 80000003 (first chance)
+*******************************************************************************
+*                                                                             *
+*   You are seeing this message because you pressed either                    *
+*       CTRL+C (if you run kd.exe) or,                                        *
+*       CTRL+BREAK (if you run WinDBG),                                       *
+*   on your debugger machine's keyboard.                                      *
+*                                                                             *
+*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+*                                                                             *
+* If you did not intend to break into the debugger, press the "g" key, then   *
+* press the "Enter" key now.  This message might immediately reappear.  If it *
+* does, press "g" and "Enter" again.                                          *
+*                                                                             *
+*******************************************************************************
+nt!DbgBreakPointWithStatus:
+fffff800`9cfc06d0 cc              int     3
+kd> .process ffffe000adb572c0
+Implicit process is now ffffe000`adb572c0
+WARNING: .cache forcedecodeuser is not enabled
+kd> .process
+Implicit process is now ffffe000`ab060040
+kd> .process /i ffffe000adb572c0
+You need to continue execution (press 'g' <enter>) for the context
+to be switched. When the debugger breaks in again, you will be in
+the new process context.
+kd> g
+Break instruction exception - code 80000003 (first chance)
+nt!DbgBreakPointWithStatus:
+fffff800`9cfc06d0 cc              int     3
+kd> .process
+Implicit process is now ffffe000`adb572c0
+kd> dq gs:0x188
+002b:00000000`00000188  ffffe000`abb83340 00000000`00000000
+002b:00000000`00000198  fffff800`9d20c740 00000000`01010100
+002b:00000000`000001a8  ffffd000`3773ddd0 00000000`00000000
+002b:00000000`000001b8  fffff800`9d19c890 00000000`80050031
+002b:00000000`000001c8  00000000`0511efe8 00000000`7bd57000
+002b:00000000`000001d8  00000000`000006f8 00000000`00000000
+002b:00000000`000001e8  00000000`00000000 00000000`00000000
+002b:00000000`000001f8  00000000`00000000 00000000`ffff0ff0
+kd> dq ffffe000`abb83340+b8
+ffffe000`abb833f8  ffffe000`adb572c0 00000000`0c000000
+ffffe000`abb83408  fffff800`9d14bf00 ffffe000`abb83480
+ffffe000`abb83418  fffff800`9d19bb40 fffff800`9d19bb40
+ffffe000`abb83428  fffff800`9d20c340 00000000`00000000
+ffffe000`abb83438  00000000`00000000 00000000`00e80008
+ffffe000`abb83448  ffffe000`abb83510 ffffe000`abb83510
+ffffe000`abb83458  00000000`8ba2831e ffffe000`ae3971a0
+ffffe000`abb83468  fffff800`9d19b688 d8a0721f`e18b8764
+kd> dq ffffe000`adb572c0+3f8
+ffffe000`adb576b8  00000093`acec7000 ffffd000`39353000
+ffffe000`adb576c8  00000000`00000000 ffffe000`adcb6340
+ffffe000`adb576d8  ffffc001`4ffd4380 00000000`00000000
+ffffe000`adb576e8  00000000`00000000 ffffc001`50732cf0
+ffffe000`adb576f8  ffffe000`ad77fc21 00000000`00000000
+ffffe000`adb57708  ffffe000`ae2c5db0 2e646170`65746f6e
+ffffe000`adb57718  02000000`00657865 00000000`00000000
+ffffe000`adb57728  ffffe000`ada58a80 00000000`00000000
+kd> dq ffffe000`adb572c0+3f8
+ffffe000`adb576b8  00000093`acec7000 ffffd000`39353000
+ffffe000`adb576c8  00000000`00000000 ffffe000`adcb6340
+ffffe000`adb576d8  ffffc001`4ffd4380 00000000`00000000
+ffffe000`adb576e8  00000000`00000000 ffffc001`50732cf0
+ffffe000`adb576f8  ffffe000`ad77fc21 00000000`00000000
+ffffe000`adb57708  ffffe000`ae2c5db0 2e646170`65746f6e
+ffffe000`adb57718  02000000`00657865 00000000`00000000
+ffffe000`adb57728  ffffe000`ada58a80 00000000`00000000
+kd> dt nt!_EPROCESS ffffe000`adb572c0
+   +0x000 Pcb              : _KPROCESS
+   +0x2d8 ProcessLock      : _EX_PUSH_LOCK
+   +0x2e0 RundownProtect   : _EX_RUNDOWN_REF
+   +0x2e8 UniqueProcessId  : 0x00000000`00000590 Void
+   +0x2f0 ActiveProcessLinks : _LIST_ENTRY [ 0xfffff800`9d1521a0 - 0xffffe000`abac0b30 ]
+   +0x300 Flags2           : 0x200d000
+   +0x300 JobNotReallyActive : 0y0
+   +0x300 AccountingFolded : 0y0
+   +0x300 NewProcessReported : 0y0
+   +0x300 ExitProcessReported : 0y0
+   +0x300 ReportCommitChanges : 0y0
+   +0x300 LastReportMemory : 0y0
+   +0x300 ForceWakeCharge  : 0y0
+   +0x300 CrossSessionCreate : 0y0
+   +0x300 NeedsHandleRundown : 0y0
+   +0x300 RefTraceEnabled  : 0y0
+   +0x300 DisableDynamicCode : 0y0
+   +0x300 EmptyJobEvaluated : 0y0
+   +0x300 DefaultPagePriority : 0y101
+   +0x300 PrimaryTokenFrozen : 0y1
+   +0x300 ProcessVerifierTarget : 0y0
+   +0x300 StackRandomizationDisabled : 0y0
+   +0x300 AffinityPermanent : 0y0
+   +0x300 AffinityUpdateEnable : 0y0
+   +0x300 PropagateNode    : 0y0
+   +0x300 ExplicitAffinity : 0y0
+   +0x300 ProcessExecutionState : 0y00
+   +0x300 DisallowStrippedImages : 0y0
+   +0x300 HighEntropyASLREnabled : 0y1
+   +0x300 ExtensionPointDisable : 0y0
+   +0x300 ForceRelocateImages : 0y0
+   +0x300 ProcessStateChangeRequest : 0y00
+   +0x300 ProcessStateChangeInProgress : 0y0
+   +0x300 DisallowWin32kSystemCalls : 0y0
+   +0x304 Flags            : 0x144d0c11
+   +0x304 CreateReported   : 0y1
+   +0x304 NoDebugInherit   : 0y0
+   +0x304 ProcessExiting   : 0y0
+   +0x304 ProcessDelete    : 0y0
+   +0x304 ControlFlowGuardEnabled : 0y1
+   +0x304 VmDeleted        : 0y0
+   +0x304 OutswapEnabled   : 0y0
+   +0x304 Outswapped       : 0y0
+   +0x304 FailFastOnCommitFail : 0y0
+   +0x304 Wow64VaSpace4Gb  : 0y0
+   +0x304 AddressSpaceInitialized : 0y11
+   +0x304 SetTimerResolution : 0y0
+   +0x304 BreakOnTermination : 0y0
+   +0x304 DeprioritizeViews : 0y0
+   +0x304 WriteWatch       : 0y0
+   +0x304 ProcessInSession : 0y1
+   +0x304 OverrideAddressSpace : 0y0
+   +0x304 HasAddressSpace  : 0y1
+   +0x304 LaunchPrefetched : 0y1
+   +0x304 Background       : 0y0
+   +0x304 VmTopDown        : 0y0
+   +0x304 ImageNotifyDone  : 0y1
+   +0x304 PdeUpdateNeeded  : 0y0
+   +0x304 VdmAllowed       : 0y0
+   +0x304 ProcessRundown   : 0y0
+   +0x304 ProcessInserted  : 0y1
+   +0x304 DefaultIoPriority : 0y010
+   +0x304 ProcessSelfDelete : 0y0
+   +0x304 SetTimerResolutionLink : 0y0
+   +0x308 CreateTime       : _LARGE_INTEGER 0x1d89ffa`dcc90782
+   +0x310 ProcessQuotaUsage : [2] 0x29e8
+   +0x320 ProcessQuotaPeak : [2] 0x2b90
+   +0x330 PeakVirtualSize  : 0x200`073ae000
+   +0x338 VirtualSize      : 0x200`073ad000
+   +0x340 SessionProcessLinks : _LIST_ENTRY [ 0xffffd000`39353010 - 0xffffe000`ae3993c0 ]
+   +0x350 ExceptionPortData : 0xffffe000`ad96b090 Void
+   +0x350 ExceptionPortValue : 0xffffe000`ad96b090
+   +0x350 ExceptionPortState : 0y000
+   +0x358 Token            : _EX_FAST_REF
+   +0x360 WorkingSetPage   : 0xb9d3
+   +0x368 AddressCreationLock : _EX_PUSH_LOCK
+   +0x370 PageTableCommitmentLock : _EX_PUSH_LOCK
+   +0x378 RotateInProgress : (null) 
+   +0x380 ForkInProgress   : (null) 
+   +0x388 CommitChargeJob  : (null) 
+   +0x390 CloneRoot        : _RTL_AVL_TREE
+   +0x398 NumberOfPrivatePages : 0x177
+   +0x3a0 NumberOfLockedPages : 0
+   +0x3a8 Win32Process     : 0xfffff901`43ea3c20 Void
+   +0x3b0 Job              : (null) 
+   +0x3b8 SectionObject    : 0xffffc001`501dcc10 Void
+   +0x3c0 SectionBaseAddress : 0x00007ff6`8d390000 Void
+   +0x3c8 Cookie           : 0x84c039f3
+   +0x3d0 WorkingSetWatch  : (null) 
+   +0x3d8 Win32WindowStation : 0x00000000`00000070 Void
+   +0x3e0 InheritedFromUniqueProcessId : 0x00000000`00000a08 Void
+   +0x3e8 LdtInformation   : (null) 
+   +0x3f0 OwnerProcessId   : 0
+   +0x3f8 Peb              : 0x00000093`acec7000 _PEB
+   +0x400 Session          : 0xffffd000`39353000 Void
+   +0x408 AweInfo          : (null) 
+   +0x410 QuotaBlock       : 0xffffe000`adcb6340 _EPROCESS_QUOTA_BLOCK
+   +0x418 ObjectTable      : 0xffffc001`4ffd4380 _HANDLE_TABLE
+   +0x420 DebugPort        : (null) 
+   +0x428 WoW64Process     : (null) 
+   +0x430 DeviceMap        : 0xffffc001`50732cf0 Void
+   +0x438 EtwDataSource    : 0xffffe000`ad77fc21 Void
+   +0x440 PageDirectoryPte : 0
+   +0x448 ImageFilePointer : 0xffffe000`ae2c5db0 _FILE_OBJECT
+   +0x450 ImageFileName    : [15]  "notepad.exe"
+   +0x45f PriorityClass    : 0x2 ''
+   +0x460 SecurityPort     : (null) 
+   +0x468 SeAuditProcessCreationInfo : _SE_AUDIT_PROCESS_CREATION_INFO
+   +0x470 JobLinks         : _LIST_ENTRY [ 0x00000000`00000000 - 0x0 ]
+   +0x480 HighestUserAddress : 0x00007fff`ffff0000 Void
+   +0x488 ThreadListHead   : _LIST_ENTRY [ 0xffffe000`ae52aed0 - 0xffffe000`ab097710 ]
+   +0x498 ActiveThreads    : 2
+   +0x49c ImagePathHash    : 0xd8414f97
+   +0x4a0 DefaultHardErrorProcessing : 1
+   +0x4a4 LastThreadExitStatus : 0n0
+   +0x4a8 PrefetchTrace    : _EX_FAST_REF
+   +0x4b0 LockedPagesList  : (null) 
+   +0x4b8 ReadOperationCount : _LARGE_INTEGER 0x0
+   +0x4c0 WriteOperationCount : _LARGE_INTEGER 0x0
+   +0x4c8 OtherOperationCount : _LARGE_INTEGER 0x0
+   +0x4d0 ReadTransferCount : _LARGE_INTEGER 0x0
+   +0x4d8 WriteTransferCount : _LARGE_INTEGER 0x0
+   +0x4e0 OtherTransferCount : _LARGE_INTEGER 0x0
+   +0x4e8 CommitChargeLimit : 0
+   +0x4f0 CommitCharge     : 0x1de
+   +0x4f8 CommitChargePeak : 0x1de
+   +0x500 Vm               : _MMSUPPORT
+   +0x5f8 MmProcessLinks   : _LIST_ENTRY [ 0xfffff800`9d174558 - 0xffffe000`abac0e38 ]
+   +0x608 ModifiedPageCount : 3
+   +0x60c ExitStatus       : 0n259
+   +0x610 VadRoot          : _RTL_AVL_TREE
+   +0x618 VadHint          : 0xffffe000`adb4d470 Void
+   +0x620 VadCount         : 0x4e
+   +0x628 VadPhysicalPages : 0
+   +0x630 VadPhysicalPagesLimit : 0
+   +0x638 AlpcContext      : _ALPC_PROCESS_CONTEXT
+   +0x658 TimerResolutionLink : _LIST_ENTRY [ 0x00000000`00000000 - 0x0 ]
+   +0x668 TimerResolutionStackRecord : (null) 
+   +0x670 RequestedTimerResolution : 0
+   +0x674 SmallestTimerResolution : 0
+   +0x678 ExitTime         : _LARGE_INTEGER 0x0
+   +0x680 InvertedFunctionTable : (null) 
+   +0x688 InvertedFunctionTableLock : _EX_PUSH_LOCK
+   +0x690 ActiveThreadsHighWatermark : 2
+   +0x694 LargePrivateVadCount : 0
+   +0x698 ThreadListLock   : _EX_PUSH_LOCK
+   +0x6a0 WnfContext       : (null) 
+   +0x6a8 Spare0           : 0
+   +0x6b0 SignatureLevel   : 0 ''
+   +0x6b1 SectionSignatureLevel : 0 ''
+   +0x6b2 Protection       : _PS_PROTECTION
+   +0x6b3 HangCount        : 0 ''
+   +0x6b4 Flags3           : 0
+   +0x6b4 Minimal          : 0y0
+   +0x6b4 ReplacingPageRoot : 0y0
+   +0x6b4 DisableNonSystemFonts : 0y0
+   +0x6b4 AuditNonSystemFontLoading : 0y0
+   +0x6b4 Crashed          : 0y0
+   +0x6b4 JobVadsAreTracked : 0y0
+   +0x6b4 VadTrackingDisabled : 0y0
+   +0x6b4 AuxiliaryProcess : 0y0
+   +0x6b4 SubsystemProcess : 0y0
+   +0x6b4 IndirectCpuSets  : 0y0
+   +0x6b4 InPrivate        : 0y0
+   +0x6b4 ProhibitRemoteImageMap : 0y0
+   +0x6b4 ProhibitLowILImageMap : 0y0
+   +0x6b4 SignatureMitigationOptIn : 0y0
+   +0x6b8 DeviceAsid       : 0n0
+   +0x6c0 SvmData          : (null) 
+   +0x6c8 SvmProcessLock   : _EX_PUSH_LOCK
+   +0x6d0 SvmLock          : 0
+   +0x6d8 SvmProcessDeviceListHead : _LIST_ENTRY [ 0xffffe000`adb57998 - 0xffffe000`adb57998 ]
+   +0x6e8 LastFreezeInterruptTime : 0
+   +0x6f0 DiskCounters     : 0xffffe000`adb57a48 _PROCESS_DISK_COUNTERS
+   +0x6f8 PicoContext      : (null) 
+   +0x700 TrustletIdentity : 0
+   +0x708 KeepAliveCounter : 0
+   +0x70c NoWakeKeepAliveCounter : 0
+   +0x710 HighPriorityFaultsAllowed : 0
+   +0x718 EnergyValues     : (null) 
+   +0x720 VmContext        : (null) 
+   +0x728 SequenceNumber   : 0x4a
+   +0x730 CreateInterruptTime : 0x9d7f8aca
+   +0x738 CreateUnbiasedInterruptTime : 0x9d7f8aca
+   +0x740 TotalUnbiasedFrozenTime : 0
+   +0x748 LastAppStateUpdateTime : 0x9d7f8aca
+   +0x750 LastAppStateUptime : 0y0000000000000000000000000000000000000000000000000000000000000 (0)
+   +0x750 LastAppState     : 0y000
+   +0x758 SharedCommitCharge : 0x838
+   +0x760 SharedCommitLock : _EX_PUSH_LOCK
+   +0x768 SharedCommitLinks : _LIST_ENTRY [ 0xffffc001`501da7f8 - 0xffffc001`4f10d618 ]
+   +0x778 AllowedCpuSets   : 0
+   +0x780 DefaultCpuSets   : 0
+   +0x778 AllowedCpuSetsIndirect : (null) 
+   +0x780 DefaultCpuSetsIndirect : (null) 
+kd> dt nt!_PEB 0x00000093`acec7000
+   +0x000 InheritedAddressSpace : 0 ''
+   +0x001 ReadImageFileExecOptions : 0 ''
+   +0x002 BeingDebugged    : 0 ''
+   +0x003 BitField         : 0x4 ''
+   +0x003 ImageUsesLargePages : 0y0
+   +0x003 IsProtectedProcess : 0y0
+   +0x003 IsImageDynamicallyRelocated : 0y1
+   +0x003 SkipPatchingUser32Forwarders : 0y0
+   +0x003 IsPackagedProcess : 0y0
+   +0x003 IsAppContainer   : 0y0
+   +0x003 IsProtectedProcessLight : 0y0
+   +0x003 SpareBits        : 0y0
+   +0x004 Padding0         : [4]  ""
+   +0x008 Mutant           : 0xffffffff`ffffffff Void
+   +0x010 ImageBaseAddress : 0x00007ff6`8d390000 Void
+   +0x018 Ldr              : 0x00007ff8`113b5200 _PEB_LDR_DATA
+   +0x020 ProcessParameters : 0x0000023e`9a5712e0 _RTL_USER_PROCESS_PARAMETERS
+   +0x028 SubSystemData    : (null) 
+   +0x030 ProcessHeap      : 0x0000023e`9a570000 Void
+   +0x038 FastPebLock      : 0x00007ff8`113b4e80 _RTL_CRITICAL_SECTION
+   +0x040 AtlThunkSListPtr : (null) 
+   +0x048 IFEOKey          : (null) 
+   +0x050 CrossProcessFlags : 0
+   +0x050 ProcessInJob     : 0y0
+   +0x050 ProcessInitializing : 0y0
+   +0x050 ProcessUsingVEH  : 0y0
+   +0x050 ProcessUsingVCH  : 0y0
+   +0x050 ProcessUsingFTH  : 0y0
+   +0x050 ReservedBits0    : 0y000000000000000000000000000 (0)
+   +0x054 Padding1         : [4]  ""
+   +0x058 KernelCallbackTable : 0x00007ff8`0ebc2220 Void
+   +0x058 UserSharedInfoPtr : 0x00007ff8`0ebc2220 Void
+   +0x060 SystemReserved   : [1] 0
+   +0x064 AtlThunkSListPtr32 : 0
+   +0x068 ApiSetMap        : 0x0000023e`9a460000 Void
+   +0x070 TlsExpansionCounter : 0
+   +0x074 Padding2         : [4]  ""
+   +0x078 TlsBitmap        : 0x00007ff8`113b52a0 Void
+   +0x080 TlsBitmapBits    : [2] 0xffffffff
+   +0x088 ReadOnlySharedMemoryBase : 0x00007ff6`8cb90000 Void
+   +0x090 SparePvoid0      : (null) 
+   +0x098 ReadOnlyStaticServerData : 0x00007ff6`8cb90720  -> (null) 
+   +0x0a0 AnsiCodePageData : 0x00007ff6`8cc90000 Void
+   +0x0a8 OemCodePageData  : 0x00007ff6`8cca0228 Void
+   +0x0b0 UnicodeCaseTableData : 0x00007ff6`8ccb0650 Void
+   +0x0b8 NumberOfProcessors : 1
+   +0x0bc NtGlobalFlag     : 0
+   +0x0c0 CriticalSectionTimeout : _LARGE_INTEGER 0xffffe86d`079b8000
+   +0x0c8 HeapSegmentReserve : 0x100000
+   +0x0d0 HeapSegmentCommit : 0x2000
+   +0x0d8 HeapDeCommitTotalFreeThreshold : 0x10000
+   +0x0e0 HeapDeCommitFreeBlockThreshold : 0x1000
+   +0x0e8 NumberOfHeaps    : 4
+   +0x0ec MaximumNumberOfHeaps : 0x10
+   +0x0f0 ProcessHeaps     : 0x00007ff8`113b3ac0  -> 0x0000023e`9a570000 Void
+   +0x0f8 GdiSharedHandleTable : 0x0000023e`9a840000 Void
+   +0x100 ProcessStarterHelper : (null) 
+   +0x108 GdiDCAttributeList : 0x14
+   +0x10c Padding3         : [4]  ""
+   +0x110 LoaderLock       : 0x00007ff8`113b21e0 _RTL_CRITICAL_SECTION
+   +0x118 OSMajorVersion   : 0xa
+   +0x11c OSMinorVersion   : 0
+   +0x120 OSBuildNumber    : 0x295a
+   +0x122 OSCSDVersion     : 0
+   +0x124 OSPlatformId     : 2
+   +0x128 ImageSubsystem   : 2
+   +0x12c ImageSubsystemMajorVersion : 0xa
+   +0x130 ImageSubsystemMinorVersion : 0
+   +0x134 Padding4         : [4]  ""
+   +0x138 ActiveProcessAffinityMask : 1
+   +0x140 GdiHandleBuffer  : [60] 0
+   +0x230 PostProcessInitRoutine : (null) 
+   +0x238 TlsExpansionBitmap : 0x00007ff8`113b52c0 Void
+   +0x240 TlsExpansionBitmapBits : [32] 1
+   +0x2c0 SessionId        : 1
+   +0x2c4 Padding5         : [4]  ""
+   +0x2c8 AppCompatFlags   : _ULARGE_INTEGER 0x0
+   +0x2d0 AppCompatFlagsUser : _ULARGE_INTEGER 0x0
+   +0x2d8 pShimData        : 0x0000023e`9a4a0000 Void
+   +0x2e0 AppCompatInfo    : (null) 
+   +0x2e8 CSDVersion       : _UNICODE_STRING ""
+   +0x2f8 ActivationContextData : 0x0000023e`9a490000 _ACTIVATION_CONTEXT_DATA
+   +0x300 ProcessAssemblyStorageMap : 0x0000023e`9a5707f0 _ASSEMBLY_STORAGE_MAP
+   +0x308 SystemDefaultActivationContextData : 0x0000023e`9a480000 _ACTIVATION_CONTEXT_DATA
+   +0x310 SystemAssemblyStorageMap : (null) 
+   +0x318 MinimumStackCommit : 0
+   +0x320 FlsCallback      : 0x0000023e`9a5828d0 _FLS_CALLBACK_INFO
+   +0x328 FlsListHead      : _LIST_ENTRY [ 0x0000023e`9a5824b0 - 0x23e`9a5824b0 ]
+   +0x338 FlsBitmap        : 0x00007ff8`113b5310 Void
+   +0x340 FlsBitmapBits    : [4] 0xf
+   +0x350 FlsHighIndex     : 3
+   +0x358 WerRegistrationData : (null) 
+   +0x360 WerShipAssertPtr : (null) 
+   +0x368 pUnused          : (null) 
+   +0x370 pImageHeaderHash : (null) 
+   +0x378 TracingFlags     : 0
+   +0x378 HeapTracingEnabled : 0y0
+   +0x378 CritSecTracingEnabled : 0y0
+   +0x378 LibLoaderTracingEnabled : 0y0
+   +0x378 SpareTracingBits : 0y00000000000000000000000000000 (0)
+   +0x37c Padding6         : [4]  ""
+   +0x380 CsrServerReadOnlySharedMemoryBase : 0x7ff7`3bcc0000
+   +0x388 TppWorkerpListLock : 0
+   +0x390 TppWorkerpList   : _LIST_ENTRY [ 0x00000093`acd9fa00 - 0x93`acd9fa00 ]
+   +0x3a0 WaitOnAddressHashTable : [128] (null) 
+kd> dq 00000093`acec7000+bc
+00000093`acec70bc  079b8000`00000000 00100000`ffffe86d
+00000093`acec70cc  00002000`00000000 00010000`00000000
+00000093`acec70dc  00001000`00000000 00000004`00000000
+00000093`acec70ec  113b3ac0`00000010 9a840000`00007ff8
+00000093`acec70fc  00000000`0000023e 00000014`00000000
+00000093`acec710c  113b21e0`00000000 0000000a`00007ff8
+00000093`acec711c  0000295a`00000000 00000002`00000002
+00000093`acec712c  00000000`0000000a 00000001`00000000 
+`````
+
+
