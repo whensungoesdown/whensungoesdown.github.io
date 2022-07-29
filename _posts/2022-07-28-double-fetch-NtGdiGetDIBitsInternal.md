@@ -1,5 +1,5 @@
 ---
-title: NtGdiCreateDIBSection
+title: NtGdiGetDIBitsInternal
 published: true
 ---
 
