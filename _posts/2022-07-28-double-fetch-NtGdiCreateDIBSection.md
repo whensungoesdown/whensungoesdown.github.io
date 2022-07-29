@@ -272,6 +272,18 @@ But, that's too deep an internal function.
 
 I could give it try by change the value before the second fetch, see if it causes any BSOD.
 
+
+> biCompression
+> The type of compression for a compressed bottom-up bitmap (top-down DIBs cannot be compressed). This member can be one of the following values.
+> 
+> Value	Description
+> BI_RGB	An uncompressed format.
+> BI_RLE8	A run-length encoded (RLE) format for bitmaps with 8 bpp. The compression format is a 2-byte format consisting of a count byte followed by a byte containing a color index. For more information, see Bitmap Compression.
+> BI_RLE4	An RLE format for bitmaps with 4 bpp. The compression format is a 2-byte format consisting of a count byte followed by two word-length color indexes. For more information, see Bitmap Compression.
+> BI_BITFIELDS	Specifies that the bitmap is not compressed and that the color table consists of three DWORD color masks that specify the red, green, and blue components, respectively, of each pixel. This is valid when used with 16- and 32-bpp bitmaps.
+> BI_JPEG	Indicates that the image is a JPEG image.
+> BI_PNG	Indicates that the image is a PNG image.
+
  
 
 -------------------------------------------------------------------------------
