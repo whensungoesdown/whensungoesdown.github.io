@@ -1,5 +1,5 @@
 ---
-title: double fetch, case 32 - 
+title: double fetch, case 32 - case 62
 published: true
 ---
 
@@ -1810,5 +1810,836 @@ DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1087
                  24 08
        1c00473fc c3              RET
 
+
+`````
+
+---------------------------------------------------------------
+
+case 54
+
+
+useless
+
+
+`````shell
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5
+   eip 0xfffff80179c91b72, user_address 0x75925d7740, user_data 0x1, modrm 0x91, pc 0xfffff80179c91b7f
+   eip 0xfffff961a3a34c30, user_address 0x75925d7740, user_data 0x1, modrm 0x88, pc 0xfffff961a3a34c7f
+`````
+
+
+`````shell
+                             LAB_140407b4f                                   XREF[1]:     140407b3f(j)  
+       140407b4f 49 89 b7        MOV        qword ptr [R15 + 0x180],RSI
+                 80 01 00 00
+       140407b56 4d 8b ce        MOV        param_4,R14
+       140407b59 4d 8d 46 d0     LEA        param_3,[R14 + -0x30]
+       140407b5d 48 8b 94        MOV        param_2,qword ptr [RSP + param_5]
+                 24 c0 00 
+                 00 00
+       140407b65 48 8b 8c        MOV        param_1,qword ptr [RSP + local_res20]
+                 24 b8 00 
+                 00 00
+       140407b6d e8 7e cd        CALL       FUN_1401448f0                                    undefined FUN_1401448f0()
+                 d3 ff
+       140407b72 8b f8           MOV        EDI,EAX
+       140407b74 89 44 24 34     MOV        dword ptr [RSP + local_64],EAX
+       140407b78 48 8b 8b        MOV        param_1,qword ptr [RBX + 0xf0]
+                 f0 00 00 00
+   --> 140407b7f 8b 91 40        MOV        param_2,dword ptr [param_1 + 0x1740]
+                 17 00 00
+       140407b85 89 54 24 30     MOV        dword ptr [RSP + local_68],param_2
+       140407b89 eb 21           JMP        LAB_140407bac
+       140407b8b ba 01 00        MOV        EDX,0x1
+                 00 00
+       140407b90 89 54 24 30     MOV        dword ptr [RSP + 0x30],EDX
+       140407b94 48 8b 5c        MOV        RBX,qword ptr [RSP + 0x38]
+                 24 38
+       140407b99 4c 8b 74        MOV        R14,qword ptr [RSP + 0x40]
+                 24 40
+       140407b9e 4c 8b 7c        MOV        R15,qword ptr [RSP + 0x48]
+                 24 48
+       140407ba3 4c 8b 64        MOV        R12,qword ptr [RSP + 0x50]
+                 24 50
+       140407ba8 8b 7c 24 34     MOV        EDI,dword ptr [RSP + 0x34]
+
+`````
+
+
+`````shell
+                             0x34c30  1267  NtGdiFlushUserBatch
+                             Ordinal_1267                                    XREF[5]:     Entry Point(*), 1c02f2ee0(*), 
+                             NtGdiFlushUserBatch                                          1c0332a94(*), 1c03663f0(*), 
+                                                                                          1c037c154(*)  
+       1c0034c30 48 89 5c        MOV        qword ptr [RSP + local_res8],RBX
+                 24 08
+       1c0034c35 48 89 74        MOV        qword ptr [RSP + local_res10],RSI
+                 24 10
+       1c0034c3a 48 89 7c        MOV        qword ptr [RSP + local_res18],RDI
+                 24 18
+       1c0034c3f 4c 89 64        MOV        qword ptr [RSP + local_res20],R12
+                 24 20
+       1c0034c44 41 55           PUSH       R13
+       1c0034c46 41 56           PUSH       R14
+       1c0034c48 41 57           PUSH       R15
+       1c0034c4a 48 81 ec        SUB        RSP,0x260
+                 60 02 00 00
+       1c0034c51 48 8b 05        MOV        RAX,qword ptr [DAT_1c0320fb8]                    = 00002B992DDFA232h
+                 60 c3 2e 00
+       1c0034c58 48 33 c4        XOR        RAX,RSP
+       1c0034c5b 48 89 84        MOV        qword ptr [RSP + local_28],RAX
+                 24 50 02 
+                 00 00
+       1c0034c63 65 48 8b        MOV        RAX,qword ptr GS:[0x30]
+                 04 25 30 
+                 00 00 00
+       1c0034c6c 48 89 84        MOV        qword ptr [RSP + local_198],RAX
+                 24 e0 00 
+                 00 00
+       1c0034c74 c7 84 24        MOV        dword ptr [RSP + local_1b4],0x1
+                 c4 00 00 
+                 00 01 00 
+   --> 1c0034c7f 8b 88 40        MOV        ECX,dword ptr [RAX + 0x1740]
+                 17 00 00
+       1c0034c85 89 8c 24        MOV        dword ptr [RSP + local_1dc],ECX
+                 9c 00 00 00
+       1c0034c8c 4c 8d a8        LEA        R13,[RAX + 0x300]
+                 00 03 00 00
+       1c0034c93 4c 89 ac        MOV        qword ptr [RSP + local_1e8],R13
+                 24 90 00 
+                 00 00
+       1c0034c9b c7 80 40        MOV        dword ptr [RAX + 0x1740],0x0
+                 17 00 00 
+                 00 00 00 00
+       1c0034ca5 81 a0 f0        AND        dword ptr [RAX + 0x2f0],0x80000000
+                 02 00 00 
+                 00 00 00 80
+       1c0034caf 8b b8 f0        MOV        EDI,dword ptr [RAX + 0x2f0]
+                 02 00 00
+       1c0034cb5 eb 05           JMP        LAB_1c0034cbc
+       1c0034cb7 e9 63 01        JMP        LAB_1c0034e1f
+                 00 00
+
+`````
+
+
+> The TIB is also known as Thread Environment Block.
+> In a Win32 environment, the FS register always points at the TEB, in a Win64 environment, it's the GS register.
+> Programattically, the TEB can be found with NtCurrentTeb().
+> Struct members
+> The TIB apparently corresponds to the NT_TIB struct (winnt.h)
+> The first element is a pointer to (the thread's) EXCEPTION_REGISTRATION struct.
+> The second and third elements contain the high and low addresses of the stack.
+> etc.
+> Offset 0x18 (Win32) of the TIB points to the linear address of itself:
+> 
+> mov eax, fs:[0x18]
+> 
+> In Win64, this is gs:[0x30].
+> NtosKrnl.exe (ntddk.h, NtosKrnl.lib) provides the function PsGetCurrentThreadTeb() that returns a pointer to the TIB.
+> Offset 0x30 (Win32) points to the linear address of the PEB. In Win64, this is gs:[0x60].
+
+
+
+-------------------------------------------------------
+
+case 55
+
+useless
+
+`````shell
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1091
+   eip 0xfffff961a3a55afd, user_address 0x7592a7e610, user_data 0x2c, modrm 0x2, pc 0xfffff961a3a55b2e
+   eip 0xfffff961a3a55afd, user_address 0x7592a7e610, user_data 0x2c, modrm 0x7, pc 0xfffff961a3a55b38
+`````
+
+`````shell
+                             LAB_1c0055b1d                                   XREF[1]:     1c0055b15(j)  
+       1c0055b1d 48 8b 05        MOV        RAX,qword ptr [->WIN32KBASE.SYS::W32UserProbeA   = 00357e22
+                 d4 ba 2f 00
+       1c0055b24 48 8b d7        MOV        RDX,RDI
+       1c0055b27 48 3b 38        CMP        RDI,qword ptr [RAX]
+       1c0055b2a 48 0f 43 10     CMOVNC     RDX,qword ptr [RAX]
+   --> 1c0055b2e 8a 02           MOV        AL,byte ptr [RDX]
+       1c0055b30 88 02           MOV        byte ptr [RDX],AL
+       1c0055b32 8a 42 2b        MOV        AL,byte ptr [RDX + 0x2b]
+       1c0055b35 88 42 2b        MOV        byte ptr [RDX + 0x2b],AL
+   --> 1c0055b38 8b 07           MOV        EAX,dword ptr [RDI]
+       1c0055b3a 89 44 24 68     MOV        dword ptr [RSP + local_50[0]],EAX
+       1c0055b3e eb 07           JMP        LAB_1c0055b47
+       1c0055b40 33 db           XOR        EBX,EBX
+       1c0055b42 e9 e7 00        JMP        LAB_1c0055c2e
+                 00 00
+
+`````
+---------------------------------------------------------------------
+
+case 56
+
+`````shell
+DOUBLE FETCH:   cr3 0x12cd41000, syscall 0x1a9
+   eip 0xfffff80179c53d41, user_address 0x16934f7a128, user_data 0x0, modrm 0x2, pc 0xfffff80179c53d57
+   eip 0xfffff80179c53d41, user_address 0x16934f7a128, user_data 0x169350c6020, modrm 0x2, pc 0xfffff80179c53d57
+`````
+
+`````shell
+                             LAB_1403c9d13                                   XREF[1]:     1403c9d03(j)  
+       1403c9d13 44 8b 43 30     MOV        R8D,dword ptr [RBX + 0x30]
+       1403c9d17 4c 8d 4c        LEA        R9=>local_70,[RSP + 0x28]
+                 24 28
+       1403c9d1c 48 8b d7        MOV        RDX,RDI
+       1403c9d1f e8 14 01        CALL       FUN_1403c9e38                                    undefined FUN_1403c9e38()
+                 00 00
+       1403c9d24 89 44 24 20     MOV        dword ptr [RSP + local_78],EAX
+       1403c9d28 85 c0           TEST       EAX,EAX
+       1403c9d2a 0f 88 a6        JS         LAB_1403c9dd6
+                 00 00 00
+       1403c9d30 44 8b 43 30     MOV        R8D,dword ptr [RBX + 0x30]
+       1403c9d34 48 8b d3        MOV        RDX,RBX
+       1403c9d37 48 8b 4c        MOV        RCX,qword ptr [RSP + local_70]
+                 24 28
+       1403c9d3c e8 3f 3a        CALL       RtlCopyMemory                                    void * RtlCopyMemory(void * _Dst
+                 d8 ff
+       1403c9d41 f6 47 5a 10     TEST       byte ptr [RDI + 0x5a],0x10
+       1403c9d45 75 25           JNZ        LAB_1403c9d6c
+       1403c9d47 4c 8b 44        MOV        R8,qword ptr [RSP + local_70]
+                 24 28
+       1403c9d4c 49 83 c0 20     ADD        R8,0x20
+       1403c9d50 48 8b 57 48     MOV        RDX,qword ptr [RDI + 0x48]
+       1403c9d54 0f 0d 0a        PREFETCHW  byte ptr [RDX]
+   --> 1403c9d57 48 8b 02        MOV        RAX,qword ptr [RDX]
+                             LAB_1403c9d5a                                   XREF[1]:     1403c9d68(j)  
+       1403c9d5a 49 89 00        MOV        qword ptr [R8],RAX
+       1403c9d5d 48 8b c8        MOV        RCX,RAX
+       1403c9d60 f0              LOCK
+       1403c9d61 4c 0f b1 02     CMPXCHG    qword ptr [RDX],R8
+       1403c9d65 48 3b c1        CMP        RAX,RCX
+       1403c9d68 75 f0           JNZ        LAB_1403c9d5a
+       1403c9d6a eb 24           JMP        LAB_1403c9d90
+
+`````
+
+
+
+------------------------------------------------------
+
+case 57
+
+0xfffff801799d7940 is from RtlCopyMemory(), and 0xfffff80179c82010 is from RtlEqualUnicodeString().
+
+Is it possible to let the unicode string equal to something string in order to bypass authentication?
+
+`````shell
+DOUBLE FETCH:   cr3 0x10d414000, syscall 0x1a9
+   eip 0xfffff801799d7780, user_address 0x163d11228a0, user_data 0x4d005000420055, modrm 0x44, pc 0xfffff801799d7940
+   eip 0xfffff80179c82009, user_address 0x163d11228a0, user_data 0x4d005000420055, modrm 0xa, pc 0xfffff80179c82010
+`````
+
+`````shell
+                             LAB_14014d940                                   XREF[1]:     14014d94f(j)  
+   --> 14014d940 48 8b 44        MOV        RAX,qword ptr [_Src + _Dst*0x1 + -0x8]
+                 0a f8
+       14014d945 48 83 e9 08     SUB        _Dst,0x8
+       14014d949 49 ff c9        DEC        R9
+       14014d94c 48 89 01        MOV        qword ptr [_Dst],RAX
+       14014d94f 75 ef           JNZ        LAB_14014d940
+
+                             LAB_14014d951                                   XREF[1]:     14014d93e(j)  
+       14014d951 49 83 e0 07     AND        _Size,0x7
+       14014d955 74 17           JZ         LAB_14014d96e
+       14014d957 66 0f 1f        NOP        word ptr [RAX + RAX*0x1]
+                 84 00 00 
+                 00 00 00
+                             LAB_14014d960                                   XREF[1]:     14014d96c(j)  
+       14014d960 8a 44 0a ff     MOV        AL,byte ptr [_Src + _Dst*0x1 + -0x1]
+       14014d964 48 ff c9        DEC        _Dst
+       14014d967 49 ff c8        DEC        _Size
+       14014d96a 88 01           MOV        byte ptr [_Dst],AL
+       14014d96c 75 f2           JNZ        LAB_14014d960
+
+`````
+
+`````shell
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined RtlEqualUnicodeString()
+             undefined         AL:1           <RETURN>
+             undefined8        Stack[-0x8]:8  local_8                                 XREF[4]:     1403f8032(*), 
+                                                                                                   1403f8071(*), 
+                                                                                                   1403f80b6(*), 
+                                                                                                   1403f80c1(*)  
+                             0x3f7fe0  1822  RtlEqualUnicodeString
+                             Ordinal_1822                                    XREF[103]:   Entry Point(*), 
+                             RtlEqualUnicodeString                                        FUN_14005aa20:14005aaa9(c), 
+                                                                                          FUN_14005abc0:14005abfd(c), 
+                                                                                          FUN_140215424:14021554d(c), 
+                                                                                          14026aeb4(*), 14026aec8(*), 
+                                                                                          14026aedc(*), 14026aef0(*), 
+                                                                                          14026af04(*), 1403569d4(*), 
+                                                                                          FUN_14046e2c4:14046e33f(c), 
+                                                                                          FUN_1406c4774:1406c48b9(c), 
+                                                                                          FUN_1406c4774:1406c48d4(c), 
+                                                                                          FUN_1406c6b6c:1406c6b9a(c), 
+                                                                                          FUN_1406c6b6c:1406c6bbd(c), 
+                                                                                          FUN_1406c6b6c:1406c6bdd(c), 
+                                                                                          FUN_1406c6b6c:1406c6bfd(c), 
+                                                                                          FUN_1406c6b6c:1406c6c1d(c), 
+                                                                                          FUN_1406c6b6c:1406c6c3d(c), 
+                                                                                          FUN_1406c6b6c:1406c6c68(c), [more]
+       1403f7fe0 48 83 ec 08     SUB        RSP,0x8
+       1403f7fe4 0f b7 01        MOVZX      EAX,word ptr [RCX]
+       1403f7fe7 44 0f b7 0a     MOVZX      R9D,word ptr [RDX]
+       1403f7feb 41 3b c1        CMP        EAX,R9D
+       1403f7fee 74 07           JZ         LAB_1403f7ff7
+       1403f7ff0 32 c0           XOR        AL,AL
+                             LAB_1403f7ff2                                   XREF[3]:     1403f8077(j), 1403f80bc(j), 
+                                                                                          1403f80c7(j)  
+       1403f7ff2 48 83 c4 08     ADD        RSP,0x8
+       1403f7ff6 c3              RET
+                             LAB_1403f7ff7                                   XREF[1]:     1403f7fee(j)  
+       1403f7ff7 4c 8b 49 08     MOV        R9,qword ptr [RCX + 0x8]
+       1403f7ffb 4c 8b 52 08     MOV        R10,qword ptr [RDX + 0x8]
+       1403f7fff 4e 8d 1c 08     LEA        R11,[RAX + R9*0x1]
+       1403f8003 48 83 f8 08     CMP        RAX,0x8
+       1403f8007 72 29           JC         LAB_1403f8032
+       1403f8009 0f 1f 80        NOP        dword ptr [RAX]
+                 00 00 00 00
+                             LAB_1403f8010                                   XREF[1]:     1403f8030(j)  
+   --> 1403f8010 49 8b 0a        MOV        RCX,qword ptr [R10]
+       1403f8013 49 39 09        CMP        qword ptr [R9],RCX
+       1403f8016 75 1a           JNZ        LAB_1403f8032
+       1403f8018 83 e8 08        SUB        EAX,0x8
+       1403f801b 0f 84 ab        JZ         LAB_1403f80cc
+                 00 00 00
+       1403f8021 49 83 c1 08     ADD        R9,0x8
+       1403f8025 48 63 c8        MOVSXD     RCX,EAX
+       1403f8028 49 83 c2 08     ADD        R10,0x8
+       1403f802c 48 83 f9 08     CMP        RCX,0x8
+       1403f8030 73 de           JNC        LAB_1403f8010
+
+`````
+
+---------------------------------------------------------------------
+
+
+case 58
+
+
+0xfffff801799d7960 is from RtlCopyMemory
+
+need to figure out which function is 0xfffff80179d16b03 from.
+
+`````shell
+DOUBLE FETCH:   cr3 0x12279c000, syscall 0x127
+   eip 0xfffff80179d16ad9, user_address 0x3dd207e710, user_data 0x1, modrm 0x1, pc 0xfffff80179d16b03
+   eip 0xfffff80179d16ad9, user_address 0x3dd207e710, user_data 0x1, modrm 0x3f, pc 0xfffff80179d16b05
+
+DOUBLE FETCH:   cr3 0x12279c000, syscall 0x127
+   eip 0xfffff80179d16ad9, user_address 0x3dd207e710, user_data 0x1, modrm 0x1, pc 0xfffff80179d16b03
+   eip 0xfffff801799d7780, user_address 0x3dd207e710, user_data 0x1, modrm 0x44, pc 0xfffff801799d7960
+
+`````
+
+
+`````shell
+                             LAB_14048cae7                                   XREF[1]:     14048caca(j)  
+       14048cae7 41 f6 c7 03     TEST       R15B,0x3
+       14048caeb 0f 85 92        JNZ        LAB_14048cb83
+                 00 00 00
+       14048caf1 49 8b cf        MOV        RCX,R15
+       14048caf4 4c 3b 3d        CMP        R15,qword ptr [MmUserProbeAddress]               = ??
+                 05 27 ef ff
+       14048cafb 48 0f 43        CMOVNC     RCX,qword ptr [MmUserProbeAddress]               = ??
+                 0d fd 26 
+                 ef ff
+   --> 14048cb03 8a 01           MOV        AL,byte ptr [RCX]
+   --> 14048cb05 41 8b 3f        MOV        EDI,dword ptr [R15]
+       14048cb08 89 bc 24        MOV        dword ptr [RSP + 0x90],EDI
+                 90 00 00 00
+       14048cb0f 83 ff 42        CMP        EDI,0x42
+       14048cb12 73 74           JNC        LAB_14048cb88
+       14048cb14 8d 47 ff        LEA        EAX,[RDI + -0x1]
+       14048cb17 8d 0c 40        LEA        ECX,[RAX + RAX*0x2]
+       14048cb1a 8d 0c 8d        LEA        ECX,[0x14 + RCX*0x4]
+                 14 00 00 00
+       14048cb21 89 4c 24 68     MOV        dword ptr [RSP + 0x68],ECX
+       14048cb25 85 c9           TEST       ECX,ECX
+       14048cb27 74 16           JZ         LAB_14048cb3f
+       14048cb29 8b d1           MOV        EDX,ECX
+       14048cb2b 49 03 d7        ADD        RDX,R15
+       14048cb2e 48 8b 05        MOV        RAX,qword ptr [MmUserProbeAddress]               = ??
+                 cb 26 ef ff
+       14048cb35 48 3b d0        CMP        RDX,RAX
+       14048cb38 77 5e           JA         LAB_14048cb98
+       14048cb3a 49 3b d7        CMP        RDX,R15
+       14048cb3d 72 59           JC         LAB_14048cb98
+
+`````
+
+`````shell
+                             LAB_14014d940                                   XREF[1]:     14014d94f(j)  
+       14014d940 48 8b 44        MOV        RAX,qword ptr [_Src + _Dst*0x1 + -0x8]
+                 0a f8
+       14014d945 48 83 e9 08     SUB        _Dst,0x8
+       14014d949 49 ff c9        DEC        R9
+       14014d94c 48 89 01        MOV        qword ptr [_Dst],RAX
+       14014d94f 75 ef           JNZ        LAB_14014d940
+
+                             LAB_14014d951                                   XREF[1]:     14014d93e(j)  
+       14014d951 49 83 e0 07     AND        _Size,0x7
+       14014d955 74 17           JZ         LAB_14014d96e
+       14014d957 66 0f 1f        NOP        word ptr [RAX + RAX*0x1]
+                 84 00 00 
+                 00 00 00
+                             LAB_14014d960                                   XREF[1]:     14014d96c(j)  
+   --> 14014d960 8a 44 0a ff     MOV        AL,byte ptr [_Src + _Dst*0x1 + -0x1]
+       14014d964 48 ff c9        DEC        _Dst
+       14014d967 49 ff c8        DEC        _Size
+       14014d96a 88 01           MOV        byte ptr [_Dst],AL
+       14014d96c 75 f2           JNZ        LAB_14014d960
+
+`````
+
+
+---------------------------------------------------
+
+case 59
+
+
+*** need review
+
+
+0xfffff80179c9d0dc 0xfffff80179c732f7 shown in case 11.
+
+1404130dc - 1403e92f7 = 29DE5 
+0xfffff80179c9d0dc - 0xfffff80179c732f7 = 29DE5
+
+1405ed14a - 1403e92f7 = 16E53
+0xfffff80179c8a14a - 0xfffff80179c732f7 = 16E53
+
+Note: 
+
+they are not in the same syscall, 0x12 0x1d, so they are not fetching the same data. Just the code has something in common.
+
+`````shell
+DOUBLE FETCH:   cr3 0xa9774000, syscall 0x12
+   eip 0xfffff80179c9d01b, user_address 0x7fff928b1b80, user_data 0x7fff928bd660, modrm 0x49, pc 0xfffff80179c9d0dc
+   eip 0xfffff80179c73515, user_address 0x7fff928b1b80, user_data 0x7fff928bd660, modrm 0x4a, pc 0xfffff80179c732f7
+
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1d
+   eip 0xfffff80179c8a045, user_address 0x7592d7f3f0, user_data 0x7fff886fe320, modrm 0x40, pc 0xfffff80179c8a14a
+   eip 0xfffff80179c73515, user_address 0x7592d7f3f0, user_data 0x7fff886fe320, modrm 0x4a, pc 0xfffff80179c732f7
+`````
+
+`````shell
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1d
+   eip 0xfffff80179c8a045, user_address 0x7592d7f3e8, user_data 0x9a0098, modrm 0x8, pc 0xfffff80179c8a141
+   eip 0xfffff80179c73515, user_address 0x7592d7f3e8, user_data 0x9a0098, modrm 0x2, pc 0xfffff80179c732f1
+`````
+
+`````shell
+       1404130bb 48 3b f8        CMP        RDI,RAX
+       1404130be 73 74           JNC        LAB_140413134
+                             LAB_1404130c0                                   XREF[1]:     140413137(j)
+       1404130c0 0f b6 01        MOVZX      EAX,byte ptr [param_1]
+       1404130c3 48 8b 4f 10     MOV        param_1,qword ptr [RDI + 0x10]
+       1404130c7 48 8b 05        MOV        RAX,qword ptr [MmUserProbeAddress]               = ??
+                 32 c1 f6 ff
+       1404130ce 48 3b c8        CMP        param_1,RAX
+       1404130d1 73 66           JNC        LAB_140413139
+                             LAB_1404130d3                                   XREF[1]:     14041313c(j)
+       1404130d3 8b 01           MOV        EAX,dword ptr [param_1]
+       1404130d5 89 84 24        MOV        dword ptr [RSP + local_f8[0]],EAX
+                 b0 00 00 00
+   --> 1404130dc 48 8b 49 08     MOV        param_1,qword ptr [param_1 + 0x8]
+       1404130e0 48 89 8c        MOV        qword ptr [RSP + local_f8[8]],param_1
+                 24 b8 00
+                 00 00
+       1404130e8 0f 28 84        MOVAPS     XMM0,xmmword ptr [RSP + local_f8[0]]
+                 24 b0 00
+                 00 00
+       1404130f0 66 0f 7f        MOVDQA     xmmword ptr [RSP + local_158[0]],XMM0
+                 44 24 50
+
+`````
+
+`````shell
+       1403e92c5 65 48 8b        MOV        RAX,qword ptr GS:[0x188]
+                 04 25 88
+                 01 00 00
+       1403e92ce 0f b6 88        MOVZX      ECX,byte ptr [RAX + 0x232]
+                 32 02 00 00
+       1403e92d5 41 88 4b 18     MOV        byte ptr [R11 + local_res18],CL
+       1403e92d9 84 c9           TEST       CL,CL
+       1403e92db 0f 84 5d        JZ         LAB_1403e943e
+                 01 00 00
+       1403e92e1 48 8b 05        MOV        RAX,qword ptr [MmUserProbeAddress]               = ??
+                 18 5f f9 ff
+       1403e92e8 48 3b d0        CMP        RDX,RAX
+       1403e92eb 0f 83 5a        JNC        LAB_1403e944b
+                 01 00 00
+                             LAB_1403e92f1                                   XREF[1]:     1403e944e(j)
+   --x 1403e92f1 8b 02           MOV        EAX,dword ptr [RDX]
+       1403e92f3 89 44 24 40     MOV        dword ptr [RSP + local_38[0]],EAX
+   --> 1403e92f7 48 8b 4a 08     MOV        RCX,qword ptr [RDX + 0x8]
+       1403e92fb 48 89 4c        MOV        qword ptr [RSP + local_38[8]],RCX
+                 24 48
+       1403e9300 66 85 c0        TEST       AX,AX
+       1403e9303 74 28           JZ         LAB_1403e932d
+       1403e9305 f6 c1 01        TEST       CL,0x1
+       1403e9308 0f 85 45        JNZ        LAB_1403e9453
+                 01 00 00
+
+`````
+
+`````shell
+                             LAB_140400122                                   XREF[1]:     140400258(j)  
+       140400122 0f b6 01        MOVZX      EAX,byte ptr [param_1]
+       140400125 48 8b 47 10     MOV        RAX,qword ptr [RDI + 0x10]
+       140400129 48 89 84        MOV        qword ptr [RSP + local_f8],RAX
+                 24 e0 00 
+                 00 00
+       140400131 48 8b 0d        MOV        param_1,qword ptr [MmUserProbeAddress]           = ??
+                 c8 f0 f7 ff
+       140400138 48 3b c1        CMP        RAX,param_1
+       14040013b 0f 83 1c        JNC        LAB_14040025d
+                 01 00 00
+                             LAB_140400141                                   XREF[1]:     140400260(j)  
+   --x 140400141 8b 08           MOV        param_1,dword ptr [RAX]
+       140400143 89 8c 24        MOV        dword ptr [RSP + local_118[0]],param_1
+                 c0 00 00 00
+   --> 14040014a 48 8b 40 08     MOV        RAX,qword ptr [RAX + 0x8]
+       14040014e 48 89 84        MOV        qword ptr [RSP + local_118[8]],RAX
+                 24 c8 00 
+                 00 00
+       140400156 0f 28 84        MOVAPS     XMM0,xmmword ptr [RSP + local_118[0]]
+                 24 c0 00 
+                 00 00
+       14040015e 66 0f 7f        MOVDQA     xmmword ptr [RSP + local_188[0]],XMM0
+                 44 24 50
+       140400164 66 85 c9        TEST       param_1,param_1
+       140400167 74 27           JZ         LAB_140400190
+       140400169 a8 01           TEST       AL,0x1
+       14040016b 0f 85 f4        JNZ        LAB_140400265
+                 00 00 00
+       140400171 0f b7 d1        MOVZX      param_2,param_1
+       140400174 48 03 d0        ADD        param_2,RAX
+       140400177 48 8b 0d        MOV        param_1,qword ptr [MmUserProbeAddress]           = ??
+                 82 f0 f7 ff
+       14040017e 48 3b d1        CMP        param_2,param_1
+       140400181 0f 87 e3        JA         LAB_14040026a
+                 00 00 00
+       140400187 48 3b d0        CMP        param_2,RAX
+       14040018a 0f 82 da        JC         LAB_14040026a
+                 00 00 00
+
+`````
+
+------------------------------------------------------------------------
+
+
+case 60
+
+`````shell
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1d
+   eip 0xfffff80179c8a045, user_address 0x7592d7efe8, user_data 0x7592d7f3e8, modrm 0x47, pc 0xfffff80179c8a125
+   eip 0xfffff80179c73515, user_address 0x7592d7efe8, user_data 0x7592d7f3e8, modrm 0x78, pc 0xfffff80179c73108
+
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x1d
+   eip 0xfffff80179c8a045, user_address 0x7592d7efe0, user_data 0x5c, modrm 0x47, pc 0xfffff80179c8a280
+   eip 0xfffff80179c73515, user_address 0x7592d7efe0, user_data 0x5c, modrm 0x40, pc 0xfffff80179c730df
+
+`````
+
+
+`````shell
+                             LAB_1403e90d5                                   XREF[2]:     1403e9098(j), 1403e90b3(j)  
+       1403e90d5 41 83 38 30     CMP        dword ptr [param_3],0x30
+       1403e90d9 0f 85 b1        JNZ        LAB_1403e9190
+                 00 00 00
+   --x 1403e90df 49 8b 40 08     MOV        RAX,qword ptr [param_3 + 0x8]
+       1403e90e3 48 89 43 08     MOV        qword ptr [RBX + 0x8],RAX
+       1403e90e7 41 8b 40 18     MOV        EAX,dword ptr [param_3 + 0x18]
+       1403e90eb 89 44 24 48     MOV        dword ptr [RSP + local_50],EAX
+       1403e90ef 84 d2           TEST       param_2,param_2
+       1403e90f1 74 08           JZ         LAB_1403e90fb
+       1403e90f3 0f ba f0 09     BTR        EAX,0x9
+       1403e90f7 89 44 24 48     MOV        dword ptr [RSP + local_50],EAX
+
+                             LAB_1403e90fb                                   XREF[1]:     1403e90f1(j)  
+       1403e90fb a9 0d e0        TEST       EAX,0xfffee00d
+                 fe ff
+       1403e9100 0f 85 9a        JNZ        LAB_1403e91a0
+                 00 00 00
+       1403e9106 89 03           MOV        dword ptr [RBX],EAX
+   --> 1403e9108 4d 8b 78 10     MOV        R15,qword ptr [param_3 + 0x10]
+       1403e910c 4c 89 7c        MOV        qword ptr [RSP + local_48],R15
+                 24 50
+       1403e9111 49 8b 48 20     MOV        param_1,qword ptr [param_3 + 0x20]
+       1403e9115 48 89 4c        MOV        qword ptr [RSP + local_40],param_1
+                 24 58
+       1403e911a 4d 8b 70 28     MOV        R14,qword ptr [param_3 + 0x28]
+       1403e911e 4c 89 74        MOV        qword ptr [RSP + local_58],R14
+                 24 40
+       1403e9123 4d 85 f6        TEST       R14,R14
+       1403e9126 0f 84 8e        JZ         LAB_1403e91ba
+                 00 00 00
+       1403e912c 40 84 f6        TEST       SIL,SIL
+       1403e912f 74 3f           JZ         LAB_1403e9170
+       1403e9131 65 48 8b        MOV        RAX,qword ptr GS:[0x188]
+                 04 25 88 
+                 01 00 00
+
+`````
+
+`````shell
+                             LAB_140400122                                   XREF[1]:     140400258(j)  
+       140400122 0f b6 01        MOVZX      EAX,byte ptr [param_1]
+   --> 140400125 48 8b 47 10     MOV        RAX,qword ptr [RDI + 0x10]
+       140400129 48 89 84        MOV        qword ptr [RSP + local_f8],RAX
+                 24 e0 00 
+                 00 00
+       140400131 48 8b 0d        MOV        param_1,qword ptr [MmUserProbeAddress]           = ??
+                 c8 f0 f7 ff
+       140400138 48 3b c1        CMP        RAX,param_1
+       14040013b 0f 83 1c        JNC        LAB_14040025d
+                 01 00 00
+                             LAB_140400141                                   XREF[1]:     140400260(j)  
+     x 140400141 8b 08           MOV        param_1,dword ptr [RAX]
+       140400143 89 8c 24        MOV        dword ptr [RSP + local_118[0]],param_1
+                 c0 00 00 00
+     x 14040014a 48 8b 40 08     MOV        RAX,qword ptr [RAX + 0x8]
+       14040014e 48 89 84        MOV        qword ptr [RSP + local_118[8]],RAX
+                 24 c8 00 
+                 00 00
+       140400156 0f 28 84        MOVAPS     XMM0,xmmword ptr [RSP + local_118[0]]
+                 24 c0 00 
+                 00 00
+       14040015e 66 0f 7f        MOVDQA     xmmword ptr [RSP + local_188[0]],XMM0
+                 44 24 50
+       140400164 66 85 c9        TEST       param_1,param_1
+       140400167 74 27           JZ         LAB_140400190
+       140400169 a8 01           TEST       AL,0x1
+       14040016b 0f 85 f4        JNZ        LAB_140400265
+                 00 00 00
+       140400171 0f b7 d1        MOVZX      param_2,param_1
+       140400174 48 03 d0        ADD        param_2,RAX
+       140400177 48 8b 0d        MOV        param_1,qword ptr [MmUserProbeAddress]           = ??
+                 82 f0 f7 ff
+       14040017e 48 3b d1        CMP        param_2,param_1
+       140400181 0f 87 e3        JA         LAB_14040026a
+                 00 00 00
+       140400187 48 3b d0        CMP        param_2,RAX
+       14040018a 0f 82 da        JC         LAB_14040026a
+                 00 00 00
+
+
+...
+
+
+                             LAB_140400280                                   XREF[1]:     14040019b(j)  
+   --x 140400280 48 8b 47 08     MOV        RAX,qword ptr [RDI + 0x8]
+       140400284 48 89 44        MOV        qword ptr [RSP + local_190],RAX
+                 24 48
+       140400289 8b 5c 24 44     MOV        EBX,dword ptr [RSP + local_194]
+       14040028d eb 4e           JMP        LAB_1404002dd
+       14040028f 8b d8           MOV        EBX,EAX
+       140400291 48 c7 44        MOV        qword ptr [RSP + 0x58],0x0
+                 24 58 00 
+                 00 00 00
+
+
+`````
+
+----------------------------------------------------------
+
+case 61
+
+can't find which module
+
+`````shell
+DOUBLE FETCH:   cr3 0x12cd41000, syscall 0x55
+   eip 0xfffff800a1e36f6a, user_address 0x1c456eb720, user_data 0x2e, modrm 0x83, pc 0xfffff800a1e36f6f
+   eip 0xfffff800a1e375e0, user_address 0x1c456eb720, user_data 0x2e, modrm 0x80, pc 0xfffff800a1e375f0
+`````
+
+----------------------------------------------------------------------
+
+
+case 62
+
+***
+
+Apparently, it is a "size".
+
+Detailed analysis is in another post.
+
+`````shell
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f328, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f328, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f338, user_data 0x2f, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f338, user_data 0x2f, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f348, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f348, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f550, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f550, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f560, user_data 0x1a, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f560, user_data 0x1a, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f530, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f530, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f540, user_data 0x1d, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f540, user_data 0x1d, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f2b0, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f2b0, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f2c0, user_data 0x21, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f2c0, user_data 0x21, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f0d0, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f0d0, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f0e0, user_data 0x5d, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f0e0, user_data 0x5d, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f0f0, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f0f0, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f2d0, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f2d0, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f2e0, user_data 0x2e, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f2e0, user_data 0x2e, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f2f0, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f2f0, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f340, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f340, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f350, user_data 0x37, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f350, user_data 0x37, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f360, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f360, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f370, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f370, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f380, user_data 0x3d, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f380, user_data 0x3d, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f390, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f390, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5d0, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f5d0, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5e0, user_data 0x49, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f5e0, user_data 0x49, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5f0, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f5f0, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f570, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f570, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f580, user_data 0x2a, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f580, user_data 0x2a, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f590, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f590, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5a0, user_data 0x53, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f5a0, user_data 0x53, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5b0, user_data 0x27, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99d12, user_address 0x7592d7f5b0, user_data 0x27, modrm 0x54, pc 0xfffff80179c99ade
+
+DOUBLE FETCH:   cr3 0x120c9d000, syscall 0x5e
+   eip 0xfffff80179c99665, user_address 0x7592d7f5c0, user_data 0x4, modrm 0x4a, pc 0xfffff80179c99706
+   eip 0xfffff80179c99c0f, user_address 0x7592d7f5c0, user_data 0x4, modrm 0x54, pc 0xfffff80179c99ade
+
+`````
+
+`````shell
+                             LAB_14040f6eb                                   XREF[1]:     14040f73b(j)  
+       14040f6eb 89 85 bc        MOV        dword ptr [RBP + local_28c],EAX
+                 00 00 00
+       14040f6f1 41 3b c7        CMP        EAX,R15D
+       14040f6f4 0f 83 b5        JNC        LAB_14040f7af
+                 00 00 00
+       14040f6fa 45 8b ce        MOV        param_4,R14D
+       14040f6fd 8b c8           MOV        param_1,EAX
+       14040f6ff 48 c1 e1 04     SHL        param_1,0x4
+       14040f703 48 03 d1        ADD        param_2,param_1
+   --> 14040f706 8b 4a 08        MOV        param_1,dword ptr [param_2 + 0x8]
+       14040f709 89 4d 7c        MOV        dword ptr [RBP + local_2cc],param_1
+       14040f70c 44 8b c1        MOV        param_3,param_1
+       14040f70f 81 f9 ff        CMP        param_1,0xffff
+                 ff 00 00
+       14040f715 77 56           JA         LAB_14040f76d
+       14040f717 45 84 d2        TEST       R10B,R10B
+       14040f71a 75 21           JNZ        LAB_14040f73d
+       14040f71c 32 c9           XOR        param_1,param_1
+
+`````
+
+
+`````shell
+                             LAB_14040fac3                                   XREF[1]:     14040fb76(j)  
+       14040fac3 89 9d b8        MOV        dword ptr [RBP + local_290],EBX
+                 00 00 00
+       14040fac9 3b 9d 98        CMP        EBX,dword ptr [RBP + param_10]
+                 03 00 00
+       14040facf 0f 83 bf        JNC        LAB_14040fb94
+                 00 00 00
+       14040fad5 8b c3           MOV        EAX,EBX
+       14040fad7 48 03 c0        ADD        RAX,RAX
+       14040fada 48 8b 4d 50     MOV        param_1,qword ptr [RBP + local_2f8]
+   --> 14040fade 8b 54 c1 08     MOV        param_2,dword ptr [param_1 + RAX*0x8 + 0x8]
+       14040fae2 4c 8b 14 c1     MOV        R10,qword ptr [param_1 + RAX*0x8]
+       14040fae6 45 84 ed        TEST       R13B,R13B
+       14040fae9 0f 85 8c        JNZ        LAB_14040fb7b
+                 00 00 00
+       14040faef 32 c9           XOR        param_1,param_1
 
 `````
