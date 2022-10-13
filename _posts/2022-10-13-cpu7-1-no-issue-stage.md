@@ -31,6 +31,34 @@ cpu7模块里本来想完全从头写，先只放cpu7_ifu和cpu7_exu，可发现
 
 先在cpu7_ifu里有cpu7_ifu_fdp和cpu7_ifu_dec，取值，解码。
 
+`````c
+
+obj/main.elf:     file format elf32-loongarch
+obj/main.elf
+
+
+Disassembly of section .text:
+
+1c000000 <_start>:
+kernel_entry():
+1c000000:       0280058c        addi.w  $r12,$r12,1(0x1)
+1c000004:       0280098c        addi.w  $r12,$r12,2(0x2)
+1c000008:       02800d8c        addi.w  $r12,$r12,3(0x3)
+1c00000c:       0280118c        addi.w  $r12,$r12,4(0x4)
+1c000010:       0280158c        addi.w  $r12,$r12,5(0x5)
+1c000014:       5c000d80        bne     $r12,$r0,12(0xc) # 1c000020 <testbranch>
+1c000018:       0280058c        addi.w  $r12,$r12,1(0x1)
+1c00001c:       0280058c        addi.w  $r12,$r12,1(0x1)
+
+1c000020 <testbranch>:
+testbranch():
+1c000020:       028041ad        addi.w  $r13,$r13,16(0x10)
+1c000024:       028041ad        addi.w  $r13,$r13,16(0x10)
+1c000028:       028041ad        addi.w  $r13,$r13,16(0x10)
+1c00002c:       02816805        addi.w  $r5,$r0,90(0x5a)
+
+`````
+
 ![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-10-13-0.png)
 
 ifu_exu_op是解码的信息，但这里面好想没有imm，看来ifu里面也要搞个cpu7_ifu_imd这样的模块把imm解码出来。
@@ -195,4 +223,6 @@ chiplab里有issue stage，是因为后面的功能模块可能被占用，不�
 `````
 
 
-chiplabdecode
+问题来了，是不是要有个信号表示这条指令到底是发给ALU的运算指令，还是发给LSU的读写指令?
+
+
