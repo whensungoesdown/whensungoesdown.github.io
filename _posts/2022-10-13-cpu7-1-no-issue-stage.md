@@ -78,6 +78,7 @@ chiplab里有issue stage，是因为后面的功能模块可能被占用，不�
 
 参考opensparc，sparc_ifu_dec解码模块会解码出不同的信号给如alu，fpu，lsu等不同功能模块的信号。
 
+
 `````verilog
    // to EXU
    output [2:0]   ifu_exu_aluop_d;// 000 - add/sub
@@ -225,4 +226,76 @@ chiplab里有issue stage，是因为后面的功能模块可能被占用，不�
 
 问题来了，是不是要有个信号表示这条指令到底是发给ALU的运算指令，还是发给LSU的读写指令?
 
+到是没看到这样的信号，但有ifu_exu_wen_d。ALU不管怎么算，最终要写回寄存器才有作用。
+
+`````verilog
+   //-------------------
+   // Writeback Controls
+   //-------------------
+   //  write to icc/xcc
+   assign ifu_exu_setcc_d = arith_inst &
+                             (op3_hi[1] & (~op3[3] | ~op3[1] & ~op3[0]) |
+                              op3_hi[2] & (~op3[3] & ~op3[2])); // tagged op
+   //  write to rd
+   assign ifu_exu_wen_d = ((~rd_00) & brsethi_inst & sethi_or_nop | // sethi
+                                 (~rd_00) & arith_inst &  // all single cycle insts
+                                 (~op3[5] & ~op3[3]    |     // alu ops
+                                              ~op3[5] & op3_lo[8]  |     // addC
+                                              ~op3[5] & op3_lo[12] |     // subC
+                                              op3_hi[2] &
+                                              (~op3[3] & ~op3_lo[4] |    // shft, tag, ~muls
+                                               // need to kill if rd to invalid reg
+                                               // all vld regs will retn in W stage
+                                               op3_lo[8] & ~rs1_0f | op3_lo[10]  | // rd
+                             op3_lo[9] | // rdhpr
+                                               op3_lo[12] | op3_lo[15])| // mov
+                                              op3_hi[3] &
+                                              (op3_lo[8]  |    // jmpl
+                                               op3_lo[12] |    // save
+                                               op3_lo[13] |    // restore
+                             op3_lo[6] & int_align_d)  // vis int align
+                                              )           |
+                                 call_inst);
+
+`````
+
+在sparc_exu_ecl里，信号给进sparc_exu_ecl_wb。
+
+`````verilog
+   input        ifu_exu_wen_d;  // instruction in d-stage writes to regfile
+   input        ifu_exu_ialign_d;// instruction is alignaddress
+
+
+   // Writeback control logic
+   sparc_exu_ecl_wb writeback(
+	...
+	.rd_m     (rd_m[4:0]),
+        .tid_m    (tid_m[1:0]),
+        .thr_m    (thr_m[3:0]),
+        .tid_w1   (tid_w1[1:0]),
+        .ifu_exu_wen_d(ifu_exu_wen_d),
+        .ifu_exu_kill_e(ifu_exu_kill_e),
+	...
+   );
+
+`````
+
+
+------------------------------------------------------
+
+还是用chiplab里的alu吧，因为loongarch里好像是有三个操作数的指令？
+
+`````verilog
+//alu0
+wire [`GRLEN-1:0] alu0_a = ex1_port0_a_lsu_fw ? ex1_lsu_fw_data : ex1_port0_a;
+wire [`GRLEN-1:0] alu0_b = ex1_port0_b_lsu_fw ? ex1_lsu_fw_data : ex1_port0_b;
+    
+alu alu0(   .a          (alu0_a),
+            .b          (alu0_b),
+            .double_word(ex1_port0_double),
+            .alu_op     (ex1_port0_op),
+            .c          (ex1_port0_c),
+            .Result     (ex1_alu0_res)
+        );
+`````
 
