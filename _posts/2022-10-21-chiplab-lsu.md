@@ -147,7 +147,61 @@ lsu_finish和res_valid关系有点复杂。。
 
 要在opensparc里看看，lsu模块空闲时用什么信号表示。
 
+看了下， 其实之前就遇到了，不是lsu向外告诉满了，而是lsu发给ifu，让ifu stall，ifq_fcl_stallreq。
 
+`````verilog
+ifu/rtl/sparc_ifu_fcl.v
+
+
+   dff_s #(2) stlreq_reg(.din ({lsu_ifu_stallreq,
+                              ffu_ifu_stallreq}),
+                       .q   ({lsu_stallreq_d1,
+                              ffu_stallreq_d1}),
+                       .clk (clk), .se(se), .si(), .so());
+
+   assign all_stallreq = ifq_fcl_stallreq | lsu_stallreq_d1 |
+                         ffu_stallreq_d1 | itlb_starv_alert;
+
+   // leave out stall from ifq which goes directly to swl
+   assign fcl_dtu_stall_bf = lsu_stallreq_d1 | ffu_stallreq_d1 |
+                             itlb_starv_alert | rst_stallreq;
+
+`````
+
+`````verilog
+ifu/rtl/sparc_ifu_fcl.v
+
+
+//--------------------------
+// Fetch Request and Stall
+//--------------------------
+                      
+   // Determine if we need can continue fetching next cycle
+//   assign fetch_bf = (~all_stallreq & ~fcl_reset & ~rst_stallreq) &
+//                   (switch_bf |
+//                    ~(part_stall_thisthr_f | fdp_fcl_swc_s2));
+//                    ~(stall_thisthr_f | fdp_fcl_swc_s2 | immu_fault_f));
+
+   assign fetch_bf = (~all_stallreq & ~fcl_reset & ~rst_stallreq) &
+                       (switch_bf |  // replace with ntr_s?
+                        ~(part_stall_thisthr_f  
+                          | fdp_fcl_swc_s2
+                          )
+                        );
+`````
+
+`````verilog
+lsu/rtl/lsu_qctl2.v
+
+// High water mark conservatively put at 16-4 = 12
+assign  dfq_stall = (dfq_vld_entries[5:0] >= 6'd4) ;
+assign  lsu_ifu_stallreq =
+        dfq_stall |  int_skid_stall | lsu_tlbop_force_swo ;
+        //dfq_stall | dfq_stall_d1 | dfq_stall_d2 | int_skid_stall | lsu_tlbop_force_swo ;
+`````
+
+
+我这里就先不要change这个信号了。
 
 
 
