@@ -144,3 +144,18 @@ Test case failed!
 
 现在没有读到结果，不知道是不是蓝框里的这几个信号给的不对。
 
+
+做下对比，下面是chiplab运行同一个testcase。
+
+![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-10-26-1.png)
+
+res_valid从来都是0，这个很奇怪，因为res_valid还是个reg，这块逻辑有点乱，所以从来没有1过。
+
+关键不同的地方就是data_recv这个信号和我之前的不同。
+
+
+![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-10-26-2.png)
+
+现在把res_valid这个dff改成一直是0，结果data_recv多高了一个cycle，结果就能读数据了。
+
+现在需要搞清res_valid，lsu_res_valid，data_recv的意义和之间的逻辑，要简化这部分。chiplab这块好像是碰巧了，要不res_valid寄存器一直是0没有意义。
