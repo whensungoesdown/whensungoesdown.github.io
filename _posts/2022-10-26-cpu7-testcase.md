@@ -159,3 +159,60 @@ res_valid从来都是0，这个很奇怪，因为res_valid还是个reg，这块�
 现在把res_valid这个dff改成一直是0，结果data_recv多高了一个cycle，结果就能读数据了。
 
 现在需要搞清res_valid，lsu_res_valid，data_recv的意义和之间的逻辑，要简化这部分。chiplab这块好像是碰巧了，要不res_valid寄存器一直是0没有意义。
+
+----------------------------------------------------------
+
+现在要把lsu和alu的结果做个选择然后写到regfile里。
+
+`````verilog
+exu/rtl/sparc_exu_byp.v
+
+   // Mux for rd_data_m between ALU and load data and ECC result and restore result
+   mux4ds #(64) rd_data_m_mux(.dout(byp_irf_rd_data_m[63:0]),
+                              .in0(full_rd_data_m[63:0]),
+                              .in1(dfill_data_g2[63:0]),
+                              .in2(ecc_byp_ecc_result_m[63:0]),
+                              .in3(restore_rd_data[63:0]),
+                              .sel0(ecl_byp_sel_pipe_m),
+                              .sel1(ecl_byp_sel_load_m),
+                              .sel2(ecl_byp_sel_ecc_m),
+                              .sel3(ecl_byp_sel_restore_m));
+`ifdef FPGA_SYN_CLK_DFF
+   dffe_s #(64) dff_rd_data_m2w(.din(byp_irf_rd_data_m[63:0]), .en (~(sehold)), .clk(clk), .q(byp_irf_rd_data_w[63:0]),
+                           .se(se), .si(), .so());
+`else
+   dff_s #(64) dff_rd_data_m2w(.din(byp_irf_rd_data_m[63:0]), .clk(sehold_clk), .q(byp_irf_rd_data_w[63:0]),
+                           .se(se), .si(), .so());
+`endif
+
+`````
+
+这种控制信号都是先从lsu alu进到ecl，再给出到byp。
+
+bypass相当于exu里的data path了。
+
+`````verilog
+exu/rtl/sparc_exu_ecl_wb.v
+
+   ///////////////////
+   // W1 port control
+   ///////////////////
+   // sehold will turn off in pipe writes and put the hold functionality through
+   // the non inst_vld part
+   // Mux between load and ALU for rd, thr, and wen
+   assign      ecl_byp_sel_load_m = ~(wb_m | wrsr_m | ecl_byp_sel_ecc_m) & ld_g2;
+   assign      ecl_byp_sel_pipe_m = (wb_m | wrsr_m) & ~ecl_byp_sel_ecc_m;
+   assign      ecl_byp_sel_restore_m = ~(wb_m | wrsr_m | ld_g2 | ecl_byp_sel_ecc_m);
+   assign      wen_no_inst_vld_m = (sehold)? ecl_irf_wen_w:
+                                             ((dfill_vld_g2 & ecl_byp_sel_load_m) |
+                                              (ecl_byp_sel_restore_m & restore_wen));
+   dff_s dff_lsu_wen_m2w(.din(wen_no_inst_vld_m), .clk(clk), .q(wen_no_inst_vld_w), .se(se), .si(),
+                       .so());
+
+`````
+
+------------------------------------------
+
+lsu_res_valid的意思，估计是resource valid，不是result valid。
+
+我这里改成result valid，表示lsu resource 可用的，以后在说，反正现在是顺序core。
