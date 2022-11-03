@@ -1,5 +1,5 @@
 ---
-title: BUG FIX: pc_f到pc_d，在指令还没fetch回来的时候就把pc_f传给pc_d了。
+title: BUG FIX pc_f到pc_d，在指令还没fetch回来的时候就把pc_f传给pc_d了。
 published: true
 ---
 
