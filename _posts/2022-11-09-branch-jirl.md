@@ -53,3 +53,66 @@ alu最开始没有设置个alu_vld这样的信号，所以现在是lsu，bru没�
 `````
 
 wen的设置好像opensparc里有例子，应该先学学。
+
+--------------------------------------------------------------
+
+用个简单的例子测试下，func_uty5_jirl。
+
+`````asm
+obj/main.elf:     file format elf32-loongarch
+obj/main.elf
+
+
+Disassembly of section .text:
+
+1c000000 <_start>:
+kernel_entry():
+1c000000:       14380006        lu12i.w $r6,114688(0x1c000)
+1c000004:       02802805        addi.w  $r5,$r0,10(0xa)
+1c000008:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c00000c:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000010:       4c0018c1        jirl    $r1,$r6,24(0x18)
+1c000014:       028200a5        addi.w  $r5,$r5,128(0x80)
+
+1c000018 <skip>:
+skip():
+1c000018:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c00001c:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000020:       028040a5        addi.w  $r5,$r5,16(0x10)
+
+`````
+
+jirl用$r6里的值+0x18，跳转到1c000018，同时$r1里存pc+4，也就是1c000014。
+
+`````shell
+Read Miss For Addr0.
+Read Miss For Addr0.
+Read Miss For Addr0.
+[0000000544ns] mycpu : pc = 1c000000,  reg = 06, val = 1c000000
+[0000000556ns] mycpu : pc = 1c000004,  reg = 05, val = 0000000a
+[0000000568ns] mycpu : pc = 1c000008,  reg = 05, val = 0000001a
+[0000000580ns] mycpu : pc = 1c00000c,  reg = 05, val = 0000002a
+[0000000592ns] mycpu : pc = 1c000010,  reg = 01, val = 1c000014
+[0000000616ns] mycpu : pc = 1c000018,  reg = 05, val = 0000003a
+[0000000628ns] mycpu : pc = 1c00001c,  reg = 05, val = 0000004a
+[0000000640ns] mycpu : pc = 1c000020,  reg = 05, val = 0000005a
+total clock is 995
+uty: test golden_trace->reg[5]: 5a
+
+Terminated at 2004 ns.
+Test exit.
+Time limit exceeded.
+total time is 332752 us
+Test case passed!
+**************************************************
+*                                                *
+*      * * *       *        * * *     * * *      *
+*      *    *     * *      *         *           *
+*      * * *     *   *      * * *     * * *      *
+*      *        * * * *          *         *     *
+*      *       *       *    * * *     * * *      *
+*                                                *
+**************************************************
+
+make[1]: Leaving directory '/home/u/prjs/cpu7/sims/verilator/run_func/tmp'
+`````
