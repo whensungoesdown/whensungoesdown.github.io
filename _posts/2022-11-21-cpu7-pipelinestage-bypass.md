@@ -15,11 +15,11 @@ published: true
 需要到_m时，下一条指令才到_d。
 
 
+`````shell
 _d   _e(alu)   _m(lsu)
-
 ^_______|         |
-
 ^_________________|
+`````
 
 
 比如下面这个例子，在2 cycle fetch一条指令的时候，func_uty1_ld。
@@ -55,11 +55,12 @@ var1():
 
 在_m _w的时候把数据送向_e。_d读完寄存器应该时间挺紧张的。
 
+
+`````shell
 _e      _m        _w
-
 ^_______|         |
-
 ^_________________|
+`````
 
 
 这样的话就算chiplab的cache fill cache line需要2个cycle（外面也是SRAM），也不用担心了，_w --> _e就行了。
@@ -164,6 +165,7 @@ wire double_read = op_preldx || op_ldx_b || op_ldx_h || op_ldx_w || op_ldx_d || 
 
 就不git上传了，把patch文件贴这算了。
 
+`````shell
 
 diff --git a/IP/myCPU/cpu7.v b/IP/myCPU/cpu7.v
 index 8a14d5c..b7265d6 100644
@@ -393,3 +395,5 @@ index 55f36dc..30083d2 100755
          my_program)
              RUN_FUNC=n 
              RUN_C=y
+
+`````
