@@ -161,6 +161,46 @@ wire double_read = op_preldx || op_ldx_b || op_ldx_h || op_ldx_w || op_ldx_d || 
 
 ------------------------------------------------------------------
 
+搞了个func_uty7_beq_testbyp1cycle_obj，测试下cache一个cycle一条指令的时候byp是否正常。
+
+`````asm
+obj/main.elf:     file format elf32-loongarch
+obj/main.elf
+
+
+Disassembly of section .text:
+
+1c000000 <_start>:
+kernel_entry():
+1c000000:       02800803        addi.w  $r3,$r0,2(0x2)
+1c000004:       02800004        addi.w  $r4,$r0,0
+
+1c000008 <again>:
+again():
+1c000008:       02800484        addi.w  $r4,$r4,1(0x1)
+1c00000c:       02802805        addi.w  $r5,$r0,10(0xa)
+1c000010:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000014:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000018:       0280a406        addi.w  $r6,$r0,41(0x29)
+1c00001c:       028004c6        addi.w  $r6,$r6,1(0x1)
+1c000020:       580008c5        beq     $r6,$r5,8(0x8) # 1c000028 <skip>
+1c000024:       028200a5        addi.w  $r5,$r5,128(0x80)
+
+1c000028 <skip>:
+skip():
+1c000028:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c00002c:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000030:       028040a5        addi.w  $r5,$r5,16(0x10)
+1c000034:       5fffd464        bne     $r3,$r4,-44(0x3ffd4) # 1c000008 <again>
+
+`````
+
+1c000010 1c000014这两条就应该是_m的rd bypass到_e。
+
+![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-11-21-1.png)
+
+------------------------------------------------------------------
+
 之前乱改cache和tlb，搞成1cycle一条指令，但有问题，比如下一个cache line的时候 0x20以后会出问题。
 
 就不git上传了，把patch文件贴这算了。
