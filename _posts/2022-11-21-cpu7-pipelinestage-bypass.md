@@ -96,6 +96,124 @@ _e      _m        _w
 
 `````
 
+---------------------------------------------------
+2022-12-20 add:
+
+今天在做csr寄存器bypass的时候又在想这个问题，为什么bypass _w不把结果传递给_d，毕竟_d的时候已经从寄存器读出结果了。
+
+OpenSPARC的byp就是做在_d。
+
+我想来想去也觉得不应该是_d _e位置随便选吧。
+
+应该是读regfile在哪，就应该在什么地方开始做byp。
+
+那为什么现在做在_e，只要把_m _w的数据前递就行了呢？
+
+特意做了个func_uty13_testbyp1cycle来测试下。
+
+`````asm
+1c000000 <_start>:
+kernel_entry():
+1c000000:       02800403        addi.w  $r3,$r0,1(0x1)
+1c000004:       02800004        addi.w  $r4,$r0,0
+
+1c000008 <again>:
+again():
+1c000008:       02800484        addi.w  $r4,$r4,1(0x1)
+
+1c00000c:       02802805        addi.w  $r5,$r0,10(0xa)
+1c000010:       02800000        addi.w  $r0,$r0,0
+1c000014:       02800000        addi.w  $r0,$r0,0
+1c000018:       028140a5        addi.w  $r5,$r5,80(0x50)
+
+1c00001c:       02800000        addi.w  $r0,$r0,0
+1c000020:       02800000        addi.w  $r0,$r0,0
+1c000024:       5fffe464        bne     $r3,$r4,-28(0x3ffe4) # 1c000008 <again>
+
+`````
+中间r5的两次addi.w，中间隔着2个nop，结果也是正确的。
+
+现在找到的原因是cpu7里用的是chiplab的regfile。
+
+还没有搞清楚这个regfile生成出来的是latch还是dflop。
+
+`````verilog
+ 78   // process write                                                                                                                            
+ 79         always @(posedge clk) begin                                                                                                           
+ 80                 // if(rst) begin                                                                                                              
+ 81                 //      regs[31] <= 32'd0;                                                                                                    
+ 82                                                                                                                                               
+ 83                 // end                                                                                                                        
+ 84                 // else begin                                                                                                                 
+ 85                         case({wen1_input,wen2_input})                                                                                         
+ 86                                         2'b11:begin                                                                                           
+ 87                                            regs[waddr1] <= wdata1;                                                                            
+ 88                                            regs[waddr2] <= wdata2;                                                                            
+ 89                                            end                                                                                                
+ 90                                         2'b10:regs[waddr1] <= wdata1;                                                                         
+ 91                                         2'b01:regs[waddr2] <= wdata2;                                                                         
+ 92                                         default:        ;                                                                                     
+ 93                         endcase                                                                                                               
+ 94                 // end                                                                                                                        
+ 95         end
+`````
+
+不过先看下上面func_uty13_testbyp1cycle测试的例子。
+
+
+![screenshot2](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-12-20-0.png)
+
+可以看到rd_data_w的数据0xa，已经写进去了，并且irf_ecl_rs1_data_d，也就是nop nop后面的addi指令也已经从寄存器里读出来了。
+
+本来以为rd_data_w的数据要在下一个rising edge写进寄存器，那时候_d才能读出来，现在看来不是。
+
+不过这个是always @(posedge clk) 感觉就是和dff是又一样的啊。
+
+原来是里面做了read port forwarding。
+
+`````verilog
+ 32   // read after write (RAW)                                                                                                                   
+ 33         wire r1_1_w1_raw =      wen1 && (raddr0_0 == waddr1);                                                                                 
+ 34         wire r1_2_w1_raw =  wen1 && (raddr0_1 == waddr1);                                                                                     
+ 35         wire r1_1_w2_raw =      wen2 && (raddr0_0 == waddr2);                                                                                 
+ 36         wire r1_2_w2_raw =  wen2 && (raddr0_1 == waddr2);                                                                                     
+ 37                                                                                                                                               
+ 38         wire r2_1_w1_raw =      wen1 && (raddr1_0 == waddr1);                                                                                 
+ 39         wire r2_2_w1_raw =  wen1 && (raddr1_1 == waddr1);                                                                                     
+ 40         wire r2_1_w2_raw =      wen2 && (raddr1_0 == waddr2);                                                                                 
+ 41         wire r2_2_w2_raw =  wen2 && (raddr1_1 == waddr2);                                                                                     
+ 42                                                                                                                                               
+ 43         wire r3_1_w1_raw =      wen1 && (raddr2_0 == waddr1);                                                                                 
+ 44         wire r3_2_w1_raw =  wen1 && (raddr2_1 == waddr1);                                                                                     
+ 45         wire r3_1_w2_raw =      wen2 && (raddr2_0 == waddr2);                                                                                 
+ 46         wire r3_2_w2_raw =  wen2 && (raddr2_1 == waddr2);                                                                                     
+ 47  
+ 48         wire r1_1_raw = r1_1_w1_raw || r1_1_w2_raw;     // read port need forwarding                                                          
+ 49         wire r1_2_raw = r1_2_w1_raw || r1_2_w2_raw;                                                                                           
+ 50         wire r2_1_raw = r2_1_w1_raw || r2_1_w2_raw;                                                                                           
+ 51         wire r2_2_raw = r2_2_w1_raw || r2_2_w2_raw;                                                                                           
+ 52         wire r3_1_raw = r3_1_w1_raw || r3_1_w2_raw;                                                                                           
+ 53         wire r3_2_raw = r3_2_w1_raw || r3_2_w2_raw;                                                                                           
+ 54                                                                                                                                               
+ 55         wire [`GRLEN-1:0]       r1_1_raw_data = r1_1_w2_raw ? wdata2 : wdata1;  // forwarding data                                            
+ 56         wire [`GRLEN-1:0]       r1_2_raw_data = r1_2_w2_raw ? wdata2 : wdata1;                                                                
+ 57         wire [`GRLEN-1:0]       r2_1_raw_data = r2_1_w2_raw ? wdata2 : wdata1;                                                                
+ 58         wire [`GRLEN-1:0]       r2_2_raw_data = r2_2_w2_raw ? wdata2 : wdata1;                                                                
+ 59         wire [`GRLEN-1:0]       r3_1_raw_data = r3_1_w2_raw ? wdata2 : wdata1;                                                                
+ 60         wire [`GRLEN-1:0]       r3_2_raw_data = r3_2_w2_raw ? wdata2 : wdata1; 
+`````
+
+原因在这，也就是说，这个图上的_w时刻，数据还没有写进reg。
+
+![screenshot3](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2022-12-20-1.png)
+
+果然是这样，r5的值在下一个cycle才写进去。
+
+那这么说，现在实现的cpu7_csr里，读csr寄存器在_d，写csr寄存器在_m，byp要把_e _m的都forwarding到_d。
+
+**以后做byp，要regfile读在那个阶段，数据就要前递到哪个阶段。当然还要看refile的实现。**
+---------------------------------------------------
+
 现在又有一个想法，让lsu里计算地址也复用ALU，有个好处，就是data bypass只需要处理给alu的参数了。
 
 否则ld指令需要的参数也要考虑data bypass。
