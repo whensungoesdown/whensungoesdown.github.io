@@ -313,3 +313,7 @@ axi_wrap_ram和confreg都是axi的接口。
 axi_wrap_ram是个xilinx的ip。
 
 confreg是有实现的，虽然不是想找的axi_sram_bridge，但这个里面应该可以学到东西。
+
+还要是CPU_CDE_AXI/mycpu_axi_verify/rtl/CONFREG/confreg.v，这个里面的confreg才是axi接口的。
+
+
