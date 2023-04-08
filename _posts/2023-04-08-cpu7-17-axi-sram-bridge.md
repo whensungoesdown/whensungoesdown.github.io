@@ -327,6 +327,10 @@ make: *** [Makefile:50: compile] Error 2
 
 ![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-04-08-1.png)
 
-还是以前那样，数据比rvalid慢半个cycle。
+还是以前那样，数据比rvalid慢半个cycle。而且rready在等到rvalid后也没有变0，rready是一直拉高的。
+
+rready不下来，这次的传输就一直结束不了，导致只有这一次取指。
 
 看来还是ram模拟的部分出问题了。
+
+刚注意到发过来的ar请求是带burst的，arid是7，我也没处理。
