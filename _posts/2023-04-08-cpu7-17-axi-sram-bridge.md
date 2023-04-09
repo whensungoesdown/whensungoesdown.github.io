@@ -565,4 +565,22 @@ Read Miss For Addr18.
 但是这个rready还是没见低下去。
 
 
+-------------------
 
+后来后来我又想了下，rready是不需要在rvalid high后必须拉低的，表示仍然可以在下一个cycle接收数据。
+
+我之前实现的方式是rready在rvalid一起high后，rready拉低至少一个cycle。现在看来，如果是burst，rvalid可以好几个cycle都是high，rready一直high也没问题。
+
+---------------------------------------------------------
+
+chiplab的代码把soc_axi_sram_bridge改回去，去掉了axi_apb_bridge和CONFREG，以及AXI_RAND，AXI_SLAVE_MUX等模块。现在是只有cpu和soc_axi_sram_bridge直接到sram。
+
+代码能编译，测试例子也全都跑通了，说明取指啥的都没问题，应该和之前一样。
+
+但我看了下波形，发现soc_axi_sram的实现还是有问题，还是rdata比rvalid晚半个cycle。
+
+只是说这个问题在verilator模拟的时候被错误的模拟了，所以读的值是对的，但这个协议从波形上看是有问题的。
+
+![screenshot4](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-04-08-4.png)
+
+黄框这里上升沿rvalid rready都是1，这里就应该rdata取值了，而这时的rdata是0，真正的值在下降沿才到，所以这样肯定是有问题的。
