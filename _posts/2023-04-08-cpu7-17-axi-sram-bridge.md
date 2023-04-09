@@ -571,6 +571,10 @@ Read Miss For Addr18.
 
 我之前实现的方式是rready在rvalid一起high后，rready拉低至少一个cycle。现在看来，如果是burst，rvalid可以好几个cycle都是high，rready一直high也没问题。
 
+刚才看了下，rready是master那便负责拉低，不是axi_sram_bridge这的事，测了下，testbench那不拉低rready，后续的读没问题。
+
+![screenshot5](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-04-08-5.png)
+
 ---------------------------------------------------------
 
 chiplab的代码把soc_axi_sram_bridge改回去，去掉了axi_apb_bridge和CONFREG，以及AXI_RAND，AXI_SLAVE_MUX等模块。现在是只有cpu和soc_axi_sram_bridge直接到sram。
