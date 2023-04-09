@@ -333,4 +333,236 @@ rready不下来，这次的传输就一直结束不了，导致只有这一次�
 
 看来还是ram模拟的部分出问题了。
 
+
+verilator看样子是以半个cycle为单位，每次对于top的输入有变化时都eval()。
+
+cpu7/sims/verilator/testbench/include/testbench.h
+`````c
+    void simulate(vluint64_t& main_time, int* nStatus){
+        if(!simu_quiet)fprintf(stderr,"Verilator Simulation Start.\n");
+        int emask = status_call_finish;
+        vluint8_t& clock = top->aclk;
+        vluint8_t& reset = top->aresetn;
+        long long clock_total = 0;
+        bool uart_div_set = false;
+        bool div_reinit = false;
+        int p_config;
+        unsigned int div_val_1 = 0;
+        unsigned int div_val_2 = 0;
+        unsigned int div_val_3 = 0;
+        static const int reset_valid = 0;
+        #define EVAL ((clock=!clock),main_time+=1,this->eval(main_time))
+        #define EVAL_no_clock_change (this->eval(main_time))
+		if (restore_bp_time == 0){
+        	reset = reset_valid;
+        	clock = 0;
+        	//top->enable_delay = simu_bus_delay;
+        	//top->random_seed = simu_bus_delay_random_seed;
+            //printf("random seed is %d\n", simu_bus_delay_random_seed);
+        	for(int i=0;i<10;i+=1){if(EVAL)break;}
+		}
+        clock = 0;
+        //top->enable_delay = simu_bus_delay;
+        //top->random_seed = simu_bus_delay_random_seed;
+        if(!EVAL){
+            reset = !reset_valid;
+            emask = 0;
+            #ifdef RAND_TEST
+            int init_error = rand64->init_all();
+            if (init_error) {
+                printf("RAND TEST INIT FAILED\n");
+                return ;
+            }
+            #endif
+            printf("Start\n");
+            while(true){
+                // Simulate until exit
+				if ((main_time <= (save_bp_time+1) && main_time >= (save_bp_time-1)) && (break_once == 0)) {
+					if (main_time != save_bp_time) {
+						printf("Warning: real break point main time is %ld\n", main_time);
+					}
+					ram->breakpoint_save(main_time, ram_save_bp_file);
+					save_model(main_time, top_save_bp_file);
+					printf("save break point over!\n");
+					break_once = 1;
+				}
+                emask|= ram->process(main_time);
+		// uty: test
+                //if(EVAL_no_clock_change)break;
+
+                //uart receive
+                top->uart_rx = (*uart)(top->uart_tx);
+                //uart reconfig
+                if(top->uart_enab && top->uart_rw) {
+                    switch(top->uart_addr) {
+                        case 0: 
+                            if(uart_div_set == true) {
+                                div_val_1 = top->uart_datai;
+                                div_reinit = true;
+                            }
+                            break;
+                        case 1:
+                            if(uart_div_set == true) {
+                                div_val_2 = top->uart_datai << 8;
+                                div_reinit = true;
+                            }
+                            break;
+                        case 2:
+                            if(uart_div_set == true) {
+                                div_val_3 = top->uart_datai << 16;
+                                div_reinit = true;
+                            }
+                            break;
+                        case 3:
+                            if(uart_div_set == false && (top->uart_datai & 0x80) == 0x80) {
+                                uart_div_set = true;
+                            }
+                            else if(uart_div_set == true && (top->uart_datai & 0x80) == 0) {
+                                if (div_reinit == true) {
+                                    uart_config = (uart_config & 0xff000000) | ((div_val_1 + div_val_2 + div_val_3) * 16);
+                                    div_reinit = false;
+                                }
+                                uart_div_set = false;
+                            }
+                            switch (top->uart_datai & 0x30) {
+                                case 0x00: 
+                                    p_config = 0x0;
+                                    break;
+                                case 0x10:
+                                    p_config = 0x1;
+                                    break;
+                                case 0x20:
+                                    p_config = 0x3;
+                                    break;
+                                case 0x30:
+                                    p_config = 0x2;
+                                    break;
+                                default:
+                                    p_config = 0x0;
+                            }
+                            uart_config = (uart_config & 0x00ffffff) | ((3 - (top->uart_datai & 0x3)) << 28) 
+                                                                     | ((top->uart_datai & 0x4) << 25)  
+                                                                     | ((top->uart_datai & 0x8) << 23)  
+                                                                     | (p_config << 24);
+                            /*
+                            //set bit
+                            uart_config = (uart_config & 0x0fffffff) | ((3 - (top->datai & 0x3)) << 28);
+                            //set stop
+                            uart_config = (uart_config & 0xf7ffffff) | ((top->datai & 0x4) << 25);
+                            //set parity
+                            uart_config = (uart_config & 0xfbffffff) | ((top->datai & 0x8) << 23);
+                            //set fixdp and evenp
+                            uart_config = (uart_config & 0xfcffffff) | (p_config << 24);
+                            */
+                            //debug
+                            //printf("uart datai is %x\n", top->uart_datai);
+                            //printf("uart config is %x\n", uart_config);
+                            uart->setup(uart_config);
+                            break;
+                    }
+                }
+		// uty: test
+                if(EVAL)break;
+                //if(EVAL_no_clock_change)break;
+                emask|= time_limit->process(main_time);
+                #ifndef RAND_TEST
+//                emask|= golden_trace->process(main_time);
+                #endif
+                if(EVAL)break;
+                if(emask)break;
+                clock_total += 1;
+            }
+        }
+        printf("total clock is %lld\n", clock_total);
+
+	// uty: test
+//	printf ("uty: test golden_trace->reg[5]: %llx\n", golden_trace->reg[5]);
+//
+//	if (0x5a == golden_trace->reg[5])
+//	{
+//		*nStatus = 0;
+//	}
+//	else
+//	{
+//		*nStatus = -1;
+//	}
+
+
+        EVAL;
+        #undef EVAL
+        display_exist_cause(main_time,emask);
+        close();
+    }
+`````
+
+这个代码里最不显眼的EVAL，就是这里的关键。对于soc_top来说，外界的输入变化，只有ram，uart和中断。
+
+这里不考虑uart。
+
+因为ram是模拟的，当ram_rdata从文件里读出给出来后，需要更新soc_top的状态。
+
+比如`emask|= ram->process(main_time);`以后，后面就有`if(EVAL)break;`
+
+`````c
+#define EVAL ((clock=!clock),main_time+=1,this->eval(main_time))
+`````
+
+这个宏里有clock的翻转，还有时间加1。
+
+试了下clock不翻转，时间也不加1，就直接eval()。
+
+结果确实可以把延后半个cycle的问题解决，如下图。
+
+![screenshot3](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-04-08-3.png)
+
+但同时运行时也给出了很多warning，像这种。
+
+`````shell
+Read Miss For Addr18.
+%Warning: previous dump at t=1567, requesting t=1567, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1568, requesting t=1568, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1569, requesting t=1569, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1570, requesting t=1570, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1571, requesting t=1571, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1572, requesting t=1572, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1573, requesting t=1573, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1574, requesting t=1574, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1575, requesting t=1575, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1576, requesting t=1576, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1577, requesting t=1577, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1578, requesting t=1578, dump call ignored
+Read Miss For Addr18.
+%Warning: previous dump at t=1579, requesting t=1579, dump call ignored
+
+`````
+感觉要搞这个，还得把verilator搞清楚，先得保证测试框架是正确的，还得确定出chiplab里l1cache的axi master也没问题，最终才能验证我写的axi_sram_bridge中的问题。
+
+并且注意到chiplab里发出的axi请求是带burst的，而现在我还没搞burst。
+
+做这个axi_sram_bridge目的是为做l1 cache做准备，现在感觉搞复杂了。
+
+还不如用modelsim做验证，重写之前的测试例子。
+
+------------------------------------------------------------------------
 刚注意到发过来的ar请求是带burst的，arid是7，我也没处理。
+
+
+这ram_rdata晚半个cycle的问题，在原来的soc_axi_sram_bridge里，它的ram_rdata是在收到arvalid后，间隔1个cycle后，才给出的rdata和rvalid。也就是说读ram要2个cycle，但这时rdata和rvalid是对齐的。
+
+![screenshot2](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-04-08-2.png)
+
+但是这个rready还是没见低下去。
+
+
+
