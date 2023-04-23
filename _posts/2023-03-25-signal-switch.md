@@ -95,8 +95,7 @@ rready和arvalid在tb里是同时给出来的。也可以让rready稍微晚一�
 解决方法就是rdata_valid | ar_enter; 这样ar_enter来了，至少能high一个cycle。
 
 `````verilog
- 128    assign rdata_valid_next = (rdata_valid | ar_enter) & (~m_rready);                                                                         
- 129    //assign rdata_valid_next = (rdata_valid | ar_enter) & (~rready);                                                                         
+ 128    assign rdata_valid_next = (rdata_valid_tmp | ar_enter) & (~m_rready);                                                                      129    //assign rdata_valid_next = (rdata_valid | ar_enter) & (~rready);                                                                         
  130                                                                                                                                              
  131    dffrl_s #(1) rdata_valid_reg (                                                                                                            
  132       .din   (rdata_valid_next),                                                                                                             
