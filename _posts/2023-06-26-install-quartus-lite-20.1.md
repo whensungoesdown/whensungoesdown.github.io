@@ -1,5 +1,5 @@
 ---
-title: 装Quartus Lite 20.1, 在Windows WSL上有问题
+title: 装Quartus Lite 20.1, 在Windows WSL
 published: true
 ---
 
@@ -84,7 +84,21 @@ $ export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4
 
 Turns out, this is a quartus issue with WSL on Windows.
 
-https://community.intel.com/t5/Intel-Quartus-Prime-Software/Quartus-failed-to-run-inside-Docker-Linux/m-p/241058
 
+
+https://community.intel.com/t5/Intel-FPGA-Software-Installation/Running-Quartus-Prime-Standard-on-WSL-crashes-in-libudev-so/m-p/1189032
+
+
+
+I don't know what happened in my case, but I did the same thing.
+
+`````shell
+$ sudo apt install libudev-dev
+
+$ export LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so
+
+`````
+
+Solved.
 
 
