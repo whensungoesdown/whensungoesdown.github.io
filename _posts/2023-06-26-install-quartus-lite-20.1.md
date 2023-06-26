@@ -95,7 +95,7 @@ I don't know what happened in my case, but I did the same thing.
 `````shell
 $ sudo apt install libudev-dev
 
-$ export LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so
+$ export LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so     <--- this is not necessary
 
 `````
 
