@@ -102,3 +102,17 @@ $ export LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so     <--- this is not necess
 Solved.
 
 
+
+---------------------------
+
+The newest version of modelsim is 20.1.1 and it still is 32-bit code.
+
+Can't run 32-bit programs on WSL Windows. Tried many things, didn't work.
+
+
+https://vhdlwhiz.com/modelsim-quartus-prime-lite-ubuntu-20-04/
+
+
+It seems to be a pain in the ass.
+
+
