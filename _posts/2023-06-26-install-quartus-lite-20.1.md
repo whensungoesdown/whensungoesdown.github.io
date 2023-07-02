@@ -116,3 +116,20 @@ https://vhdlwhiz.com/modelsim-quartus-prime-lite-ubuntu-20-04/
 It seems to be a pain in the ass.
 
 
+
+
+--------------------------------------
+
+It went smooth on a real machine with ubuntu22.04.
+
+
+`````shell
+  $ ./ModelSimSetup-20.1.1.720-linux.run 
+  $ sudo dpkg --add-architecture i386
+  $ sudo apt-get update
+  $ sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
+  $ sudo apt-get install libXext:i386
+  $ sudo apt-get install libxtst6:i386
+  $ sudo apt-get install libxft-dev:i386
+
+`````
