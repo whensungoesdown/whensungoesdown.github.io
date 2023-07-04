@@ -133,3 +133,25 @@ It went smooth on a real machine with ubuntu22.04.
   $ sudo apt-get install libxft-dev:i386
 
 `````
+
+
+-------------------------------------------
+
+晕，后来发现，windowsd的wsl是2，但是里面装的ubuntu是wsl1的。
+
+`````shell
+wsl --list --verbose
+
+  NAME            STATE           VERSION
+* Ubuntu-22.04    Running         1
+
+`````
+
+后来试了`wsl --set-version Ubuntu-22.04 2`，想把ubuntu升级到wsl2，一直不成功。
+
+最后发现，windows里没装hyper-v。
+
+装上以后就好了。
+
+现在wsl里ubuntu也能运行32bit程序了。
+
