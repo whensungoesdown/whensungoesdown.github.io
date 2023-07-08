@@ -125,3 +125,64 @@ core一直拉高data_req，直到data_data_ok为1。在core里，data_req就可�
 后面还需要考虑addr异常，align异常，request cancel的情况，所以现在接口是什么样的也定不下来。
 
 得多看代码，学学opensparc，arm都是怎样搞的。不过这些都是和cache接口，inst和data是分开的。
+
+
+
+------------------------------------------------------------------------
+
+上面的问题解决后，马上就是下一个问题。
+
+因为现在inst和data是通过同一个axi_interface读写数据，所以要注意data读回来的数据不要进入指令里。
+
+这是通过在ld指令decocde阶段就stall ifu，等stall恢复后再取指。
+
+现在的bug是，stall ifu的时间不够，看下面代码，之前用的是lsu_stall_req_next，少stall了1个cycle。
+
+
+![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-07-08-1.png)
+
+当时不太会补上cycle的缺口，又想lsu_dispatch_d来了以后马上stall ifu，所以选了lsu_stall_req_next。
+
+其实lsu_stall_req | lsu_dispatch_d就可以了。
+
+
+`````verilog
+   //
+   // lsu stall request
+   //
+
+   // lsu_dispatch_d     : _-______
+   // lsu_ecl_finish_m   : ______-_
+   //
+   // lsu_stall_req      : __-----_
+   // lsu_stall_req_next : _-----__
+   // lsu_stall_req_ful  : _------_
+   //
+
+   wire lsu_stall_req;
+   wire lsu_stall_req_next;
+
+   wire lsu_stall_req_ful;
+
+   assign lsu_stall_req_ful = lsu_stall_req | lsu_dispatch_d;
+
+   //
+   // lsu_dispatch_d is the staring signal
+   // lsu_ecl_finish_m ends it
+   //
+   assign lsu_stall_req_next =  (lsu_dispatch_d) | (lsu_stall_req & ~lsu_ecl_finish_m);
+
+   dffr_s #(1) lsu_stall_req_reg (
+      .din (lsu_stall_req_next),
+      .clk (clk),
+      .q   (lsu_stall_req),
+      .se(), .si(), .so(), .rst (~resetn));
+
+`````
+
+![screenshot2](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2023-07-08-2.png)
+
+但这里不能用 `assign lsu_stall_req_ful = lsu_stall_req | lsu_ecl_finish_m`，因为lsu_ecl_finish_m的原因，在reset后是x，所以导致后面取值都出问题了。
+这个问题可以通过找到lsu_ecl_finish_m是x的原因来解决，但我没试。
+
+
