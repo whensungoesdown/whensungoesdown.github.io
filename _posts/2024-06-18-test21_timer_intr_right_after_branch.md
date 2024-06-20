@@ -151,3 +151,69 @@ era记录的是pc_f，本打算通过era记录跳转地址寄存器里的值来�
 
 power里是只要写一种目的寄存器就会被解码成一个iop。比如一条指令里既写通用寄存器GPR又设置标志寄存器CR，那这条指令应该是被分成两个iop。还不确定，感觉是这样。
 
+
+
+-----------------------------------------------------------------------------------------------
+
+刚才又看代码，原来era里存的是exu_ifu_pc_e。完全不记得当时自己当时怎么想的了。
+
+选pc_e有个好处，正好能解决上面的bug，就是一条指令只有到_e的时候才能确定是要执行的。因为进入到pc_f，pc_d的指令都可能被pc_e的branch指令给取消。
+
+但是问题有两个。
+
+一是_e还没有实现flash。不flash的话，这条指令在ertn后会被重新执行。
+
+二是如果进入到_e的是ld，sw，csrrw这样的会stall fetch的指令，怎样取消。
+
+`````verilog
+   assign ifu_pcbf_sel_old_bf_l = ((inst_valid_f || reset || br_taken || exu_ifu_ertn_e) & (~exu_ifu_stall_req)) | exu_ifu_except; // exception need ifu to fetch instruction from eentry
+
+...
+
+   assign fdp_dec_valid = inst_valid_f & ~exu_ifu_stall_req & ~br_taken & ~exu_ifu_except & ~exu_ifu_ertn_e; // pc_f shoudl not be passed to pc_d if a branch is taken at _e.
+
+...
+
+   wire pc_f2d_en = fdp_dec_valid;
+
+   dffe_s #(`GRLEN) pc_f2d_reg (
+      .din (pc_f),
+      .clk (clock),
+      .q   (pc_d),
+      .en  (pc_f2d_en),
+      .se(), .si(), .so());
+
+`````
+
+pc_bf保持不变，进来的pc_f不会进到pc_d，因为fdp_dev_valid是0。
+
+
+--------------------------------------------------------------
+
+
+era直接取pc_e还有第三个问题。
+
+如果解码的指令是个illegal指令，或者在取值的时候cache出错需要处理（还不清楚会是什么情况），这个exception需要跟着这条指令走，而不是直接跳eentry。
+
+ale，也就是address misalign，也应该是在_e发生的，在这里算出地址。
+
+所以给每条指令都设置个exception，exccode应该是干这个用的。龙芯chiplab里有，但当时没搞明白怎么用。
+
+`````verilog
+   input  wire                         fdp_dec_exception,
+   input  wire [5 :0]                  fdp_dec_exccode,
+`````
+
+
+如果是地址不存在呢？这个exception要在_m的时候才会知道。这种异常怎么处理？
+
+是不是要等到指令最后走到_w的时候才处理？如果是ale，就不能等到最后处理了，因为这样的请求不能发出去。这个好解决，ale的话让指令跟着流到_w，但不真的发出访问内存请求。
+
+
+
+如果在_w处理exception，（int中断也是一种exception），到是可以把前面的操作全部都不写寄存器，但sw指令写内存可是已经写了。
+
+----------------------------------------------------------
+
+
+似乎要调研下，在什么时候处理exception。
