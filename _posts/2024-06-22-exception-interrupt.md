@@ -54,6 +54,9 @@ interrupt可以算做是exception的一种，在loogarch里interrupt是exception
 
 比如红框里的1c000040，也就是beq指令，后面进到了pc_e，但由于上两个cycle的kill_d对应的是这条指令，所以后面划红线的ecl_bru_valid_e没有置1，这条指令没有起作用。
 
+ertn返回的时候，从1c00003c重新执行。
+
+![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2024-06-22-1.png)
 
 `````assembly
 Disassembly of section .text:
