@@ -55,7 +55,9 @@ published: true
 
 后来发现这样写更好些，`wire biu_ext_ar_valid_in = (biu_ext_ar_valid & ~ext_biu_ar_ready) | arb_rd_val;`
 
-道理是一样的，但开始和结束信号一起到的时候也没问题。以后这种控制信号，都改成下面这样些了。
+道理是一样的，但开始和结束信号一起到的时候也没问题。以后这种控制信号，都改成下面这样写了。
+
+当看到这种不谋而和的时候，还是很开心的。即便原来是always的风格，遇到这种valid控制信号的情况，也改成dff实例加这种写法了.
 
 
 `````verilog
