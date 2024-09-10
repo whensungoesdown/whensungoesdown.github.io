@@ -78,7 +78,7 @@ published: true
    // biu_ext_ar_valid_q   : __-____ 
 
 
-   wire biu_ext_ar_valid_in = (biu_ext_ar_valid & ~ext_biu_ar_ready) | arb_rd_val;
+   wire biu_ext_ar_valid_in = (biu_ext_ar_valid_q & ~ext_biu_ar_ready) | arb_rd_val;
    
    dffrl_s #(1) ar_valid_reg (
       .din   (biu_ext_ar_valid_in),
