@@ -13,7 +13,7 @@ module sync2r (
    input  resetn,
    input  din,
    output q
-   )；
+   );
 
    reg d1, d2;
 
