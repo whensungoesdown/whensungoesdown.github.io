@@ -1,6 +1,6 @@
 ---
 title: icache用linear address，effective address预测
-published: true
+published: false
 ---
 
 教科书里常见的icache都VIPT，virtual address index, physial tag.
