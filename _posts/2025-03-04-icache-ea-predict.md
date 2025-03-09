@@ -244,7 +244,7 @@ r_addr_in_1（端口1）是用来验证前面ieadir icache读出的data是否符
 从时钟周期上看
 
 
-###if1
+### if1
 
 `````verilog
 iffbt_ifar_inn, iffbt_if1_eadir_thread   ====>  iffea0 iffea1   
@@ -259,7 +259,7 @@ iffbt_ifar_inn, iffbt_if1_eadir_thread   ====>  iffea0 iffea1
 
 `````
 
-###if2
+### if2
 
 `````verilog
                                                                             |
@@ -275,7 +275,7 @@ iffbt_ifar_inn, iffbt_if1_eadir_thread   ====>  iffea0 iffea1
                                      
 `````
 
-###if3
+### if3
 
 `````verilog
                                          |
@@ -285,7 +285,7 @@ iffbt_ifar_inn, iffbt_if1_eadir_thread   ====>  iffea0 iffea1
                                                                                |
 `````
 
-###if4
+### if4
 
 `````verilog
                                                                                |
