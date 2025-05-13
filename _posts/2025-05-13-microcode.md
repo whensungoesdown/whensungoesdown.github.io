@@ -7,7 +7,7 @@ Trying to learn the microcode syntax.
 
 Put some data here.
 
-
+````shell
 u@uu:~/prjs/lib-micro/build$ ./ms_match_n_patch_read
 idx p src    dst
 00: 0 0x0000  0x0000
@@ -43,10 +43,11 @@ idx p src    dst
 30: 0 0x0000  0x0000
 31: 0 0x0000  0x0000
 
-
+`````
 
 ---------------------------------------
 
+`````shell
 
 0x018000f0
 up0  : 0x0
@@ -84,3 +85,4 @@ up2  : 0x2
 sync : 0x1
 crc  : 0x0
 
+`````
