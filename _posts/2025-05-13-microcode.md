@@ -86,3 +86,52 @@ sync : 0x1
 crc  : 0x0
 
 `````
+
+-----------------------------------------
+
+Now the basic prototype works.
+
+The problems are the followings.
+
+The CPU already has many microcode patches, as listed above.
+
+In total 32 match and patch entries, 29 of them are taken.
+
+And the very limited microcode ram, range from 0x7C00 to 0x7e00, is also full.
+
+There was no microcode patch from linux (or may be just one, saw it through dmesg | grep microcode). I added linux kernel command line option "dis_ucode_ldr" to disable loading microcode update. But still, the match and patch entries were not less. 
+
+So, maybe the microcode updates are from the bios, it is the coreboot in this case. I also disabled microcode updates in coreboot, but have not tried that image yet. Hope it gives more space.
+
+Now I am working on this coreboot image, trying to get some space.
+
+I tried to reset all the match and patch entries to 0, so that it is as to be no patch applied and the ram space will be all available. But when I did this, the system is freezed. I guess there may be some important patch that the CPU can not run without it.
+
+After serveral attemps, cleaning the first 16 entries seems ok. And it squeezes some space in ram.
+
+(If I only clean the first 5 entries, space from 7c00 to 7c10 is still in use by some of the rest patch entries.)
+
+Here is the steps to setup.
+
+1. wrmsr to 0x1e6 with 0x200 (bit 9).
+
+2. lib-micro.bak/build.bak/cmps_static_do_fix_IN_patch
+
+3. lib-micro/build.bak/cmps_static_clean_first_16
+
+4. lib-micro/build/cmps_static
+
+
+The code is simple. At the beginning of cmps' microcode routine, check the memory content that rdi points to, fetching the first 64-bit data. If it matches certain pattern, in this case, 0x0000000041424142, returns z flag indicating the two strings in comparision are equal.
+
+`````c
+{SUBR_DSZ64_DRR(TMP10, TMP10, TMP10), GENARITHFLAGS_IR(0x0000003f, TMP10), SFENCE, 0x0b0000f2} // SEQW UEND0
+`````
+
+The SUB uop clears TMP10 register and set the z flag that associated with TMP10. Only doing the arithemic operation so that the z flag can be generated to the architecture EFLAGS register by the following uop `GENARITHFLAGS_IR(0x0000003f, TMP10)`.
+
+Why 0x0000003f? Do not know yet.
+
+Also not sure if the SFENCE is a must, copied that from the actual cmps microcode routine. So is 0x0b0000f2, which is a END_SEQWORD with up2 points to SFENCE with sync type being WAIT.
+
+
