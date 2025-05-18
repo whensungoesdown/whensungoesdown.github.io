@@ -12,9 +12,9 @@ Coreboot loads SeaBIOS as the payload firmware and SeaBIOS works at the legacy m
 
 The firmwire comes with upsquared pro board is a UEFI one, but it does not support legacy mode boot.
 
-So, I can not install Windows and make it use MBR partition. 
+So, I can not install Windows along with MBR partition. 
 
-Although I can install ubuntu 20.04 with MBR partition. But with some extra work, as following.
+Although I can install ubuntu 20.04 with MBR partition, but with some extra work, as following.
 
 1. Boot Ubuntu USB installer through UEFI firmware.
 
@@ -23,7 +23,7 @@ Although I can install ubuntu 20.04 with MBR partition. But with some extra work
 3. Flash coreboot to replace UEFI firmware.
 
 
-However, this is not the case with installing Windows. Windows will always format the disk as GPT format when the system is booted through UEFI mode.
+However, this is not the case with installing Windows. Windows will always format the disk using GPT partition when the system is booted through UEFI mode.
 
 ------------------------------------------------------
 
@@ -33,6 +33,7 @@ https://doc.coreboot.org/mainboard/up/squared/index.html
 
 
 > Not working / Known issues
+>
 > Generally SeaBIOS works, but it can’t find the CBFS region and therefore it can’t load seavgabios. This is because of changes at the Apollolake platform.
 
 
@@ -41,9 +42,9 @@ Someone solved this issue before.
 
 https://mail.coreboot.org/hyperkitty/list/coreboot@coreboot.org/thread/KYZQBLQZ2TERK674CVEYYRG7JINXZPBN/
 
-![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2025-05-18-coreboot_upsquaredpro/EBEFFC.png)
+![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2025-05-18-coreboot_upsquaredpro/EBEFFE.png)
 
-I tried. The offset is right, but the value is not 0xFF483038.
+I tried. The offset is right, but the value I am looking for is not 0xFF483038.
 
 The following is the steps to fix this issue.
 
@@ -55,12 +56,12 @@ u@HX01040279:~/prjs/coreboot$ make menuconfig
 
 Devices->Display->Framebuffer mode, choose "Linear high-resolution framebuffer"
 
-The default 
+The default resolution
 
 (3840) Maximum width in pixels
 (2140) Maximum height in pixels
 
-is fine.
+works fine.
 
 ![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2025-05-18-coreboot_upsquaredpro/framebuffermode.png)
 
@@ -96,7 +97,7 @@ payloads/external/SeaBIOS/seabios/src/fw/coreboot.c:    u32 romstart = CONFIG_CB
 
 `````
 
-I tried "payloads/external/SeaBIOS/Makefile", no effect.
+I tried add code to "payloads/external/SeaBIOS/Makefile" to set CONFIG\_CBFS\_LOCATION. No effect, SeaBIOS/Makefile seems to be ignored.
 
 So, after compiling coreboot, go to seabios, do the following.
 
@@ -113,13 +114,13 @@ Set CBFS memory end location to 0xFFFC0000
 u@HX01040279:~/prjs/coreboot/payloads/external/SeaBIOS/seabios$ make
 `````
 
-Then, make coreboot again. coreboot.rom will be updated with the newly generated SeaBIOS.
+Then, make coreboot again. build/coreboot.rom will be updated with the newly generated SeaBIOS.
 
 `````shell
 u@HX01040279:~/prjs/coreboot$ make
 `````
 
-Now, patch coreboot.rom.
+Now, patch build/coreboot.rom.
 
 At offset 0xBFBFFC, it is 0xFF34202C.
 
