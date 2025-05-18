@@ -53,7 +53,7 @@ The following is the steps to fix this issue.
 u@HX01040279:~/prjs/coreboot$ make menuconfig
 `````
 
-Devices->Display->Framebuffer mode, choose "Linear high-resolution framebuffer"
+Devices-\>Display-\>Framebuffer mode, choose "Linear high-resolution framebuffer"
 
 The default 
 
