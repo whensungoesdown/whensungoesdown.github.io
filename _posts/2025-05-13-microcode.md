@@ -492,3 +492,27 @@ ms ram:
 7df8: 00012c039e48 0152257002ff 000000000000 01b05600
 7dfc: 000000000000 000000000000 000000000000 01ae2a00
 `````
+
+-------------------------------
+
+Clean first 16 math registers, then do the hook, that is how it could work currently.
+
+`````shell
+u@uu:~/prjs/lib-micro$ ./cmps_bin/cmps_static_do_IN_fix
+u@uu:~/prjs/lib-micro$ ./cmps_bin/cmps_static_clean_first_16_match
+u@uu:~/prjs/lib-micro$ ./cmps_bin/cmps_static
+patching addr: 00007c00 - ram: 00000000
+jump_target return value: 0x7c00
+7c00: 000500021861 237d3f000e88 0fff00000000 0b0000f2
+0x3cc8 uop 0x1c0000231027
+0x3cc8 uop 0x1c0000630026
+0x3cc8 uop 0x108501034d08
+      seqw 0x18000c0
+Patching 3cc8 -> 7c10
+7c10: 000000000000 0c4000231027 0008901f000d 018000c0
+7c14: 006410030230 0040d75b0230 006410030230 018000c0
+7c18: 0040e65f0330 006410030230 00403d770370 018000c0
+7c1c: 000000000000 00050003ac31 0150007002fa 018000e5
+7c20: 1c0000231027 1c0000630026 108501034d08 018000c0
+7c24: 015dcc700240 015dcd700240 015dce700240 018000c0
+`````
