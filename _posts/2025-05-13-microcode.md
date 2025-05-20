@@ -134,4 +134,52 @@ Why 0x0000003f? Do not know yet.
 
 Also not sure if the SFENCE is a must, copied that from the actual cmps microcode routine. So is 0x0b0000f2, which is a END_SEQWORD with up2 points to SFENCE with sync type being WAIT.
 
+------------------------------------------------------------
 
+Later I compiled coreboot without CBFS microcode update blob. I thought there would be less or even no microcode update any more.
+
+Surprisingly, the microcode match and path entries even has one more! And the sram space also is used up to 0x7df2.
+
+`````shell
+u@uu:~/prjs/lib-micro.bak$ ./build/ms_match_n_patch_read_static
+idx p src   dst
+00: 0 0x0000  0x0000
+01: 1 0x3a3a  0x7d9a
+02: 1 0x6ef6  0x7d76
+03: 1 0x6216  0x7d36
+04: 1 0x29a2  0x7c80
+05: 1 0x69ee  0x7d16
+06: 1 0x18b2  0x7c26
+07: 1 0x2832  0x7cea
+08: 1 0x549a  0x7c3a
+09: 1 0x6706  0x7d06
+10: 1 0x23aa  0x7cca
+11: 1 0x4868  0x7c60
+12: 1 0x2010  0x7c08
+13: 1 0x18dc  0x7c00
+14: 1 0x4588  0x7c38
+15: 1 0x5308  0x7d08
+16: 1 0x211e  0x7dc4
+17: 1 0x6a14  0x7d0e
+18: 1 0x0c3e  0x7d44
+19: 1 0x1362  0x7cd2
+20: 1 0x5026  0x7cd6
+21: 1 0x2842  0x7cfe
+22: 1 0x038a  0x7d14
+23: 1 0x2cb2  0x7d56
+24: 1 0x0e66  0x7d8e
+25: 1 0x4c5a  0x7dd4
+26: 1 0x1436  0x7d2e
+27: 1 0x24bc  0x7d0a
+28: 1 0x31a4  0x7d3c
+29: 1 0x758e  0x7df2
+30: 0 0x0000  0x0000
+31: 0 0x0000  0x0000
+
+`````
+
+Should list sram content to find empty space.
+
+From the coreboot doc, the microcode update is applied sometimes even before the core is out of reset.
+
+And almost guaranteed that the cpu wont be stable without any microcode update.
