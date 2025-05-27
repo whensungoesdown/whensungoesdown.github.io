@@ -122,7 +122,7 @@ u@HX01040279:~/prjs/coreboot$ make
 
 Now, patch build/coreboot.rom.
 
-At offset 0xBFBFFC, it is 0xFF34202C.
+At offset 0xEBEFFC, it is 0xFF34202C.
 
 Change it to 0xFF44302C.
 
