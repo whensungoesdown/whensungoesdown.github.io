@@ -18,3 +18,6 @@ published: true
 ![screenshot0](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/2024-11-06-0.png)
 
 
+不用的时候一定要吧Signal Tap关掉，否则编译出来的东西还带着。Assignments-\>Settings，把SignalTap II Logic Analyzer里Enable SignalTap II Logic Analyzer选项去掉。
+
+![screenshot1](https://github.com/whensungoesdown/whensungoesdown.github.io/raw/main/_posts/signaltap.png)
