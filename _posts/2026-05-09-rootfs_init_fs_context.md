@@ -1,9 +1,9 @@
 ---
-title: rootfs\_init\_fs\_context
+title: rootfs_init_fs_context
 published: true
 ---
 
-在执行到alloc\_fs\_context()
+在执行到alloc_fs_context()
 
 `````verilog
 /**
@@ -71,7 +71,7 @@ static struct fs_context *alloc_fs_context(struct file_system_type *fs_type,
         fc->need_free = true;
         return fc;
 
-err\_fc:
+err_fc:
         printk("                                        put_fs_context()\n");
         put_fs_context(fc);
         printk("                                        put_fs_context() finish\n");
